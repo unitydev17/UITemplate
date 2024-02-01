@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UITemplate.View
 {
-    public sealed class StartingWindowView : WindowView
+    public class StartingWindowView : PopupWindow
     {
         [SerializeField] private TMP_Text _timeAbsent;
         [SerializeField] private ButtonView _claimButtonView;

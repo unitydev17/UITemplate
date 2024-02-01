@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using UITemplate.Model;
 using UITemplate.View;
 using UniRx;
@@ -7,6 +8,7 @@ using VContainer.Unity;
 
 namespace UITemplate.Presenter
 {
+    [UsedImplicitly]
     public class StartingWindowPresenter : WindowPresenter<StartingWindowView, StartingWindowModel>, IInitializable
     {
         private Action _onClaimPressed;
