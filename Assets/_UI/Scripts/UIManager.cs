@@ -4,13 +4,13 @@ namespace UITemplate
 {
     public class UIManager
     {
-        private readonly StartingWindowPresenter _startingWindowPresenter;
-        private readonly ChefPackWindowPresenter _chefPackWindowPresenter;
+        private readonly StartingPopupPresenter _startingPopupPresenter;
+        private readonly ChefPackPopupPresenter _chefPackPopupPresenter;
 
-        public UIManager(StartingWindowPresenter startingWindowPresenter, ChefPackWindowPresenter chefPackWindowPresenter)
+        public UIManager(StartingPopupPresenter startingPopupPresenter, ChefPackPopupPresenter chefPackPopupPresenter)
         {
-            _startingWindowPresenter = startingWindowPresenter;
-            _chefPackWindowPresenter = chefPackWindowPresenter;
+            _startingPopupPresenter = startingPopupPresenter;
+            _chefPackPopupPresenter = chefPackPopupPresenter;
         }
 
         public void Run()
@@ -20,8 +20,8 @@ namespace UITemplate
 
         private void OpenStartingPopup()
         {
-            _startingWindowPresenter.Setup(OnClaimPressed);
-            _startingWindowPresenter.OpenView();
+            _startingPopupPresenter.Setup(OnClaimPressed);
+            _startingPopupPresenter.OpenView();
         }
 
         private void OnClaimPressed()
@@ -31,7 +31,7 @@ namespace UITemplate
 
         private void OpenChefPackPopup()
         {
-            _chefPackWindowPresenter.OpenView();
+            _chefPackPopupPresenter.OpenView();
         }
     }
 }

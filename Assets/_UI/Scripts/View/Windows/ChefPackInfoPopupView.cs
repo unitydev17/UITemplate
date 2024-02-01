@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UITemplate.View
 {
-    public class ChefPackWindowView : PopupWindow
+    public class ChefPackInfoPopupView : PopupView
     {
         [SerializeField] private ButtonView _closeButtonView;
 

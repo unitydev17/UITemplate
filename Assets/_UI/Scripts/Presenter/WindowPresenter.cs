@@ -15,7 +15,7 @@ namespace UITemplate.Presenter
         {
             _disposables.Add(observable.Subscribe(value => handler?.Invoke()));
         }
-        
+
         protected void Register(IObservable<Unit> observable, Action<Unit> handler)
         {
             _disposables.Add(observable.Subscribe(handler));
@@ -40,6 +40,11 @@ namespace UITemplate.Presenter
         public void Dispose()
         {
             _disposables.Dispose();
+        }
+
+
+        protected virtual void CloseAction()
+        {
         }
     }
 }

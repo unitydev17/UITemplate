@@ -9,17 +9,19 @@ using VContainer.Unity;
 namespace UITemplate.Presenter
 {
     [UsedImplicitly]
-    public class StartingWindowPresenter : WindowPresenter<StartingWindowView, StartingWindowModel>, IInitializable
+    public class StartingPopupPresenter : PopupPresenter<StartingPopupView, StartingPopupModel>
     {
         private Action _onClaimPressed;
         private Action _onSkipPressed;
 
-        public StartingWindowPresenter(StartingWindowView view, StartingWindowModel model) : base(view, model)
+        public StartingPopupPresenter(StartingPopupView view, StartingPopupModel model) : base(view, model)
         {
         }
 
-        public void Initialize()
+        public override void Start()
         {
+            Debug.Log("Start StartingPopupPresenter");
+            base.Start();
             Register(view.onClaimBtnClick, OnClaimClick);
             Register(view.onSkipBtnClick, OnSkipClick);
         }
@@ -42,6 +44,11 @@ namespace UITemplate.Presenter
 
             model.timeAbsent = "11h 22m";
             view.Refresh(model);
+        }
+
+        protected override void CloseAction()
+        {
+            Debug.Log("Close starting popup (presenter)");
         }
     }
 }

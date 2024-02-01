@@ -24,9 +24,7 @@ namespace UITemplate.View
             Disappear(callback);
         }
 
-        protected virtual void Appear()
-        {
-        }
+        protected abstract void Appear();
 
         protected virtual void Disappear(Action callback = null)
         {

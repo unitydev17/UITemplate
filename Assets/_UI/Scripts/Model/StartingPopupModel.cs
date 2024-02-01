@@ -1,6 +1,6 @@
 namespace UITemplate.Model
 {
-    public class StartingWindowModel
+    public class StartingPopupModel
     {
         public string timeAbsent = "start";
     }

@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace UITemplate.View
 {
-    public class StartingWindowView : PopupWindow
+    public class StartingPopupView : PopupView
     {
         [SerializeField] private TMP_Text _timeAbsent;
         [SerializeField] private ButtonView _claimButtonView;
 
         public IObservable<Unit> onClaimBtnClick => _claimButtonView.onClick.AsObservable();
-
-        public void Refresh(StartingWindowModel model)
+        
+        public void Refresh(StartingPopupModel model)
         {
             _timeAbsent.SetText(string.Format(Constants.TimeAbsentEarnings, model.timeAbsent));
         }

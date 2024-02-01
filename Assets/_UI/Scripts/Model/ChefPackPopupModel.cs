@@ -1,6 +1,6 @@
 namespace UITemplate.Model
 {
-    public class ChefPackWindowModel
+    public class ChefPackPopupModel
     {
         
     }

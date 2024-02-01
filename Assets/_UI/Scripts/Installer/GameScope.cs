@@ -9,24 +9,32 @@ public class GameScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
-        RegisterStartingWindow(builder);
-        RegisterChefPackWindow(builder);
+        RegisterStartingPopup(builder);
+        RegisterChefPackPopup(builder);
+        RegisterChefPackInfoPopup(builder);
 
         builder.RegisterEntryPoint<AppBoot>();
         builder.Register<UIManager>(Lifetime.Singleton);
     }
 
-    private static void RegisterStartingWindow(IContainerBuilder builder)
+    private static void RegisterStartingPopup(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<StartingWindowView>();
-        builder.Register<StartingWindowModel>(Lifetime.Singleton);
-        builder.Register<StartingWindowPresenter>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.RegisterComponentInHierarchy<StartingPopupView>();
+        builder.Register<StartingPopupModel>(Lifetime.Scoped);
+        builder.Register<StartingPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
     }
 
-    private static void RegisterChefPackWindow(IContainerBuilder builder)
+    private static void RegisterChefPackPopup(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<ChefPackWindowView>();
-        builder.Register<ChefPackWindowModel>(Lifetime.Singleton);
-        builder.Register<ChefPackWindowPresenter>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
+        builder.RegisterComponentInHierarchy<ChefPackPopupView>();
+        builder.Register<ChefPackPopupModel>(Lifetime.Scoped);
+        builder.Register<ChefPackPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+    }
+
+    private static void RegisterChefPackInfoPopup(IContainerBuilder builder)
+    {
+        builder.RegisterComponentInHierarchy<ChefPackInfoPopupView>();
+        builder.Register<ChefPackInfoPopupModel>(Lifetime.Scoped);
+        builder.Register<ChefPackInfoPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
     }
 }
