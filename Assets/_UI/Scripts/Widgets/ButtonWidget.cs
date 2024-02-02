@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace UITemplate.View
 {
-    public class ButtonView : Button, IDragHandler
+    public class ButtonWidget : Button, IDragHandler
     {
         public new ButtonClickedEvent onClick;
         private bool _tap;

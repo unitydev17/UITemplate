@@ -10,13 +10,13 @@ namespace UITemplate.View
     {
         private Transform _popupTr;
         private Image _bg;
-        private ButtonView _closeBtn;
+        private ButtonWidget _closeBtn;
 
         public IObservable<Unit> onCloseBtnClick => GetCloseBtnObservable();
 
         private IObservable<Unit> GetCloseBtnObservable()
         {
-            if (!_closeBtn) _closeBtn = GetComponentInChildren<ButtonView>();
+            if (!_closeBtn) _closeBtn = GetComponentInChildren<ButtonWidget>();
             return _closeBtn.onClick.AsObservable();
         }
 

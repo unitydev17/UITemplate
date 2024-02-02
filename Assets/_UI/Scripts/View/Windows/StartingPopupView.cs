@@ -9,10 +9,10 @@ namespace UITemplate.View
     public class StartingPopupView : PopupView
     {
         [SerializeField] private TMP_Text _timeAbsent;
-        [SerializeField] private ButtonView _claimButtonView;
+        [SerializeField] private ButtonWidget claimButtonWidget;
 
-        public IObservable<Unit> onClaimBtnClick => _claimButtonView.onClick.AsObservable();
-        
+        public IObservable<Unit> onClaimBtnClick => claimButtonWidget.onClick.AsObservable();
+
         public void Refresh(StartingPopupModel model)
         {
             _timeAbsent.SetText(string.Format(Constants.TimeAbsentEarnings, model.timeAbsent));
