@@ -1,6 +1,6 @@
-namespace UITemplate.Domain.Model
+namespace UITemplate.Presentation.Model.Popups
 {
-    public class AppModel
+    public class SettingsPopupModel
     {
         public bool musicOn;
         public bool soundOn;
