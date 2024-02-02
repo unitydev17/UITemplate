@@ -1,5 +1,4 @@
 using UITemplate.View;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.Presenter
@@ -12,8 +11,13 @@ namespace UITemplate.Presenter
 
         public virtual void Initialize()
         {
-            Debug.Log($"PopupPresenter Start  {view}");
+            Register(view.onSkipBtnClick, OnSkipClick);
             Register(view.onCloseBtnClick, OnCloseClick);
+        }
+
+        private void OnSkipClick()
+        {
+            CloseView(CloseAction);
         }
 
         private void OnCloseClick()

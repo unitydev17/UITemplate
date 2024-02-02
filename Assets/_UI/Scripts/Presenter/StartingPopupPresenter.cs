@@ -4,7 +4,6 @@ using UITemplate.Model;
 using UITemplate.View;
 using UniRx;
 using UnityEngine;
-using VContainer.Unity;
 
 namespace UITemplate.Presenter
 {
@@ -12,7 +11,7 @@ namespace UITemplate.Presenter
     public class StartingPopupPresenter : PopupPresenter<StartingPopupView, StartingPopupModel>
     {
         private Action _onClaimPressed;
-        private Action _onSkipPressed;
+
 
         public StartingPopupPresenter(StartingPopupView view, StartingPopupModel model) : base(view, model)
         {
@@ -20,21 +19,12 @@ namespace UITemplate.Presenter
 
         public override void Initialize()
         {
-            Debug.Log("Start StartingPopupPresenter");
             base.Initialize();
             Register(view.onClaimBtnClick, OnClaimClick);
-            Register(view.onSkipBtnClick, OnSkipClick);
-        }
-
-        private void OnSkipClick()
-        {
-            Debug.Log("Skip");
-            CloseView(() => _onSkipPressed?.Invoke());
         }
 
         private void OnClaimClick(Unit value)
         {
-            Debug.Log("Claim");
             CloseView(() => _onClaimPressed?.Invoke());
         }
 

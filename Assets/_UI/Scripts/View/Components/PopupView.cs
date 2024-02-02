@@ -2,14 +2,12 @@ using System;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UITemplate.View
 {
     public class PopupView : WindowView
     {
         private Transform _popupTr;
-        private Image _bg;
         private ButtonWidget _closeBtn;
 
         public IObservable<Unit> onCloseBtnClick => GetCloseBtnObservable();
@@ -20,16 +18,15 @@ namespace UITemplate.View
             return _closeBtn.onClick.AsObservable();
         }
 
-        private void Awake()
+        public override void Awake()
         {
-            Debug.Log("PopupView awake");
-            _bg = GetComponent<Image>();
+            base.Awake();
             _popupTr = transform.GetChild(0);
         }
 
         protected override void Appear()
         {
-            _bg.enabled = true;
+            SetBg(true);
 
             _popupTr.DOKill();
             _popupTr.DOScale(1, 0.5f).From(0).SetEase(Ease.OutBack);
@@ -40,7 +37,7 @@ namespace UITemplate.View
             _popupTr.DOKill();
             _popupTr.DOScale(0, 0.15f).SetEase(Ease.InBack).OnComplete(() =>
             {
-                _bg.enabled = false;
+                SetBg(false);
                 base.Disappear(callback);
             });
         }
