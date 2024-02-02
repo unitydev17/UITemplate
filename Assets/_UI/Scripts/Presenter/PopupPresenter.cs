@@ -4,13 +4,13 @@ using VContainer.Unity;
 
 namespace UITemplate.Presenter
 {
-    public abstract class PopupPresenter<TV, TM> : WindowPresenter<TV, TM>, IStartable where TV : PopupView
+    public abstract class PopupPresenter<TV, TM> : WindowPresenter<TV, TM>, IInitializable where TV : PopupView
     {
         protected PopupPresenter(TV view, TM model) : base(view, model)
         {
         }
 
-        public virtual void Start()
+        public virtual void Initialize()
         {
             Debug.Log($"PopupPresenter Start  {view}");
             Register(view.onCloseBtnClick, OnCloseClick);

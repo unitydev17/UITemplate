@@ -14,7 +14,7 @@ public class GameScope : LifetimeScope
         RegisterChefPackInfoPopup(builder);
 
         builder.RegisterEntryPoint<AppBoot>();
-        builder.Register<UIManager>(Lifetime.Singleton);
+        builder.Register<UIManager>(Lifetime.Singleton).AsImplementedInterfaces().AsSelf();
     }
 
     private static void RegisterStartingPopup(IContainerBuilder builder)

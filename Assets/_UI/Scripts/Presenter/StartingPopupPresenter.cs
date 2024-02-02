@@ -18,10 +18,10 @@ namespace UITemplate.Presenter
         {
         }
 
-        public override void Start()
+        public override void Initialize()
         {
             Debug.Log("Start StartingPopupPresenter");
-            base.Start();
+            base.Initialize();
             Register(view.onClaimBtnClick, OnClaimClick);
             Register(view.onSkipBtnClick, OnSkipClick);
         }

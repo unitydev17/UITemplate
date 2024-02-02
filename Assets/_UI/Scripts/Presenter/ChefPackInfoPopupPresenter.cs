@@ -6,9 +6,9 @@ using UnityEngine;
 namespace UITemplate.Presenter
 {
     [UsedImplicitly]
-    public class ChefPackInfoPopupPresenter : PopupPresenter<ChefPackPopupView, ChefPackPopupModel>
+    public class ChefPackInfoPopupPresenter : PopupPresenter<ChefPackInfoPopupView, ChefPackInfoPopupModel>
     {
-        public ChefPackInfoPopupPresenter(ChefPackPopupView view, ChefPackPopupModel model) : base(view, model)
+        public ChefPackInfoPopupPresenter(ChefPackInfoPopupView view, ChefPackInfoPopupModel model) : base(view, model)
         {
         }
 
