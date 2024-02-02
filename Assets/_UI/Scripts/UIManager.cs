@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
-using UITemplate.Events;
 using UITemplate.Presenter;
+using UITemplate.Presenter.Windows;
 using UniRx;
 using VContainer.Unity;
 
@@ -12,43 +12,59 @@ namespace UITemplate
         private readonly StartingPopupPresenter _startingPopupPresenter;
         private readonly ChefPackPopupPresenter _chefPackPopupPresenter;
         private readonly ChefPackInfoPopupPresenter _chefPackInfoPopupPresenter;
+        private readonly SettingsPopupPresenter _settingsPopupPresenter;
+        private readonly HudPresenter _hudPresenter;
 
-        public UIManager(StartingPopupPresenter startingPopupPresenter, ChefPackPopupPresenter chefPackPopupPresenter, ChefPackInfoPopupPresenter chefPackInfoPopupPresenter)
+        public UIManager(StartingPopupPresenter startingPopupPresenter,
+            ChefPackPopupPresenter chefPackPopupPresenter,
+            ChefPackInfoPopupPresenter chefPackInfoPopupPresenter,
+            SettingsPopupPresenter settingsPopupPresenter,
+            HudPresenter hudPresenter)
         {
             _startingPopupPresenter = startingPopupPresenter;
             _chefPackPopupPresenter = chefPackPopupPresenter;
             _chefPackInfoPopupPresenter = chefPackInfoPopupPresenter;
+            _settingsPopupPresenter = settingsPopupPresenter;
+            _hudPresenter = hudPresenter;
         }
 
         public void Initialize()
         {
+            MessageBroker.Default.Receive<CloseStartingPopupEvent>().Subscribe(OnCloseStartingPopup);
             MessageBroker.Default.Receive<ChefPackInfoOpenEvent>().Subscribe(_ => OpenChefPackInfoPopup());
-        }
-
-        private void OpenChefPackInfoPopup()
-        {
-            _chefPackInfoPopupPresenter.OpenView();
+            MessageBroker.Default.Receive<HudSettingsOpenEvent>().Subscribe(_ => OpenSettingsPopup());
         }
 
         public void Run()
         {
+            _hudPresenter.OpenView();
             OpenStartingPopup();
+        }
+
+        private void OpenSettingsPopup()
+        {
+            _settingsPopupPresenter.OpenView();
         }
 
         private void OpenStartingPopup()
         {
-            _startingPopupPresenter.Setup(OnClaimPressed);
+            _startingPopupPresenter.Setup();
             _startingPopupPresenter.OpenView();
         }
 
-        private void OnClaimPressed()
+        private void OnCloseStartingPopup(CloseStartingPopupEvent evt)
         {
-            OpenChefPackPopup();
+            if (evt.claimPressed) OpenChefPackPopup();
         }
 
         private void OpenChefPackPopup()
         {
             _chefPackPopupPresenter.OpenView();
+        }
+
+        private void OpenChefPackInfoPopup()
+        {
+            _chefPackInfoPopupPresenter.OpenView();
         }
     }
 }
