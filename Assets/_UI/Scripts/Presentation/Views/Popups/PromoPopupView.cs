@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UITemplate.View
 {
-    public class ChefPackPopupView : PopupView
+    public class PromoPopupView : PopupView
     {
         [SerializeField] private ButtonWidget _infoBtn;
 

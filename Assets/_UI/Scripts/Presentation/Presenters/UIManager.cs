@@ -12,19 +12,19 @@ namespace UITemplate.Presentation
     {
         private readonly StartingPopupPresenter _startingPopupPresenter;
         private readonly ChefPackPopupPresenter _chefPackPopupPresenter;
-        private readonly ChefPackInfoPopupPresenter _chefPackInfoPopupPresenter;
+        private readonly PromoInfoPopupPresenter _promoInfoPopupPresenter;
         private readonly SettingsPopupPresenter _settingsPopupPresenter;
         private readonly HudPresenter _hudPresenter;
 
         public UIManager(StartingPopupPresenter startingPopupPresenter,
             ChefPackPopupPresenter chefPackPopupPresenter,
-            ChefPackInfoPopupPresenter chefPackInfoPopupPresenter,
+            PromoInfoPopupPresenter promoInfoPopupPresenter,
             SettingsPopupPresenter settingsPopupPresenter,
             HudPresenter hudPresenter)
         {
             _startingPopupPresenter = startingPopupPresenter;
             _chefPackPopupPresenter = chefPackPopupPresenter;
-            _chefPackInfoPopupPresenter = chefPackInfoPopupPresenter;
+            _promoInfoPopupPresenter = promoInfoPopupPresenter;
             _settingsPopupPresenter = settingsPopupPresenter;
             _hudPresenter = hudPresenter;
         }
@@ -65,7 +65,7 @@ namespace UITemplate.Presentation
 
         private void OpenChefPackInfoPopup()
         {
-            _chefPackInfoPopupPresenter.OpenView();
+            _promoInfoPopupPresenter.OpenView();
         }
     }
 }

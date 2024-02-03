@@ -6,9 +6,9 @@ using UITemplate.View;
 namespace UITemplate.Presentation.Presenters.Popups
 {
     [UsedImplicitly]
-    public class ChefPackInfoPopupPresenter : PopupPresenter<ChefPackInfoPopupView, BaseModel>
+    public class PromoInfoPopupPresenter : PopupPresenter<PromoInfoPopupView, BaseModel>
     {
-        public ChefPackInfoPopupPresenter(ChefPackInfoPopupView view, BaseModel model) : base(view, model)
+        public PromoInfoPopupPresenter(PromoInfoPopupView view, BaseModel model) : base(view, model)
         {
         }
     }

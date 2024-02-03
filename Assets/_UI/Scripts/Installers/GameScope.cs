@@ -45,14 +45,14 @@ namespace UITemplate.Infrastructure.Installers
 
         private static void RegisterChefPackPopup(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<ChefPackPopupView>();
+            builder.RegisterComponentInHierarchy<PromoPopupView>();
             builder.Register<ChefPackPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
         }
 
         private static void RegisterChefPackInfoPopup(IContainerBuilder builder)
         {
-            builder.RegisterComponentInHierarchy<ChefPackInfoPopupView>();
-            builder.Register<ChefPackInfoPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
+            builder.RegisterComponentInHierarchy<PromoInfoPopupView>();
+            builder.Register<PromoInfoPopupPresenter>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
         }
 
         private static void RegisterHudWindow(IContainerBuilder builder)

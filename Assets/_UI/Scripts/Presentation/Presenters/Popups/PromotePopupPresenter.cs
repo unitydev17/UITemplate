@@ -7,9 +7,9 @@ using UniRx;
 namespace UITemplate.Presentation.Presenters.Popups
 {
     [UsedImplicitly]
-    public class ChefPackPopupPresenter : PopupPresenter<ChefPackPopupView, BaseModel>
+    public class ChefPackPopupPresenter : PopupPresenter<PromoPopupView, BaseModel>
     {
-        public ChefPackPopupPresenter(ChefPackPopupView view, BaseModel model) : base(view, model)
+        public ChefPackPopupPresenter(PromoPopupView view, BaseModel model) : base(view, model)
         {
         }
 
