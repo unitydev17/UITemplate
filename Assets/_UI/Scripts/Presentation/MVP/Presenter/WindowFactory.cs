@@ -1,8 +1,7 @@
-using System;
 using JetBrains.Annotations;
+using UITemplate.Application.Services;
 using UITemplate.Presentation.Presenters.Common;
 using UITemplate.View;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
@@ -15,15 +14,17 @@ namespace UITemplate.Presentation.Factories
         private static int _order;
 
         private readonly IObjectResolver _container;
+        private readonly IPrefabLoadService _prefabLoadService;
 
-        public WindowFactory(IObjectResolver container)
+        public WindowFactory(IObjectResolver container, IPrefabLoadService prefabLoadService)
         {
             _container = container;
+            _prefabLoadService = prefabLoadService;
         }
 
         public TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
         {
-            var prefab = GetPrefab<TView>();
+            var prefab = _prefabLoadService.GetPrefab<TView>();
             var view = Object.Instantiate(prefab).GetComponent<TView>();
             view.SetSortingOrder(_order++);
 
@@ -32,21 +33,6 @@ namespace UITemplate.Presentation.Factories
 
             (presenter as IInitializable)?.Initialize();
             return presenter;
-        }
-
-        private static GameObject GetPrefab<TView>()
-        {
-            try
-            {
-                var path = typeof(TView).ToString().Split(".");
-                return Resources.Load<GameObject>(path[^1]);
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
-
-            throw new Exception("Prefab not found");
         }
     }
 }
