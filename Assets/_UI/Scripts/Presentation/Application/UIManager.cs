@@ -6,7 +6,6 @@ using UITemplate.Presentation.Windows.Popups.Settings;
 using UITemplate.Presentation.Windows.Popups.Starting;
 using UITemplate.Presentation.Windows.Hud;
 using UniRx;
-using VContainer;
 using VContainer.Unity;
 
 namespace UITemplate.Presentation
@@ -14,11 +13,11 @@ namespace UITemplate.Presentation
     [UsedImplicitly]
     public class UIManager : IInitializable
     {
-        private readonly IObjectResolver _container;
+        private readonly WindowFactory _windowFactory;
 
-        public UIManager(IObjectResolver container)
+        public UIManager(WindowFactory windowFactory)
         {
-            _container = container;
+            _windowFactory = windowFactory;
         }
 
         public void Initialize()
@@ -30,18 +29,18 @@ namespace UITemplate.Presentation
 
         public void Run()
         {
-            WindowFactory.Create<HudPresenter, HudView, HudModel>(_container).OpenView();
+            _windowFactory.Create<HudPresenter, HudView, HudModel>().OpenView();
             OpenStartingPopup();
         }
 
         private void OpenSettingsPopup()
         {
-            WindowFactory.Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>(_container).OpenView();
+            _windowFactory.Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>().OpenView();
         }
 
         private void OpenStartingPopup()
         {
-            var presenter = WindowFactory.Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>(_container);
+            var presenter = _windowFactory.Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>();
             presenter.Setup();
             presenter.OpenView();
         }
@@ -53,12 +52,12 @@ namespace UITemplate.Presentation
 
         private void OpenChefPackPopup()
         {
-            WindowFactory.Create<PromoPopupPresenter, PromoPopupView, BaseModel>(_container).OpenView();
+            _windowFactory.Create<PromoPopupPresenter, PromoPopupView, BaseModel>().OpenView();
         }
 
         private void OpenChefPackInfoPopup()
         {
-            WindowFactory.Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>(_container).OpenView();
+            _windowFactory.Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>().OpenView();
         }
     }
 }

@@ -12,7 +12,6 @@ namespace UITemplate.Infrastructure.Installers
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            
             builder.Register<WindowFactory>(Lifetime.Singleton);
             builder.Register<AppModel>(Lifetime.Scoped);
 

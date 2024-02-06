@@ -1,6 +1,4 @@
-using System;
 using DG.Tweening;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,13 +8,11 @@ namespace UITemplate.View
     {
         public new ButtonClickedEvent onClick;
         private bool _tap;
-        private Vector2 _tapPosition;
 
 
         public override void OnPointerDown(PointerEventData eventData)
         {
             _tap = true;
-            _tapPosition = eventData.position;
             AnimatePress();
         }
 
@@ -26,10 +22,6 @@ namespace UITemplate.View
             _tap = false;
 
             AnimateRelease();
-
-            var moveDistance = Vector2.Distance(eventData.position, _tapPosition);
-
-            if (Math.Abs(moveDistance) > 1 && eventData.pointerCurrentRaycast.gameObject != gameObject) return;
 
             onClick?.Invoke();
         }

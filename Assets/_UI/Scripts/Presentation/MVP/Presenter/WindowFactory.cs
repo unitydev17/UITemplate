@@ -14,14 +14,21 @@ namespace UITemplate.Presentation.Factories
     {
         private static int _order;
 
-        public static TPresenter Create<TPresenter, TView, TModel>(IObjectResolver container) where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
+        private readonly IObjectResolver _container;
+
+        public WindowFactory(IObjectResolver container)
+        {
+            _container = container;
+        }
+
+        public TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
         {
             var prefab = GetPrefab<TView>();
             var view = Object.Instantiate(prefab).GetComponent<TView>();
             view.SetSortingOrder(_order++);
 
             var model = new TModel();
-            var presenter = new TPresenter {view = view, model = model, container = container};
+            var presenter = new TPresenter {view = view, model = model, container = _container};
 
             (presenter as IInitializable)?.Initialize();
             return presenter;
