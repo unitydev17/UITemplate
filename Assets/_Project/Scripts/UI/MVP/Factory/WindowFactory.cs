@@ -1,6 +1,11 @@
 using JetBrains.Annotations;
 using UITemplate.Infrastructure.Interfaces;
+using UITemplate.Presentation.Model;
 using UITemplate.Presentation.MVP.Presenter;
+using UITemplate.Presentation.Windows.Hud;
+using UITemplate.Presentation.Windows.Popups.Promo;
+using UITemplate.Presentation.Windows.Popups.Settings;
+using UITemplate.Presentation.Windows.Popups.Starting;
 using UITemplate.View;
 using VContainer;
 using VContainer.Unity;
@@ -22,7 +27,7 @@ namespace UITemplate.Presentation.MVP.Factory
             _prefabLoadService = prefabLoadService;
         }
 
-        public TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
+        private TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
         {
             var prefab = _prefabLoadService.GetPrefab<TView>();
             var view = Object.Instantiate(prefab).GetComponent<TView>();
@@ -32,7 +37,34 @@ namespace UITemplate.Presentation.MVP.Factory
             var presenter = new TPresenter {view = view, model = model, container = _container};
 
             (presenter as IInitializable)?.Initialize();
+            (presenter as IStartable)?.Start();
+
             return presenter;
+        }
+
+        public StartingPopupPresenter GetStartingPopup()
+        {
+            return Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>();
+        }
+
+        public SettingsPopupPresenter GetSettingsPopup()
+        {
+            return Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>();
+        }
+
+        public HudPresenter GetHud()
+        {
+            return Create<HudPresenter, HudView, HudModel>();
+        }
+
+        public PromoPopupPresenter GetPromoPopup()
+        {
+            return Create<PromoPopupPresenter, PromoPopupView, BaseModel>();
+        }
+
+        public PromoInfoPopupPresenter GetPromoInfoPopup()
+        {
+            return Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>();
         }
     }
 }

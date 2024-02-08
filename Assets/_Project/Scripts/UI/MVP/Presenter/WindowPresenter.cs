@@ -5,7 +5,7 @@ namespace UITemplate.Presentation.MVP.Presenter
 {
     public abstract class WindowPresenter<TView, TModel> : BasePresenter<TView, TModel> where TView : WindowView
     {
-        public void OpenView()
+        protected void OpenView()
         {
             view.gameObject.SetActive(true);
         }
