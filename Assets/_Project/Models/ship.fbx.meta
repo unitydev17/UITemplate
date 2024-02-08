@@ -1,9 +1,34 @@
 fileFormatVersion: 2
-guid: 6a873e39a38904d8a800b41d6474ccfa
+guid: e99cf37c7ca724e23831776249b17aac
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship-inner
+    second: {fileID: 2100000, guid: 3460559d6c0b14637af3e0db6d4a8a86, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship-tube
+    second: {fileID: 2100000, guid: 374070ff9d88d4f1db482ce63e72918e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_base
+    second: {fileID: 2100000, guid: 9ac9c45286bcd4df588a8a23e44d5af9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ship_body
+    second: {fileID: 2100000, guid: 65054c1d8ecc84bf48d1a29b943d743c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: tube
+    second: {fileID: 2100000, guid: aaad4e88ee8ff4f00b4b18e30dfe98f8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -35,14 +60,14 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 50
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
     importVisibility: 1
-    importBlendShapes: 0
+    importBlendShapes: 1
     importCameras: 0
     importLights: 0
     nodeNameCollisionStrategy: 1
@@ -90,7 +115,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 50
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
