@@ -27,7 +27,7 @@ namespace UITemplate.Presentation
 
         public void Run()
         {
-            // _windowFactory.GetHud();
+            _windowFactory.GetHud();
             // OpenStartingPopup();
         }
 

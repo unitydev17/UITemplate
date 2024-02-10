@@ -1,32 +1,48 @@
 using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class PlayerInput : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class PlayerInput : MonoBehaviour
 {
-    public static event Action<Vector2> OnDragMove;
+    public static event Action<Vector3> OnDragMove;
+    public static event Action<Vector3> OnSlide;
 
     private bool _tap;
-    [SerializeField] private Vector2 _position;
+    private Vector3 _position;
 
-    public void OnPointerDown(PointerEventData eventData)
+
+    private void Start()
     {
-        _tap = true;
-        _position = eventData.position;
+        Observable.EveryUpdate().Where(_ => Input.GetMouseButtonDown(0)).Subscribe(_ => OnPointerDown()).AddTo(this);
+        Observable.EveryUpdate().Where(_ => Input.GetMouseButton(0)).Subscribe(_ => OnDrag()).AddTo(this);
+        Observable.EveryUpdate().Where(_ => Input.GetMouseButtonUp(0)).Subscribe(_ => OnPointerUp()).AddTo(this);
     }
 
-    public void OnDrag(PointerEventData eventData)
+    private void OnPointerDown()
+    {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
+        _tap = true;
+        _position = Input.mousePosition;
+    }
+
+    private void OnDrag()
     {
         if (!_tap) return;
 
-        var deltaPos = (eventData.position - _position).normalized;
-        _position = eventData.position;
-        
+        var deltaPos = (Input.mousePosition - _position).normalized;
+        _position = Input.mousePosition;
+
         OnDragMove?.Invoke(deltaPos);
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    private void OnPointerUp()
     {
+        if (!_tap) return;
         _tap = false;
+
+        var deltaPos = (Input.mousePosition - _position).normalized;
+        OnSlide?.Invoke(deltaPos);
     }
 }
