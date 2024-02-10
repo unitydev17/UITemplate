@@ -4,6 +4,7 @@ namespace UITemplate.Common.Dto
     {
         public int id;
         public int currentIncome;
+        public int nextDeltaIncome;
         public int nextUpgradeCost;
         public int level;
         public float upgradeCompletion;

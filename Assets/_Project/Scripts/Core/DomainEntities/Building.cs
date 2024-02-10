@@ -5,6 +5,7 @@ namespace UITemplate.Core.Entities
         public int id;
         public int level;
         public int currentIncome;
+        public int nextDeltaIncome;
         public int nextUpgradeCost;
         public float upgradeCompletion;
         public float incomeCompletion;

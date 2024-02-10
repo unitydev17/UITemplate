@@ -9,7 +9,7 @@ namespace UITemplate.Application.ScriptableObjects
         public string costs;
         public string incomes;
         public string incomeMultiplier;
-
+        public float globalSpeedMultiplier;
 
         public int upgradesCount => GetSize(costs);
         public int GetCost(in int upgradeLevel) => GetValue<int>(costs, upgradeLevel, upgradesCount - 1);

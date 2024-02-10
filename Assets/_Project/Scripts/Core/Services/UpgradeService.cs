@@ -28,6 +28,7 @@ namespace UITemplate.Application.Services
             building.upgradeCompletion = GetUpgradeCompletion(building);
             building.currentIncome = _cfg.GetIncome(building.level);
             building.incomeMultiplier = _cfg.GetIncomeMultiplier(building.level);
+            building.nextDeltaIncome = maxUpdate ? 0 : _cfg.GetIncome(building.level + 1) - building.currentIncome;
         }
 
         private float GetUpgradeCompletion(Building building)

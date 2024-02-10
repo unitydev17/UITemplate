@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using UITemplate.Application.ScriptableObjects;
 using UITemplate.Core;
 using UITemplate.Core.Entities;
 using UITemplate.Core.Interfaces;
@@ -12,10 +13,12 @@ namespace UITemplate.Application.Services
     public class IncomeService : IIncomeService
     {
         private readonly PlayerData _playerData;
+        private UpgradeCfg _cfg;
 
-        public IncomeService(PlayerData playerData)
+        public IncomeService(PlayerData playerData, UpgradeCfg cfg)
         {
             _playerData = playerData;
+            _cfg = cfg;
         }
 
         public void Process(Building building)
@@ -40,13 +43,12 @@ namespace UITemplate.Application.Services
 
         private static void NotifyBoard(Building building)
         {
-            var dto = BuildingDtoMapper.GetDto(building);
-            MessageBroker.Default.Publish(new IncomeEvent(dto));
+            MessageBroker.Default.Publish(new IncomeEvent(building.ToDto()));
         }
 
-        private static void UpdateIncome(Building building)
+        private void UpdateIncome(Building building)
         {
-            building.incomeCompletion += building.incomeSpeed * building.incomeMultiplier * Time.deltaTime;
+            building.incomeCompletion += building.incomeSpeed * building.incomeMultiplier * Time.deltaTime * _cfg.globalSpeedMultiplier;
         }
 
         private static bool IsBuildingClose(Building building)

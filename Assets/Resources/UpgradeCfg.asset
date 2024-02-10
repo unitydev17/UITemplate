@@ -15,3 +15,4 @@ MonoBehaviour:
   costs: 10,20,50,100,250,500,1250,2500,5000
   incomes: 0,1,2,5,10,25,50,125,250,500
   incomeMultiplier: 0,1,1.25,1.5,2,2.5,3,4,5,10
+  globalSpeedMultiplier: 10

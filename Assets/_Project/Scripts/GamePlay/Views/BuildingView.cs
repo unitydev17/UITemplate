@@ -88,6 +88,6 @@ public class BuildingView : MonoBehaviour
         _upgradeProgressImg.fillAmount = dto.upgradeCompletion;
         _incomeProgressImg.fillAmount = dto.incomeCompletion;
 
-        _incomeHelperTxt.text = $"+{dto.currentIncome}";
+        _incomeHelperTxt.text = $"+{dto.nextDeltaIncome}";
     }
 }

@@ -7,15 +7,7 @@ namespace UITemplate.Core
     {
         public static BuildingDto GetDto(Building building)
         {
-            return new BuildingDto
-            {
-                id = building.id,
-                currentIncome = building.currentIncome,
-                nextUpgradeCost = building.nextUpgradeCost,
-                level = building.level,
-                upgradeCompletion = building.upgradeCompletion,
-                incomeCompletion = building.incomeCompletion
-            };
+            return building.ToDto();
         }
 
         public static PlayerDto ToDto(this PlayerData playerData)
@@ -35,7 +27,8 @@ namespace UITemplate.Core
                 nextUpgradeCost = building.nextUpgradeCost,
                 level = building.level,
                 upgradeCompletion = building.upgradeCompletion,
-                incomeCompletion = building.incomeCompletion
+                incomeCompletion = building.incomeCompletion,
+                nextDeltaIncome = building.nextDeltaIncome
             };
         }
     }
