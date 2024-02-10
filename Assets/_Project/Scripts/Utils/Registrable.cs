@@ -1,12 +1,23 @@
 using System;
 using UniRx;
 
-namespace UITemplate.Presentation.MVP.Presenter
+namespace UITemplate.Utils
 {
     public abstract class Registrable : IDisposable
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+        protected void Register<T>(IObservable<T> observable, Action handler)
+        {
+            if (observable == null) return;
+            _disposables.Add(observable.Subscribe(value => handler?.Invoke()));
+        }
+        
+        protected void Register<T>(IObservable<T> observable, Action<T> handler)
+        {
+            if (observable == null) return;
+            _disposables.Add(observable.Subscribe(value => handler?.Invoke(value)));
+        }
         protected void Register(IObservable<Unit> observable, Action handler)
         {
             if (observable == null) return;

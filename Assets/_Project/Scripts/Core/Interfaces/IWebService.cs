@@ -1,4 +1,4 @@
-namespace UITemplate.Infrastructure.Interfaces
+namespace UITemplate.Core.Interfaces
 {
     public interface IWebService
     {

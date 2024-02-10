@@ -1,6 +1,6 @@
-namespace UITemplate.Domain.Model
+namespace UITemplate.Core.Entities
 {
-    public class AppModel
+    public class Settings
     {
         public bool musicOn;
         public bool soundOn;

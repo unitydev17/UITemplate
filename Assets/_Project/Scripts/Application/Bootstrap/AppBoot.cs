@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using UITemplate.Core.Controller;
 using UITemplate.Presentation;
 using VContainer.Unity;
 
@@ -8,14 +9,17 @@ namespace UITemplate.Application
     public class AppBoot : IStartable
     {
         private readonly UIManager _ui;
+        private readonly GameManager _gameManager;
 
-        public AppBoot(UIManager ui)
+        public AppBoot(UIManager ui, GameManager gameManager)
         {
             _ui = ui;
+            _gameManager = gameManager;
         }
 
         public void Start()
         {
+            _gameManager.Run();
             _ui.Run();
         }
     }

@@ -1,0 +1,16 @@
+{
+    "name": "Events",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b7d4a491c600d4e4ab4afa61ca684c44"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using UITemplate.Infrastructure.Interfaces;
+using UITemplate.Core.Interfaces;
 using UITemplate.Presentation.Model;
 using UITemplate.Presentation.MVP.Presenter;
 using UITemplate.Presentation.Windows.Hud;

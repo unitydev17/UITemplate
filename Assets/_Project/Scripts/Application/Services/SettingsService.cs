@@ -1,15 +1,15 @@
 using JetBrains.Annotations;
-using UITemplate.Application.Interfaces;
-using UITemplate.Domain.Model;
+using UITemplate.Core.Interfaces;
+using UITemplate.Core.Entities;
 
 namespace UITemplate.Application.Services
 {
     [UsedImplicitly]
     public class SettingsService : ISettingsService
     {
-        private readonly AppModel _model;
+        private readonly Settings _model;
 
-        public SettingsService(AppModel model)
+        public SettingsService(Settings model)
         {
             _model = model;
         }
