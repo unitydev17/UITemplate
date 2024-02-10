@@ -27,7 +27,7 @@ public class WorldService : IWorldService
                 level = 0,
                 currentIncome = 0,
                 nextUpgradeCost = 11,
-                incomeSpeed = 0.1f,
+                incomeSpeed = 1f,
                 incomeCompletion = 0,
                 upgradeCompletion = 0
             });

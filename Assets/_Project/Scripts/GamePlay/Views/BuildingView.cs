@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UITemplate.Common.Dto;
 using UITemplate.Core.Controller;
@@ -88,6 +89,6 @@ public class BuildingView : MonoBehaviour
         _upgradeProgressImg.fillAmount = dto.upgradeCompletion;
         _incomeProgressImg.fillAmount = dto.incomeCompletion;
 
-        _incomeHelperTxt.text = $"+{dto.nextDeltaIncome}";
+        _incomeHelperTxt.text = dto.nextDeltaIncome == 0 ? string.Empty : $"+{dto.nextDeltaIncome}";
     }
 }
