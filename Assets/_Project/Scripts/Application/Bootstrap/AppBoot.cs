@@ -19,8 +19,9 @@ namespace UITemplate.Application
 
         public void Start()
         {
-            _gameManager.Run();
             _ui.Run();
+            _gameManager.Run();
+            
         }
     }
 }

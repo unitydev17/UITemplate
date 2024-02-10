@@ -1,6 +1,6 @@
 using UITemplate.Common.Dto;
 
-namespace UITemplate.Core.Controller
+namespace UITemplate.Events
 {
     public class IncomeEvent
     {

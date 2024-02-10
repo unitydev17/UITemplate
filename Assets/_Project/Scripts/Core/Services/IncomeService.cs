@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
 using UITemplate.Core;
-using UITemplate.Core.Controller;
 using UITemplate.Core.Entities;
 using UITemplate.Core.Interfaces;
+using UITemplate.Events;
 using UniRx;
 using UnityEngine;
 
@@ -29,6 +29,17 @@ namespace UITemplate.Application.Services
 
             _playerData.money += building.currentIncome;
 
+            NotifyBoard(building);
+            NotifyUI();
+        }
+
+        private void NotifyUI()
+        {
+            MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
+        }
+
+        private static void NotifyBoard(Building building)
+        {
             var dto = BuildingDtoMapper.GetDto(building);
             MessageBroker.Default.Publish(new IncomeEvent(dto));
         }

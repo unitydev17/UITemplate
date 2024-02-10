@@ -1,7 +1,10 @@
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
+using UITemplate.Core;
 using UITemplate.Core.Entities;
 using UITemplate.Core.Interfaces;
+using UITemplate.Events;
+using UniRx;
 
 namespace UITemplate.Application.Services
 {
@@ -45,11 +48,18 @@ namespace UITemplate.Application.Services
             if (!canUpgrade) return false;
 
             _playerData.money -= cost;
+            NotifyUI();
+            
 
             building.level++;
             UpdateBuildingValues(ref building);
 
             return true;
+        }
+        
+        private void NotifyUI()
+        {
+            MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
         }
 
         private bool IsLastUpdateReached(Building building)

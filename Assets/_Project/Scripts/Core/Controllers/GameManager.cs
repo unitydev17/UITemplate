@@ -32,7 +32,7 @@ namespace UITemplate.Core.Controller
 
         public void Initialize()
         {
-            Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeEvent);
+            Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeRequestEvent);
             Register(Observable.EveryUpdate(), UpdateBuildingTimer);
         }
 
@@ -48,14 +48,16 @@ namespace UITemplate.Core.Controller
             {
                 _incomeService.Process(building);
             }
-            
+
             var dtoList = GetDtoList();
             _worldService.UpdateBuildingViews(dtoList);
         }
 
         private void InitializePlayerData()
         {
-            _playerData.money = 1000;
+            _playerData.money = 15;
+
+            MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
         }
 
         private void InitializeBuildings()
@@ -78,14 +80,13 @@ namespace UITemplate.Core.Controller
             return _buildings.Select(BuildingDtoMapper.GetDto).ToList();
         }
 
-        private void HandleUpgradeEvent(UpgradeRequestEvent data)
+        private void HandleUpgradeRequestEvent(UpgradeRequestEvent data)
         {
             var building = GetBuilding(data.id);
             var upgradeSuccess = _upgradeService.TryUpgrade(ref building);
-            
+            if (!upgradeSuccess) return;
 
-            var dto = BuildingDtoMapper.GetDto(building);
-            MessageBroker.Default.Publish(new UpgradeResponseEvent(dto));
+            MessageBroker.Default.Publish(new UpgradeResponseEvent(building.ToDto()));
         }
 
         private Building GetBuilding(int id)
