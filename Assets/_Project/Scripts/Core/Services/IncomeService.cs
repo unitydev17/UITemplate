@@ -13,7 +13,7 @@ namespace UITemplate.Application.Services
     public class IncomeService : IIncomeService
     {
         private readonly PlayerData _playerData;
-        private UpgradeCfg _cfg;
+        private readonly UpgradeCfg _cfg;
 
         public IncomeService(PlayerData playerData, UpgradeCfg cfg)
         {
@@ -48,7 +48,11 @@ namespace UITemplate.Application.Services
 
         private void UpdateIncome(Building building)
         {
-            building.incomeCompletion += building.incomeSpeed * building.incomeMultiplier * Time.deltaTime * _cfg.globalSpeedMultiplier;
+            var completeChunk = building.incomeSpeed * building.incomeMultiplier * Time.deltaTime;
+            completeChunk *= _cfg.globalSpeedMultiplier;
+            completeChunk *= _playerData.speedUp ? 2 : 1;
+
+            building.incomeCompletion += completeChunk;
         }
 
         private static bool IsBuildingClose(Building building)

@@ -1,4 +1,6 @@
+using System;
 using UITemplate.View;
+using UniRx;
 using VContainer.Unity;
 
 namespace UITemplate.Presentation.MVP.Presenter
@@ -11,6 +13,11 @@ namespace UITemplate.Presentation.MVP.Presenter
             Register(view.onCloseBtnClick, OnCloseClick);
         }
 
+        protected void RegisterCloser(IObservable<Unit> closer)
+        {
+            Register(closer, OnCloseClick);
+        } 
+
         public void Start()
         {
             OpenView();
@@ -21,7 +28,7 @@ namespace UITemplate.Presentation.MVP.Presenter
             CloseView(CloseAction);
         }
 
-        private void OnCloseClick()
+        protected void OnCloseClick()
         {
             CloseView(CloseAction);
         }

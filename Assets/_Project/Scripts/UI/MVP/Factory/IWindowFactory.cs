@@ -16,5 +16,7 @@ namespace UITemplate.Presentation.MVP.Factory
         public PromoInfoPopupPresenter GetPromoInfoPopup();
 
         public HudPresenter GetHud();
+        
+        public StubPopupPresenter GetStubPopup();
     }
 }

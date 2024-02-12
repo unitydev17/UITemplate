@@ -2,14 +2,17 @@ using System;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace UITemplate.View
 {
-    public class PopupView : WindowView
+    public class PopupView : WindowView, IPointerDownHandler
     {
+        [SerializeField] private bool _skippable;
         private Transform _popupTr;
         private ButtonWidget _closeBtn;
 
+        public readonly Subject<Unit> onSkipBtnClick = new Subject<Unit>();
         public IObservable<Unit> onCloseBtnClick => GetCloseBtnObservable();
 
         private IObservable<Unit> GetCloseBtnObservable()
@@ -40,6 +43,12 @@ namespace UITemplate.View
                 SetBg(false);
                 base.Disappear(callback);
             });
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            if (!_skippable) return;
+            onSkipBtnClick.OnNext(Unit.Default);
         }
     }
 }

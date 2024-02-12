@@ -23,12 +23,18 @@ namespace UITemplate.Presentation
             MessageBroker.Default.Receive<CloseStartingPopupEvent>().Subscribe(OnCloseStartingPopup);
             MessageBroker.Default.Receive<ChefPackInfoOpenEvent>().Subscribe(_ => OpenPromoInfoPopup());
             MessageBroker.Default.Receive<HudSettingsOpenEvent>().Subscribe(_ => OpenSettingsPopup());
+            MessageBroker.Default.Receive<HudStubOpenEvent>().Subscribe(_ => OpenStubPopup());
         }
 
         public void Run()
         {
             _windowFactory.GetHud();
             // OpenStartingPopup();
+        }
+
+        private void OpenStubPopup()
+        {
+            _windowFactory.GetStubPopup();
         }
 
         private void OpenSettingsPopup()

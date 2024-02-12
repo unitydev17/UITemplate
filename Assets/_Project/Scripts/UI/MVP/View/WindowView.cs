@@ -6,12 +6,8 @@ using UnityEngine.UI;
 
 namespace UITemplate.View
 {
-    public abstract class WindowView : MonoBehaviour, IPointerDownHandler, ISortedView
+    public abstract class WindowView : MonoBehaviour, ISortedView
     {
-        [SerializeField] private bool _skippable;
-
-        public readonly Subject<Unit> onSkipBtnClick = new Subject<Unit>();
-
         private Image _bg;
         private Canvas _canvas;
 
@@ -29,12 +25,6 @@ namespace UITemplate.View
         public void OnEnable()
         {
             Appear();
-        }
-
-        public void OnPointerDown(PointerEventData eventData)
-        {
-            if (!_skippable) return;
-            onSkipBtnClick.OnNext(Unit.Default);
         }
 
         public void Close(Action callback)

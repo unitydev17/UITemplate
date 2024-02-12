@@ -34,7 +34,11 @@ namespace UITemplate.Presentation.MVP.Factory
             view.SetSortingOrder(_order++);
 
             var model = new TModel();
-            var presenter = new TPresenter {view = view, model = model, container = _container};
+            
+            var presenter = _container.Resolve<TPresenter>();
+            presenter.view = view;
+            presenter.model = model;
+            presenter.container = _container;
 
             (presenter as IInitializable)?.Initialize();
             (presenter as IStartable)?.Start();
@@ -55,6 +59,11 @@ namespace UITemplate.Presentation.MVP.Factory
         public HudPresenter GetHud()
         {
             return Create<HudPresenter, HudView, HudModel>();
+        }
+
+        public StubPopupPresenter GetStubPopup()
+        {
+            return Create<StubPopupPresenter, StubPopupView, StubPopupModel>();
         }
 
         public PromoPopupPresenter GetPromoPopup()

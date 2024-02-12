@@ -7,6 +7,10 @@ using UITemplate.Core.Controller;
 using UITemplate.Infrastructure.Services;
 using UITemplate.Presentation;
 using UITemplate.Presentation.MVP.Factory;
+using UITemplate.Presentation.Windows.Hud;
+using UITemplate.Presentation.Windows.Popups.Promo;
+using UITemplate.Presentation.Windows.Popups.Settings;
+using UITemplate.Presentation.Windows.Popups.Starting;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -19,6 +23,8 @@ namespace UITemplate.Infrastructure.Installers
 
         protected override void Configure(IContainerBuilder builder)
         {
+            RegisterUIViews(builder);
+
             RegisterScriptableObjects(builder);
 
             RegisterEntryPoint(builder);
@@ -30,6 +36,16 @@ namespace UITemplate.Infrastructure.Installers
             RegisterFactories(builder);
 
             RegisterUIManager(builder);
+        }
+
+        private static void RegisterUIViews(IContainerBuilder builder)
+        {
+            builder.Register<HudPresenter>(Lifetime.Scoped);
+            builder.Register<StartingPopupPresenter>(Lifetime.Scoped);
+            builder.Register<SettingsPopupPresenter>(Lifetime.Scoped);
+            builder.Register<PromoPopupPresenter>(Lifetime.Scoped);
+            builder.Register<PromoInfoPopupPresenter>(Lifetime.Scoped);
+            builder.Register<StubPopupPresenter>(Lifetime.Scoped);
         }
 
         private void RegisterScriptableObjects(IContainerBuilder builder)

@@ -1308,8 +1308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d3e63c64db24561a6dd03efef20f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dragVelocity: 2
-  _slideVelocity: 2
+  _dragVelocity: 3
+  _slideVelocity: 3
   _damping: 0.87
 --- !u!114 &519420034
 MonoBehaviour:

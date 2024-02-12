@@ -33,6 +33,7 @@ namespace UITemplate.Core.Controller
         public void Initialize()
         {
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeRequestEvent);
+            Register(MessageBroker.Default.Receive<UISpeedUpRequestEvent>(), HandleSpeedUpRequestEvent);
             Register(Observable.EveryUpdate(), UpdateBuildingTimer);
         }
 
@@ -40,6 +41,11 @@ namespace UITemplate.Core.Controller
         {
             InitializeBuildings();
             InitializePlayerData();
+        }
+
+        private void HandleSpeedUpRequestEvent(UISpeedUpRequestEvent data)
+        {
+            _playerData.speedUp = data.enable;
         }
 
         private void UpdateBuildingTimer()
