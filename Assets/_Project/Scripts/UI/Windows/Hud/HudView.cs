@@ -34,7 +34,7 @@ namespace UITemplate.Presentation.Windows.Hud
             _progressTxt.text = $"{valueRemain} sec";
         }
 
-        public void SetSpeedButton(bool active)
+        public void SetSpeedButtonActive(bool active)
         {
             _speedBtn.SetActive(active);
         }

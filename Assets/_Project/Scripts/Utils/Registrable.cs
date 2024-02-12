@@ -37,7 +37,6 @@ namespace UITemplate.Utils
 
         protected IDisposable RegisterTemporary<T>(IObservable<T> observable, Action handler)
         {
-            if (observable == null) return null;
             var disposable = observable.Subscribe(value => handler?.Invoke());
             _disposables.Add(disposable);
             return disposable;

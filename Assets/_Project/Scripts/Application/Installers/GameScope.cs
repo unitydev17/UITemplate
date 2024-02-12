@@ -23,6 +23,8 @@ namespace UITemplate.Infrastructure.Installers
 
         protected override void Configure(IContainerBuilder builder)
         {
+            RegisterCommands(builder);
+
             RegisterUIViews(builder);
 
             RegisterScriptableObjects(builder);
@@ -36,6 +38,11 @@ namespace UITemplate.Infrastructure.Installers
             RegisterFactories(builder);
 
             RegisterUIManager(builder);
+        }
+
+        private void RegisterCommands(IContainerBuilder builder)
+        {
+            builder.Register<HudSpeedUpCommand>(Lifetime.Scoped);
         }
 
         private static void RegisterUIViews(IContainerBuilder builder)
