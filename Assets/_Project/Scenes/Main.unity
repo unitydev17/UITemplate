@@ -180,7 +180,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: '1
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
   m_sharedMaterial: {fileID: -2432760663622502936, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
@@ -1306,9 +1308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d3e63c64db24561a6dd03efef20f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dragVelocity: 10
-  _slideVelocity: 5
-  _damping: 0.95
+  _dragVelocity: 2
+  _slideVelocity: 2
+  _damping: 0.87
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,7 +1636,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: '1
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
   m_sharedMaterial: {fileID: -2432760663622502936, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
@@ -2794,7 +2798,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: '1
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
   m_sharedMaterial: {fileID: -2432760663622502936, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
@@ -5144,7 +5150,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: '1
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
   m_sharedMaterial: {fileID: -2432760663622502936, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
@@ -5692,7 +5700,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 200
+  m_text: '1
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
   m_sharedMaterial: {fileID: -2432760663622502936, guid: 70e8e961afadb4fbe98209d0fb8a4b46, type: 2}
