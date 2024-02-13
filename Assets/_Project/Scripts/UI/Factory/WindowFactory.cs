@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UITemplate.Core.Interfaces;
 using UITemplate.UI.MVP.Model;
@@ -20,62 +21,64 @@ namespace UITemplate.UI.Factory
 
         private readonly IObjectResolver _container;
         private readonly IPrefabLoadService _prefabLoadService;
-        private IPrefabLoadServiceAsync _prefabLoadServiceAsync;
 
-        public WindowFactory(IObjectResolver container, IPrefabLoadService prefabLoadService, IPrefabLoadServiceAsync prefabLoadServiceAsync)
+        public WindowFactory(IObjectResolver container, IPrefabLoadService prefabLoadService)
         {
             _container = container;
             _prefabLoadService = prefabLoadService;
-            _prefabLoadServiceAsync = prefabLoadServiceAsync;
+            _prefabLoadService = prefabLoadService;
         }
 
-        private TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
+        private void Create<TPresenter, TView, TModel>(Action<TPresenter> callback) where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
         {
-            var prefab = _prefabLoadService.GetPrefab<TView>();
-            var view = Object.Instantiate(prefab).GetComponent<TView>();
-            view.SetSortingOrder(_order++);
+            _prefabLoadService.LoadUIPrefab<TView>(prefab =>
+            {
+                var view = Object.Instantiate(prefab).GetComponent<TView>();
+                view.SetSortingOrder(_order++);
 
-            var model = new TModel();
+                var model = new TModel();
 
-            var presenter = _container.Resolve<TPresenter>();
-            presenter.view = view;
-            presenter.model = model;
-            presenter.container = _container;
+                var presenter = _container.Resolve<TPresenter>();
+                presenter.view = view;
+                presenter.model = model;
+                presenter.container = _container;
 
-            (presenter as IInitializable)?.Initialize();
-            (presenter as IStartable)?.Start();
+                (presenter as IInitializable)?.Initialize();
+                (presenter as IStartable)?.Start();
 
-            return presenter;
+                callback?.Invoke(presenter);
+            });
         }
 
-        public StartingPopupPresenter GetStartingPopup()
+
+        public void GetStartingPopup(Action<StartingPopupPresenter> callback)
         {
-            return Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>();
+            Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>(callback);
         }
 
-        public SettingsPopupPresenter GetSettingsPopup()
+        public void GetSettingsPopup(Action<SettingsPopupPresenter> callback)
         {
-            return Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>();
+            Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>(callback);
         }
 
-        public HudPresenter GetHud()
+        public void GetPromoPopup(Action<PromoPopupPresenter> callback)
         {
-            return Create<HudPresenter, HudView, HudModel>();
+            Create<PromoPopupPresenter, PromoPopupView, BaseModel>(callback);
         }
 
-        public StubPopupPresenter GetStubPopup()
+        public void GetPromoInfoPopup(Action<PromoInfoPopupPresenter> callback)
         {
-            return Create<StubPopupPresenter, StubPopupView, StubPopupModel>();
+            Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>(callback);
         }
 
-        public PromoPopupPresenter GetPromoPopup()
+        public void GetHudWindow(Action<HudPresenter> callback)
         {
-            return Create<PromoPopupPresenter, PromoPopupView, BaseModel>();
+            Create<HudPresenter, HudView, HudModel>(callback);
         }
 
-        public PromoInfoPopupPresenter GetPromoInfoPopup()
+        public void GetStubPopup(Action<StubPopupPresenter> callback)
         {
-            return Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>();
+            Create<StubPopupPresenter, StubPopupView, StubPopupModel>(callback);
         }
     }
 }

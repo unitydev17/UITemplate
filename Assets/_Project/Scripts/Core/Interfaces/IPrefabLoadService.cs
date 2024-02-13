@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 
 namespace UITemplate.Core.Interfaces
 {
     public interface IPrefabLoadService
     {
-        public GameObject GetPrefab<TView>();
+        public void LoadUIPrefab<TView>(Action<GameObject> returnPrefabCallback);
     }
 }

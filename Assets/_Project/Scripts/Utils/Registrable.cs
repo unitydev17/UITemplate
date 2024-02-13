@@ -35,14 +35,12 @@ namespace UITemplate.Utils
             _disposables.Dispose();
         }
 
-        protected IDisposable RegisterTemporary<T>(IObservable<T> observable, Action handler)
+        protected static IDisposable RegisterTemporary<T>(IObservable<T> observable, Action handler)
         {
-            var disposable = observable.Subscribe(value => handler?.Invoke());
-            _disposables.Add(disposable);
-            return disposable;
+            return observable.Subscribe(value => handler?.Invoke());
         }
 
-        public void Dispose(IDisposable disposable)
+        protected static void Dispose(IDisposable disposable)
         {
             disposable.Dispose();
         }

@@ -89,7 +89,6 @@ namespace UITemplate.Infrastructure.Installers
             builder.Register<ISettingsService, SettingsService>(Lifetime.Scoped);
             builder.Register<IWebService, WebService>(Lifetime.Scoped);
             builder.Register<IPrefabLoadService, PrefabLoadService>(Lifetime.Scoped);
-            builder.Register<IPrefabLoadServiceAsync, PrefabLoadServiceAsync>(Lifetime.Scoped);
             builder.Register<IWorldService, WorldService>(Lifetime.Scoped);
         }
     }

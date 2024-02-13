@@ -1,3 +1,4 @@
+using System;
 using UITemplate.UI.Windows.Hud;
 using UITemplate.UI.Windows.Popups.Promo;
 using UITemplate.UI.Windows.Popups.Settings;
@@ -7,16 +8,11 @@ namespace UITemplate.UI.Factory
 {
     public interface IWindowFactory
     {
-        public StartingPopupPresenter GetStartingPopup();
-
-        public SettingsPopupPresenter GetSettingsPopup();
-
-        public PromoPopupPresenter GetPromoPopup();
-
-        public PromoInfoPopupPresenter GetPromoInfoPopup();
-
-        public HudPresenter GetHud();
-        
-        public StubPopupPresenter GetStubPopup();
+        public void GetStartingPopup(Action<StartingPopupPresenter> callback = null);
+        public void GetSettingsPopup(Action<SettingsPopupPresenter> callback = null);
+        public void GetPromoPopup(Action<PromoPopupPresenter> callback = null);
+        public void GetPromoInfoPopup(Action<PromoInfoPopupPresenter> callback = null);
+        public void GetHudWindow(Action<HudPresenter> callback = null);
+        public void GetStubPopup(Action<StubPopupPresenter> callback = null);
     }
 }

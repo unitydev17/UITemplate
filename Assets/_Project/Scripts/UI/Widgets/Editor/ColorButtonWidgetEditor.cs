@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UITemplate.UI.Widgets;
 using UnityEditor;
 using UnityEditor.UI;
@@ -18,6 +19,7 @@ namespace UITemplate.UI
             _activeColor = serializedObject.FindProperty("_activeColor");
         }
 
+
         public override void OnInspectorGUI()
         {
             // Begin drawing the inspector
@@ -35,3 +37,4 @@ namespace UITemplate.UI
         }
     }
 }
+#endif

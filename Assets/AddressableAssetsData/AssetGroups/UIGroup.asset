@@ -17,23 +17,13 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 1f752aa6f5a334cb49c058e05b6959ac
   m_SerializeEntries:
-  - m_GUID: f711e0d5f928d48cda152b87920c4d8b
-    m_Address: UI/SettingsPopupView
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fe65647b1323247d7b7b9001208c48e7
     m_Address: UI/HudView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4f3c3077fc11b493c87e97bad8218987
-    m_Address: UI/StubPopupView
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2c23dab92da6c426aa1a07d2f8041407
-    m_Address: UI/StartingPopupView
+  - m_GUID: 9be25e34ce9f84f4b8bff59710f2484c
+    m_Address: UI/PromoInfoPopupView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -42,8 +32,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9be25e34ce9f84f4b8bff59710f2484c
-    m_Address: UI/PromoInfoPopupView
+  - m_GUID: f711e0d5f928d48cda152b87920c4d8b
+    m_Address: UI/SettingsPopupView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2c23dab92da6c426aa1a07d2f8041407
+    m_Address: UI/StartingPopupView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f3c3077fc11b493c87e97bad8218987
+    m_Address: UI/StubPopupView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -28,8 +28,7 @@ namespace UITemplate.UI.Managers
 
         public void Run()
         {
-            _windowFactory.GetHud();
-            // OpenStartingPopup();
+            _windowFactory.GetHudWindow(presenter => { OpenStartingPopup(); });
         }
 
         private void OpenStubPopup()
@@ -44,8 +43,7 @@ namespace UITemplate.UI.Managers
 
         private void OpenStartingPopup()
         {
-            var presenter = _windowFactory.GetStartingPopup();
-            presenter.Setup();
+            _windowFactory.GetStartingPopup(presenter => presenter.Setup());
         }
 
         private void OnCloseStartingPopup(CloseStartingPopupEvent evt)
