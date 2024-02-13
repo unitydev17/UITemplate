@@ -12,7 +12,12 @@ namespace UITemplate.UI.Windows.Popups.Promo
         {
             base.Initialize();
             Register(view.onInfoClick, () => MessageBroker.Default.Publish(new ChefPackInfoOpenEvent()));
+            Register(view.onStubClick, () => MessageBroker.Default.Publish(new OpenStubEvent()));
         }
+    }
+
+    public class OpenStubEvent
+    {
     }
 
     internal class ChefPackInfoOpenEvent

@@ -11,9 +11,13 @@ namespace UITemplate.UI.Windows.Popups.Starting
     public class StartingPopupView : PopupView
     {
         [SerializeField] private TMP_Text _timeAbsent;
-        [SerializeField] private ButtonWidget claimButtonWidget;
+        [SerializeField] private ButtonWidget _claimButtonWidget;
+        [SerializeField] private ButtonWidget _claimX2ButtonWidget;
+        [SerializeField] private ButtonWidget _boostClockButtonWidget;
 
-        public IObservable<Unit> onClaimBtnClick => claimButtonWidget.onClick.AsObservable();
+        public IObservable<Unit> onClaimBtnClick => _claimButtonWidget.onClick.AsObservable();
+        public IObservable<Unit> onClaimX2BtnClick => _claimX2ButtonWidget.onClick.AsObservable();
+        public IObservable<Unit> onBoostBtnClick => _boostClockButtonWidget.onClick.AsObservable();
 
         public void Refresh(StartingPopupModel model)
         {

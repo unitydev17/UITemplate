@@ -8,8 +8,8 @@ namespace UITemplate.UI.Windows.Popups.Settings
 {
     public class StubPopupView : PopupView
     {
-        [SerializeField] public ButtonWidget _closeBtn;
+        [SerializeField] public ButtonWidget _closerBtn;
 
-        public IObservable<Unit> onClosePopupClick => _closeBtn.onClick.AsObservable();
+        public IObservable<Unit> onClosePopupClick => _closerBtn.onClick.AsObservable();
     }
 }

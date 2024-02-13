@@ -609,7 +609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _skippable: 1
-  _closeBtn: {fileID: 4832049715409887789}
+  _closerBtn: {fileID: 4832049715409887789}
 --- !u!1 &3579510866231784728
 GameObject:
   m_ObjectHideFlags: 0

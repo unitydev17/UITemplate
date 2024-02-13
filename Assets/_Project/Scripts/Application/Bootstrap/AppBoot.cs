@@ -19,9 +19,16 @@ namespace UITemplate.Application
 
         public void Start()
         {
-            UnityEngine.Device.Application.targetFrameRate = 60;
-            _ui.Run();
+            AppSetup();
+            
             _gameManager.Run();
+            _ui.Run();
+            
+        }
+
+        private static void AppSetup()
+        {
+            UnityEngine.Device.Application.targetFrameRate = 60;
         }
     }
 }
