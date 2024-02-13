@@ -1,7 +1,7 @@
 using UITemplate.Utils;
 using VContainer;
 
-namespace UITemplate.Presentation.MVP.Presenter
+namespace UITemplate.UI.MVP.Presenter
 {
     public abstract class BasePresenter<TView, TModel> : Registrable
     {

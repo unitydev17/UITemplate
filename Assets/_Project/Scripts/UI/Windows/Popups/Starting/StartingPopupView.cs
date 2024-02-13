@@ -1,11 +1,12 @@
 using System;
 using TMPro;
 using UITemplate.Application;
-using UITemplate.View;
+using UITemplate.UI.MVP.View;
+using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;
 
-namespace UITemplate.Presentation.Windows.Popups.Starting
+namespace UITemplate.UI.Windows.Popups.Starting
 {
     public class StartingPopupView : PopupView
     {

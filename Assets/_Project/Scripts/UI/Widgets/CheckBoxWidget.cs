@@ -1,19 +1,21 @@
 using System;
-using UITemplate.View;
 using UniRx;
 using UnityEngine;
 
-public class CheckBoxWidget : MonoBehaviour
+namespace UITemplate.UI.Widgets
 {
-    [SerializeField] private GameObject _checked;
-    [SerializeField] private GameObject _unchecked;
-    [SerializeField] private ButtonWidget _buttonWidget;
-
-    public IObservable<Unit> onClick => _buttonWidget.onClick.AsObservable();
-
-    public void UpdateState(bool state)
+    public class CheckBoxWidget : MonoBehaviour
     {
-        _checked.SetActive(state);
-        _unchecked.SetActive(!state);
+        [SerializeField] private GameObject _checked;
+        [SerializeField] private GameObject _unchecked;
+        [SerializeField] private ButtonWidget _buttonWidget;
+
+        public IObservable<Unit> onClick => _buttonWidget.onClick.AsObservable();
+
+        public void UpdateState(bool state)
+        {
+            _checked.SetActive(state);
+            _unchecked.SetActive(!state);
+        }
     }
 }

@@ -1,9 +1,9 @@
 using JetBrains.Annotations;
 using UITemplate.Core.Interfaces;
-using UITemplate.Presentation.MVP.Presenter;
+using UITemplate.UI.MVP.Presenter;
 
 
-namespace UITemplate.Presentation.Windows.Popups.Settings
+namespace UITemplate.UI.Windows.Popups.Settings
 {
     [UsedImplicitly]
     public class SettingsPopupPresenter : PopupPresenter<SettingsPopupView, SettingsPopupModel>

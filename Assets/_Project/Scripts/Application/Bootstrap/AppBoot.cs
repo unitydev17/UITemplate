@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 using UITemplate.Core.Controller;
-using UITemplate.Presentation;
+using UITemplate.UI.Managers;
 using VContainer.Unity;
 
 namespace UITemplate.Application

@@ -1,11 +1,11 @@
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
 using UITemplate.Events;
-using UITemplate.Presentation.MVP.Presenter;
+using UITemplate.UI.MVP.Presenter;
 using UniRx;
 using VContainer.Unity;
 
-namespace UITemplate.Presentation.Windows.Hud
+namespace UITemplate.UI.Windows.Hud
 {
     [UsedImplicitly]
     public class HudPresenter : WindowPresenter<HudView, HudModel>, IInitializable, IStartable

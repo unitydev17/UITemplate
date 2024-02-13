@@ -1,10 +1,11 @@
 using System;
 using DG.Tweening;
+using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UITemplate.View
+namespace UITemplate.UI.MVP.View
 {
     public class PopupView : WindowView, IPointerDownHandler
     {

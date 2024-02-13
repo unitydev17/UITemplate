@@ -4,7 +4,7 @@ using UITemplate.Core.Controller.Command;
 using UITemplate.Events;
 using UniRx;
 
-namespace UITemplate.Presentation.Windows.Hud
+namespace UITemplate.UI.Windows.Hud
 {
     [UsedImplicitly]
     public class HudSpeedUpCommand : TimerCommand

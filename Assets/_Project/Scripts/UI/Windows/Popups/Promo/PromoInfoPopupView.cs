@@ -1,6 +1,6 @@
-using UITemplate.View;
+using UITemplate.UI.MVP.View;
 
-namespace UITemplate.Presentation.Windows.Popups.Promo
+namespace UITemplate.UI.Windows.Popups.Promo
 {
     public class PromoInfoPopupView : PopupView
     {

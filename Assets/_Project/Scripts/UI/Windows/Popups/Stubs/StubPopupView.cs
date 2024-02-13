@@ -1,9 +1,10 @@
 using System;
-using UITemplate.View;
+using UITemplate.UI.MVP.View;
+using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;
 
-namespace UITemplate.Presentation.Windows.Popups.Settings
+namespace UITemplate.UI.Windows.Popups.Settings
 {
     public class StubPopupView : PopupView
     {

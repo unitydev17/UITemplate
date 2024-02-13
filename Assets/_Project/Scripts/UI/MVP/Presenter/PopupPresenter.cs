@@ -1,9 +1,9 @@
 using System;
-using UITemplate.View;
+using UITemplate.UI.MVP.View;
 using UniRx;
 using VContainer.Unity;
 
-namespace UITemplate.Presentation.MVP.Presenter
+namespace UITemplate.UI.MVP.Presenter
 {
     public abstract class PopupPresenter<TView, TModel> : WindowPresenter<TView, TModel>, IInitializable, IStartable where TView : PopupView
     {

@@ -1,9 +1,9 @@
-using UITemplate.Presentation.Windows.Hud;
-using UITemplate.Presentation.Windows.Popups.Promo;
-using UITemplate.Presentation.Windows.Popups.Settings;
-using UITemplate.Presentation.Windows.Popups.Starting;
+using UITemplate.UI.Windows.Hud;
+using UITemplate.UI.Windows.Popups.Promo;
+using UITemplate.UI.Windows.Popups.Settings;
+using UITemplate.UI.Windows.Popups.Starting;
 
-namespace UITemplate.Presentation.MVP.Factory
+namespace UITemplate.UI.Factory
 {
     public interface IWindowFactory
     {

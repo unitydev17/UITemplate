@@ -1,4 +1,4 @@
-namespace UITemplate.Presentation.Windows.Hud
+namespace UITemplate.UI.Windows.Hud
 {
     public class HudModel
     {

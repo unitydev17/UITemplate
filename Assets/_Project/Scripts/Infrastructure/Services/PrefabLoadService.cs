@@ -11,7 +11,7 @@ namespace UITemplate.Infrastructure.Services
             try
             {
                 var path = typeof(TView).ToString().Split(".");
-                return Resources.Load<GameObject>(path[^1]);
+                return Resources.Load<GameObject>($"UI/{path[^1]}");
             }
             catch (Exception e)
             {

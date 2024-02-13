@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
-using UITemplate.Presentation.MVP.Presenter;
+using UITemplate.UI.MVP.Presenter;
 using UniRx;
 
-namespace UITemplate.Presentation.Windows.Popups.Starting
+namespace UITemplate.UI.Windows.Popups.Starting
 {
     [UsedImplicitly]
     public class StartingPopupPresenter : PopupPresenter<StartingPopupView, StartingPopupModel>

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UITemplate.View
+namespace UITemplate.UI.Widgets
 {
     public class ColorButtonWidget : ButtonWidget
     {

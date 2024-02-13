@@ -1,8 +1,8 @@
 using JetBrains.Annotations;
-using UITemplate.Presentation.MVP.Presenter;
+using UITemplate.UI.MVP.Presenter;
 
 
-namespace UITemplate.Presentation.Windows.Popups.Settings
+namespace UITemplate.UI.Windows.Popups.Settings
 {
     [UsedImplicitly]
     public class StubPopupPresenter : PopupPresenter<StubPopupView, StubPopupModel>

@@ -1,17 +1,17 @@
 using JetBrains.Annotations;
 using UITemplate.Core.Interfaces;
-using UITemplate.Presentation.Model;
-using UITemplate.Presentation.MVP.Presenter;
-using UITemplate.Presentation.Windows.Hud;
-using UITemplate.Presentation.Windows.Popups.Promo;
-using UITemplate.Presentation.Windows.Popups.Settings;
-using UITemplate.Presentation.Windows.Popups.Starting;
-using UITemplate.View;
+using UITemplate.UI.MVP.Model;
+using UITemplate.UI.MVP.Presenter;
+using UITemplate.UI.MVP.View;
+using UITemplate.UI.Windows.Hud;
+using UITemplate.UI.Windows.Popups.Promo;
+using UITemplate.UI.Windows.Popups.Settings;
+using UITemplate.UI.Windows.Popups.Starting;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
-namespace UITemplate.Presentation.MVP.Factory
+namespace UITemplate.UI.Factory
 {
     [UsedImplicitly]
     public class WindowFactory : IWindowFactory
@@ -20,11 +20,13 @@ namespace UITemplate.Presentation.MVP.Factory
 
         private readonly IObjectResolver _container;
         private readonly IPrefabLoadService _prefabLoadService;
+        private IPrefabLoadServiceAsync _prefabLoadServiceAsync;
 
-        public WindowFactory(IObjectResolver container, IPrefabLoadService prefabLoadService)
+        public WindowFactory(IObjectResolver container, IPrefabLoadService prefabLoadService, IPrefabLoadServiceAsync prefabLoadServiceAsync)
         {
             _container = container;
             _prefabLoadService = prefabLoadService;
+            _prefabLoadServiceAsync = prefabLoadServiceAsync;
         }
 
         private TPresenter Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
@@ -34,7 +36,7 @@ namespace UITemplate.Presentation.MVP.Factory
             view.SetSortingOrder(_order++);
 
             var model = new TModel();
-            
+
             var presenter = _container.Resolve<TPresenter>();
             presenter.view = view;
             presenter.model = model;

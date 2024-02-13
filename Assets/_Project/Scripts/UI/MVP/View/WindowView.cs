@@ -1,10 +1,8 @@
 using System;
-using UniRx;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UITemplate.View
+namespace UITemplate.UI.MVP.View
 {
     public abstract class WindowView : MonoBehaviour, ISortedView
     {

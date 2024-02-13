@@ -2668,7 +2668,7 @@ GameObject:
   - component: {fileID: 1034206419}
   - component: {fileID: 1034206418}
   m_Layer: 0
-  m_Name: Board
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

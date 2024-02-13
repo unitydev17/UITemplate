@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UITemplate.View;
+using UITemplate.UI.MVP.View;
+using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UITemplate.Presentation.Windows.Hud
+namespace UITemplate.UI.Windows.Hud
 {
     public class HudView : WindowView
     {

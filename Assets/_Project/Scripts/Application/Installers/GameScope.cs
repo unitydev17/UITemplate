@@ -5,12 +5,12 @@ using UITemplate.Application.Services;
 using UITemplate.Core.Entities;
 using UITemplate.Core.Controller;
 using UITemplate.Infrastructure.Services;
-using UITemplate.Presentation;
-using UITemplate.Presentation.MVP.Factory;
-using UITemplate.Presentation.Windows.Hud;
-using UITemplate.Presentation.Windows.Popups.Promo;
-using UITemplate.Presentation.Windows.Popups.Settings;
-using UITemplate.Presentation.Windows.Popups.Starting;
+using UITemplate.UI.Factory;
+using UITemplate.UI.Managers;
+using UITemplate.UI.Windows.Hud;
+using UITemplate.UI.Windows.Popups.Promo;
+using UITemplate.UI.Windows.Popups.Settings;
+using UITemplate.UI.Windows.Popups.Starting;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -89,6 +89,7 @@ namespace UITemplate.Infrastructure.Installers
             builder.Register<ISettingsService, SettingsService>(Lifetime.Scoped);
             builder.Register<IWebService, WebService>(Lifetime.Scoped);
             builder.Register<IPrefabLoadService, PrefabLoadService>(Lifetime.Scoped);
+            builder.Register<IPrefabLoadServiceAsync, PrefabLoadServiceAsync>(Lifetime.Scoped);
             builder.Register<IWorldService, WorldService>(Lifetime.Scoped);
         }
     }

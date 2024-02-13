@@ -1,4 +1,4 @@
-namespace UITemplate.View
+namespace UITemplate.UI.MVP.View
 {
     public interface ISortedView
     {

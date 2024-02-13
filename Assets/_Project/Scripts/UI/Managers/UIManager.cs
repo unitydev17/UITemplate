@@ -1,12 +1,12 @@
 using JetBrains.Annotations;
-using UITemplate.Presentation.MVP.Factory;
-using UITemplate.Presentation.Windows.Popups.Promo;
-using UITemplate.Presentation.Windows.Popups.Starting;
-using UITemplate.Presentation.Windows.Hud;
+using UITemplate.UI.Factory;
+using UITemplate.UI.Windows.Popups.Promo;
+using UITemplate.UI.Windows.Popups.Starting;
+using UITemplate.UI.Windows.Hud;
 using UniRx;
 using VContainer.Unity;
 
-namespace UITemplate.Presentation
+namespace UITemplate.UI.Managers
 {
     [UsedImplicitly]
     public class UIManager : IInitializable

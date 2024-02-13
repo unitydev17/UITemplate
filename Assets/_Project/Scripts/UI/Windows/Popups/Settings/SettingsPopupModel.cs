@@ -1,4 +1,4 @@
-namespace UITemplate.Presentation.Windows.Popups.Settings
+namespace UITemplate.UI.Windows.Popups.Settings
 {
     public class SettingsPopupModel
     {

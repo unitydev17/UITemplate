@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UITemplate.View
+namespace UITemplate.UI.Widgets
 {
     public class ButtonWidget : Button, IDragHandler
     {

@@ -1,9 +1,7 @@
-using System;
 using TMPro;
 using UITemplate.Common.Dto;
-using UITemplate.Core.Controller;
 using UITemplate.Events;
-using UITemplate.View;
+using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
