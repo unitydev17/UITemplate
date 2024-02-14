@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 using UITemplate.Core.Interfaces;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
 
 namespace UITemplate.Application.Services
 {

@@ -10,12 +10,12 @@ namespace UITemplate.UI.MVP.Presenter
             view.gameObject.SetActive(true);
         }
 
-        protected void CloseView(Action callback)
+        protected void CloseView(Action callback = null)
         {
             view.Close(callback);
         }
 
-        protected void CloseAction()
+        protected virtual void CloseAction()
         {
         }
     }

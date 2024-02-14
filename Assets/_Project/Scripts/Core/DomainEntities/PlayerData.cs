@@ -1,4 +1,4 @@
-namespace UITemplate.Core.Entities
+namespace UITemplate.Core.DomainEntities
 {
     public class PlayerData
     {

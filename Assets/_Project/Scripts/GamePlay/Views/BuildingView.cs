@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class BuildingView : MonoBehaviour
 {
+    [SerializeField] private int _id;
     [SerializeField] private TransformBouncer _buyArea;
     [SerializeField] private ButtonWidget _buyBtn;
     [SerializeField] private TMP_Text _buyCostTxt;
@@ -24,7 +25,7 @@ public class BuildingView : MonoBehaviour
     [SerializeField] private TMP_Text _incomeHelperTxt;
 
     [SerializeField] private ClickEffect _clickEffect;
-
+    public int id => _id;
 
     private void Start()
     {
@@ -48,7 +49,7 @@ public class BuildingView : MonoBehaviour
 
     private void HandleUpgradeClick()
     {
-        MessageBroker.Default.Publish(new UpgradeRequestEvent(gameObject.GetInstanceID()));
+        MessageBroker.Default.Publish(new UpgradeRequestEvent(_id));
         _clickEffect.Animate();
     }
 
@@ -56,7 +57,7 @@ public class BuildingView : MonoBehaviour
     private void HandleUpgradeResponseEvent(UpgradeResponseEvent data)
     {
         var dto = data.dto;
-        if (dto.id != gameObject.GetInstanceID()) return;
+        if (dto.id != _id) return;
 
         if (IsBuildingOpen(dto))
         {

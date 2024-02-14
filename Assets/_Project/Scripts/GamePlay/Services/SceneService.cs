@@ -2,12 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UITemplate.Common.Dto;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Interfaces;
 using UnityEngine;
 
 [UsedImplicitly]
-public class WorldService : IWorldService
+public class SceneService : ISceneService
 {
     private readonly Dictionary<int, BuildingView> _buildings = new Dictionary<int, BuildingView>();
 
@@ -19,11 +19,11 @@ public class WorldService : IWorldService
         foreach (var view in buildingViews)
         {
             var go = view.gameObject;
-            _buildings.Add(go.GetInstanceID(), view);
+            _buildings.Add(view.id, view);
 
             result.Add(new Building
             {
-                id = go.GetInstanceID(),
+                id = view.id,
                 level = 0,
                 currentIncome = 0,
                 nextUpgradeCost = 11,

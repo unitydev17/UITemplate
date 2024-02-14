@@ -1,10 +1,10 @@
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
 
 namespace UITemplate.Core.Interfaces
 {
     public interface IUpgradeService
     {
-        public void UpdateBuildingValues(ref Building building);
+        public void UpdateBuildingsInfo();
         public bool TryUpgrade(ref Building building);
         
     }
