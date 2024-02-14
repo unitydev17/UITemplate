@@ -13,7 +13,10 @@ namespace UITemplate.Core.DomainEntities.Mappers
         {
             return new PlayerDto
             {
-                money = playerData.money
+                money = playerData.money,
+                speedUp = playerData.speedUp,
+                speedUpDuration = playerData.speedUpDuration,
+                speedUpStartTime = playerData.speedUpStartTime
             };
         }
 

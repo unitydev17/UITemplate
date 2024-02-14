@@ -53,6 +53,7 @@ namespace UITemplate.Infrastructure.Installers
             builder.Register<PromoPopupPresenter>(Lifetime.Scoped);
             builder.Register<PromoInfoPopupPresenter>(Lifetime.Scoped);
             builder.Register<StubPopupPresenter>(Lifetime.Scoped);
+            builder.Register<WelcomePopupPresenter>(Lifetime.Scoped);
         }
 
         private void RegisterScriptableObjects(IContainerBuilder builder)
@@ -70,7 +71,7 @@ namespace UITemplate.Infrastructure.Installers
             builder.Register<PlayerData>(Lifetime.Scoped);
             builder.Register<GameData>(Lifetime.Scoped);
             builder.Register<GameManager>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
-            builder.Register<Settings>(Lifetime.Scoped);
+            builder.Register<SettingsData>(Lifetime.Scoped);
         }
 
         private static void RegisterUIManager(IContainerBuilder builder)

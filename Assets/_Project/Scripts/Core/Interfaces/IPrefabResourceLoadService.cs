@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace UITemplate.Core.Interfaces
 {
-    public interface XIPrefabLoadService
+    public interface IPrefabResourceLoadService
     {
         public GameObject GetPrefab<TView>();
     }

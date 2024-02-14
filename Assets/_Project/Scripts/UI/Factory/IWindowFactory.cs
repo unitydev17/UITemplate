@@ -14,5 +14,6 @@ namespace UITemplate.UI.Factory
         public void GetPromoInfoPopup(Action<PromoInfoPopupPresenter> callback = null);
         public void GetHudWindow(Action<HudPresenter> callback = null);
         public void GetStubPopup(Action<StubPopupPresenter> callback = null);
+        public void GetWelcomePopup(Action<WelcomePopupPresenter> callback = null);
     }
 }

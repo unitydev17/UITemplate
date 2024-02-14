@@ -1,8 +1,11 @@
+using System;
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
+using UITemplate.Common.Dto;
 using UITemplate.Events;
 using UITemplate.UI.MVP.Presenter;
 using UniRx;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.UI.Windows.Hud
@@ -27,7 +30,8 @@ namespace UITemplate.UI.Windows.Hud
         {
             RegisterStubList();
             Register(view.onSettingsBtnClick, OpenSettingsPopup);
-            Register(MessageBroker.Default.Receive<UpdatePlayerDataEvent>(), UpdateIncome);
+            Register(MessageBroker.Default.Receive<UpdateOnInitEvent>(), UpdateOnInit);
+            Register(MessageBroker.Default.Receive<UpdatePlayerDataEvent>(), UpdatePlayerData);
             Register(view.onSpeedBtnClick, ActivateSpeed);
         }
 
@@ -38,14 +42,14 @@ namespace UITemplate.UI.Windows.Hud
 
         private void ResetSpeedUpButton()
         {
-            view.UpdateSpeedUpTimer((int) _cfg.speedUpDuration, 1);
+            view.UpdateSpeedUpTimer(_cfg.speedUpDuration, 1);
         }
 
         private void ActivateSpeed()
         {
             if (model.timerEnabled) return;
 
-            _timeCommand.SetViewModel(view, model);
+            _timeCommand.SetInitData(view, model);
             _timeCommand.Execute();
         }
 
@@ -59,25 +63,46 @@ namespace UITemplate.UI.Windows.Hud
 
         private static void OpenStubPopup()
         {
-            MessageBroker.Default.Publish(new HudStubOpenEvent());
+            MessageBroker.Default.Publish(new StubOpenEvent());
         }
 
         private static void OpenSettingsPopup()
         {
-            MessageBroker.Default.Publish(new HudSettingsOpenEvent());
+            MessageBroker.Default.Publish(new SettingsOpenEvent());
         }
 
-        private void UpdateIncome(UpdatePlayerDataEvent data)
+        private void UpdatePlayerData(UpdatePlayerDataEvent data)
         {
-            view.UpdateCoins(data.dto.money);
+            UpdateCoins(data.dto);
+        }
+
+        private void UpdateCoins(PlayerDto data)
+        {
+            view.UpdateCoins(data.money);
+        }
+
+        private void UpdateOnInit(UpdateOnInitEvent data)
+        {
+            UpdateCoins(data.dto);
+            if (data.dto.speedUp == false) return;
+
+            var leftTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds - data.dto.speedUpStartTime;
+            if (leftTime >= data.dto.speedUpDuration)
+            {
+                MessageBroker.Default.Publish(new UISpeedUpRequestEvent(false));
+                return;
+            }
+
+            _timeCommand.SetInitData(view, model, true, (float) leftTime);
+            _timeCommand.Execute();
         }
     }
 
-    internal class HudStubOpenEvent
+    internal class StubOpenEvent
     {
     }
 
-    internal class HudSettingsOpenEvent
+    internal class SettingsOpenEvent
     {
     }
 }

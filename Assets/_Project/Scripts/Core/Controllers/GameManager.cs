@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using UITemplate.Application.ScriptableObjects;
 using UITemplate.Common.Dto;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;
@@ -8,6 +10,7 @@ using UITemplate.Core.Interfaces;
 using UITemplate.Events;
 using UITemplate.Utils;
 using UniRx;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.Core.Controller
@@ -17,6 +20,7 @@ namespace UITemplate.Core.Controller
     {
         private readonly GameData _gameData;
         private readonly PlayerData _playerData;
+        private readonly UpgradeCfg _cfg;
 
         private readonly ISceneService _sceneService;
         private readonly IUpgradeService _upgradeService;
@@ -24,7 +28,13 @@ namespace UITemplate.Core.Controller
         private readonly IPersistenceService _persistenceService;
 
 
-        public GameManager(ISceneService sceneService, PlayerData playerData, IUpgradeService upgradeService, IIncomeService incomeService, IPersistenceService persistenceService, GameData gameData)
+        public GameManager(ISceneService sceneService,
+            PlayerData playerData,
+            IUpgradeService upgradeService,
+            IIncomeService incomeService,
+            GameData gameData,
+            IPersistenceService persistenceService,
+            UpgradeCfg cfg)
         {
             _gameData = gameData;
             _playerData = playerData;
@@ -33,12 +43,14 @@ namespace UITemplate.Core.Controller
             _upgradeService = upgradeService;
             _incomeService = incomeService;
             _persistenceService = persistenceService;
+            _cfg = cfg;
         }
 
         public void Initialize()
         {
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeRequestEvent);
             Register(MessageBroker.Default.Receive<UISpeedUpRequestEvent>(), HandleSpeedUpRequestEvent);
+            Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), HandleCloseStartingPopupEvent);
             Register(Observable.EveryUpdate(), UpdateBuildingTimer);
         }
 
@@ -48,9 +60,23 @@ namespace UITemplate.Core.Controller
             InitializePlayerData();
         }
 
+        private void HandleCloseStartingPopupEvent(CloseStartingPopupEvent data)
+        {
+            if (data.claimPressed)
+            {
+                _playerData.money += _playerData.passiveIncome;
+                MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
+            }
+            _playerData.passiveIncome = 0;
+        }
+
         private void HandleSpeedUpRequestEvent(UISpeedUpRequestEvent data)
         {
             _playerData.speedUp = data.enable;
+            if (_playerData.speedUp == false) return;
+
+            _playerData.speedUpStartTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
+            _playerData.speedUpDuration = data.duration;
         }
 
         private void UpdateBuildingTimer()
@@ -61,14 +87,33 @@ namespace UITemplate.Core.Controller
 
         private void InitializePlayerData()
         {
-            _playerData.money = 15;
+            if (_persistenceService.LoadPlayerData() == false)
+            {
+                InitPlayerData();
+                MessageBroker.Default.Publish(new WelcomeEvent());
+                return;
+            }
 
-            MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
+            var (passiveIncome, passiveTime) = _incomeService.AccruePassiveIncome();
+            _playerData.passiveIncome = passiveIncome;
+
+            MessageBroker.Default.Publish(new PassiveIncomeNotifyEvent(passiveIncome, passiveTime));
+            MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
+        }
+
+        private void InitPlayerData()
+        {
+            _playerData.money = _cfg.playerStartCoins;
+            _playerData.speedUp = false;
         }
 
         private void InitializeBuildings()
         {
+            _persistenceService.LoadSettingsData();
+            
             _gameData.buildings = _sceneService.FetchBuildingsFromScene();
+            _persistenceService.LoadSceneData();
+
             _upgradeService.UpdateBuildingsInfo();
             _sceneService.UpdateBuildingViews(buildingsDtoList);
         }
@@ -86,11 +131,6 @@ namespace UITemplate.Core.Controller
         private Building GetBuilding(int id)
         {
             return _gameData.buildings.Single(b => b.id == id);
-        }
-
-        public void SaveGameState()
-        {
-            _persistenceService.SaveGameState(_gameData.buildings);
         }
     }
 }

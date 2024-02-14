@@ -21,7 +21,9 @@ namespace UITemplate.UI.Windows.Popups.Starting
 
         public void Refresh(StartingPopupModel model)
         {
-            _timeAbsent.SetText(string.Format(Constants.TimeAbsentEarnings, model.timeAbsent));
+            var message = string.Format(Constants.TimeAbsentTime, model.timeAbsent);
+            if (model.passiveIncome > 0) message += string.Format(Constants.TimeAbsentEarnings, model.passiveIncome);
+            _timeAbsent.SetText(message);
         }
     }
 }

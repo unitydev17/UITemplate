@@ -6,11 +6,13 @@ namespace UITemplate.Application.ScriptableObjects
     [CreateAssetMenu(fileName = "UpgradeCfg")]
     public class UpgradeCfg : ScriptableObject
     {
+        public int speedUpMultiplier;
+        public float incomeSpeed;
+        public int playerStartCoins;
         public string costs;
         public string incomes;
         public string incomeMultiplier;
-        public float globalSpeedMultiplier;
-        public float speedUpDuration;
+        public int speedUpDuration;
 
         public int upgradesCount => GetSize(costs);
         public int GetCost(in int upgradeLevel) => GetValue<int>(costs, upgradeLevel, upgradesCount - 1);
@@ -18,7 +20,7 @@ namespace UITemplate.Application.ScriptableObjects
 
         public float GetIncomeMultiplier(in int upgradeLevel) => GetValue<float>(incomeMultiplier, upgradeLevel, upgradesCount);
 
-        private T GetValue<T>(in string str, in int index, int maxIndex)
+        private static T GetValue<T>(in string str, in int index, int maxIndex)
         {
             var strValue = str.Split(",")[Math.Min(index, maxIndex)];
 

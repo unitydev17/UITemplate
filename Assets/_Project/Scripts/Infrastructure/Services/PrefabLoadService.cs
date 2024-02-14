@@ -11,10 +11,11 @@ namespace UITemplate.Infrastructure.Services
     [UsedImplicitly]
     public class PrefabLoadService : IPrefabLoadService
     {
+        private static readonly CompositeDisposable Disposable = new CompositeDisposable();
         public void LoadUIPrefab<TView>(Action<GameObject> returnPrefabCallback)
         {
             var address = GetAddress<TView>();
-            GetPrefab(address).Subscribe(returnPrefabCallback);
+            GetPrefabAsObservable(address).Subscribe(returnPrefabCallback).AddTo(Disposable);
         }
 
         private static string GetAddress<TView>()
@@ -24,7 +25,7 @@ namespace UITemplate.Infrastructure.Services
             return address;
         }
 
-        private static IObservable<GameObject> GetPrefab(string address)
+        private static IObservable<GameObject> GetPrefabAsObservable(string address)
         {
             return Observable.Create<GameObject>(observer =>
             {
@@ -35,14 +36,16 @@ namespace UITemplate.Infrastructure.Services
                     {
                         observer.OnNext(op.Result);
                         observer.OnCompleted();
+                        Disposable.Dispose();
                     }
                     else
                     {
                         observer.OnError(new Exception($"Failed to load asset with address: {address}"));
+                        Disposable.Dispose();
                     }
                 };
 
-                return Disposable.Empty;
+                return UniRx.Disposable.Empty;
             });
         }
     }

@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
 using UITemplate.Core.DomainEntities;
@@ -13,8 +14,8 @@ namespace UITemplate.Application.Services
     public class IncomeService : IIncomeService
     {
         private readonly PlayerData _playerData;
-        private readonly UpgradeCfg _cfg;
         private readonly GameData _gameData;
+        private readonly UpgradeCfg _cfg;
 
         public IncomeService(PlayerData playerData, GameData gameData, UpgradeCfg cfg)
         {
@@ -26,6 +27,34 @@ namespace UITemplate.Application.Services
         public void Process()
         {
             foreach (var building in _gameData.buildings) ProcessItem(building);
+        }
+
+        public (int, double) AccruePassiveIncome()
+        {
+            var now = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
+            var passiveTime = now - _playerData.gameExitTime;
+
+            double speedUpTime = 0;
+            double normalTime = passiveTime;
+
+
+            if (_playerData.speedUp)
+            {
+                var rightBorder = Math.Min(_playerData.speedUpStartTime + _playerData.speedUpDuration, now);
+                speedUpTime =  rightBorder - _playerData.gameExitTime;
+                normalTime = Math.Abs(passiveTime - speedUpTime);
+            }
+
+            double overallIncome = 0;
+
+            foreach (var building in _gameData.buildings)
+            {
+                var income = CountIncome(building) * normalTime;
+                income += CountIncome(building, _cfg.speedUpMultiplier) * speedUpTime;
+                overallIncome += income;
+            }
+
+            return ((int) overallIncome, passiveTime);
         }
 
         private void ProcessItem(Building building)
@@ -55,11 +84,14 @@ namespace UITemplate.Application.Services
 
         private void UpdateIncome(Building building)
         {
-            var completeChunk = building.incomeSpeed * building.incomeMultiplier * Time.deltaTime;
-            completeChunk *= _cfg.globalSpeedMultiplier;
-            completeChunk *= _playerData.speedUp ? 2 : 1;
+            var speedUpMultiplier = _playerData.speedUp ? _cfg.speedUpMultiplier : 1;
+            var income = CountIncome(building, speedUpMultiplier) * Time.deltaTime;
+            building.incomeCompletion += income;
+        }
 
-            building.incomeCompletion += completeChunk;
+        private static float CountIncome(Building building, int speedUpMultiplier = 1)
+        {
+            return building.incomeSpeed * building.incomeMultiplier * speedUpMultiplier;
         }
 
         private static bool IsBuildingClose(Building building)

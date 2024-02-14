@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System;
 using JetBrains.Annotations;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Interfaces;
@@ -11,42 +11,74 @@ namespace UITemplate.Application.Services
     {
         private const string SceneDataKey = "SceneData";
         private const string PlayerDataKey = "PlayerData";
-        private PlayerData _playerData;
+        private const string SettingsDataKey = "Settings";
 
-        public PersistenceService(PlayerData playerData)
+        private readonly PlayerData _playerData;
+        private readonly GameData _gameData;
+        private readonly SettingsData _settingsData;
+
+        public PersistenceService(PlayerData playerData, GameData gameData, SettingsData settingsData)
         {
             _playerData = playerData;
+            _gameData = gameData;
+            _settingsData = settingsData;
         }
 
-        public void SaveGameState(IEnumerable<Building> buildings)
+        public void SaveGameState()
         {
             SavePlayerData();
-            SaveSceneData(buildings);
+            SaveSceneData();
+            SaveSettings();
         }
 
-        private static void SaveSceneData(IEnumerable<Building> buildings)
+        private void SaveSettings()
         {
-            var data = (List<Building>)buildings;
-            var value = JsonUtility.ToJson(data);
+            var value = JsonUtility.ToJson(_settingsData);
+            PlayerPrefs.SetString(SettingsDataKey, value);
+        }
+
+        public bool LoadSettingsData()
+        {
+            var dataStr = PlayerPrefs.GetString(SettingsDataKey);
+            if (string.IsNullOrEmpty(dataStr)) return false;
+
+            var data = JsonUtility.FromJson<SettingsData>(dataStr);
+            _settingsData.CopyFrom(data);
+
+            return true;
+        }
+
+        private void SaveSceneData()
+        {
+            var value = JsonUtility.ToJson(_gameData);
             PlayerPrefs.SetString(SceneDataKey, value);
         }
 
-        public void LoadSceneData()
+        public bool LoadSceneData()
         {
-            var data = PlayerPrefs.GetString(SceneDataKey);
-            JsonUtility.FromJson<IEnumerable<Building>>(data);
+            var dataStr = PlayerPrefs.GetString(SceneDataKey);
+            if (string.IsNullOrEmpty(dataStr)) return false;
+
+            var data = JsonUtility.FromJson<GameData>(dataStr);
+            _gameData.CopyFrom(data);
+            return true;
         }
 
         private void SavePlayerData()
         {
+            _playerData.gameExitTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
             PlayerPrefs.SetString(PlayerDataKey, JsonUtility.ToJson(_playerData));
         }
 
-        public void LoadPlayerData()
+        public bool LoadPlayerData()
         {
-            var data = PlayerPrefs.GetString(PlayerDataKey);
-            _playerData = JsonUtility.FromJson<PlayerData>(data);
-        }
+            var dataStr = PlayerPrefs.GetString(PlayerDataKey);
+            if (string.IsNullOrEmpty(dataStr)) return false;
 
+            var data = JsonUtility.FromJson<PlayerData>(dataStr);
+            _playerData.CopyFrom(data);
+
+            return true;
+        }
     }
 }

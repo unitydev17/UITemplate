@@ -1,4 +1,6 @@
+using System;
 using JetBrains.Annotations;
+using UITemplate.Events;
 using UITemplate.UI.MVP.Presenter;
 using UniRx;
 
@@ -15,7 +17,7 @@ namespace UITemplate.UI.Windows.Popups.Starting
             Register(view.onBoostBtnClick, OnBoostClick);
         }
 
-        private void OnBoostClick()
+        private static void OnBoostClick()
         {
             MessageBroker.Default.Publish(new BoostRequestEvent());
         }
@@ -25,19 +27,25 @@ namespace UITemplate.UI.Windows.Popups.Starting
             CloseView(() => MessageBroker.Default.Publish(new CloseStartingPopupEvent {claimPressed = true}));
         }
 
-        public void Setup()
+        public void Setup(int sum, double seconds)
         {
-            model.timeAbsent = "11h 22m";
+            model.passiveIncome = sum;
+
+            var timeSpan = TimeSpan.FromSeconds(seconds);
+            var days = timeSpan.Days;
+            var hours = timeSpan.Hours;
+            var minutes = timeSpan.Minutes;
+            var sec = timeSpan.Seconds;
+            model.timeAbsent = (days > 0 ? $"{days} days " : "") +
+                               (hours > 0 ? $"{hours} hours " : "") +
+                               (minutes > 0 ? $"{minutes} minutes " : "") +
+                               (sec > 0 ? $"{sec} seconds " : "");
+
             view.Refresh(model);
         }
     }
 
     internal class BoostRequestEvent
     {
-    }
-
-    internal class CloseStartingPopupEvent
-    {
-        public bool claimPressed;
     }
 }

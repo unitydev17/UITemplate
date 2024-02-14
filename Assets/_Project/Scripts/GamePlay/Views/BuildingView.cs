@@ -74,10 +74,15 @@ public class BuildingView : MonoBehaviour
     {
         _buyArea.Hide(() =>
         {
-            _buyArea.gameObject.SetActive(false);
-            _upgradeArea.SetActive(true);
+            OpenBuilding();
             UpdateInfo(dto);
         });
+    }
+
+    public void OpenBuilding()
+    {
+        _buyArea.gameObject.SetActive(false);
+        _upgradeArea.SetActive(true);
     }
 
     public void UpdateInfo(BuildingDto dto)

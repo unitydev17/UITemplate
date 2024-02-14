@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using UITemplate.Application.ScriptableObjects;
 using UITemplate.Common.Dto;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Interfaces;
@@ -10,6 +11,13 @@ using UnityEngine;
 public class SceneService : ISceneService
 {
     private readonly Dictionary<int, BuildingView> _buildings = new Dictionary<int, BuildingView>();
+    private readonly UpgradeCfg _cfg;
+
+
+    public SceneService(UpgradeCfg cfg)
+    {
+        _cfg = cfg;
+    }
 
     public List<Building> FetchBuildingsFromScene()
     {
@@ -18,18 +26,12 @@ public class SceneService : ISceneService
 
         foreach (var view in buildingViews)
         {
-            var go = view.gameObject;
             _buildings.Add(view.id, view);
 
             result.Add(new Building
             {
                 id = view.id,
-                level = 0,
-                currentIncome = 0,
-                nextUpgradeCost = 11,
-                incomeSpeed = 1f,
-                incomeCompletion = 0,
-                upgradeCompletion = 0
+                incomeSpeed = _cfg.incomeSpeed
             });
         }
 
@@ -42,6 +44,8 @@ public class SceneService : ISceneService
         {
             var viewKey = _buildings.Keys.Single(id => id == dto.id);
             var view = _buildings.GetValueOrDefault(viewKey);
+
+            if (dto.level > 0) view.OpenBuilding();
             view.UpdateInfo(dto);
         }
     }

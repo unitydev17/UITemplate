@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UITemplate.Infrastructure.Services
 {
-    public class XPrefabLoadService : XIPrefabLoadService
+    public class PrefabResourceLoadService : IPrefabResourceLoadService
     {
         public GameObject GetPrefab<TView>()
         {

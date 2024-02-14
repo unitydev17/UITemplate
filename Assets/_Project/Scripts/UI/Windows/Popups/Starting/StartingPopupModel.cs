@@ -6,5 +6,6 @@ namespace UITemplate.UI.Windows.Popups.Starting
     public class StartingPopupModel
     {
         public string timeAbsent;
+        public int passiveIncome;
     }
 }

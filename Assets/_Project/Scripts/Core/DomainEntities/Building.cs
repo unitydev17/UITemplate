@@ -1,9 +1,10 @@
 using System;
+using UITemplate.Core.Interfaces;
 
 namespace UITemplate.Core.DomainEntities
 {
     [Serializable]
-    public class Building
+    public class Building : ICopyable<Building>
     {
         public int id;
         public int level;
@@ -14,5 +15,10 @@ namespace UITemplate.Core.DomainEntities
         public float incomeCompletion;
         public float incomeSpeed;
         public float incomeMultiplier;
+
+        public void CopyFrom(Building data)
+        {
+            level = data.level;
+        }
     }
 }

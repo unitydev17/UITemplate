@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 6305595987293372541}
   - component: {fileID: 2934728962741252184}
   - component: {fileID: 788866491974004563}
-  - component: {fileID: 1657663728086377155}
+  - component: {fileID: 7212415299035243059}
   m_Layer: 5
   m_Name: StubPopupView
   m_TagString: Untagged
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1657663728086377155
+--- !u!114 &7212415299035243059
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -605,7 +605,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2654306094656854429}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52e4ecbdbb6f48a78a836cc8b2ccb468, type: 3}
+  m_Script: {fileID: 11500000, guid: a2864343e92b44ecdb030580d25d6734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _skippable: 1

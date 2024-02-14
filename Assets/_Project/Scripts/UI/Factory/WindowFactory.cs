@@ -17,7 +17,7 @@ namespace UITemplate.UI.Factory
     [UsedImplicitly]
     public class WindowFactory : IWindowFactory
     {
-        private static int _order;
+        private static int order;
 
         private readonly IObjectResolver _container;
         private readonly IPrefabLoadService _prefabLoadService;
@@ -34,7 +34,7 @@ namespace UITemplate.UI.Factory
             _prefabLoadService.LoadUIPrefab<TView>(prefab =>
             {
                 var view = Object.Instantiate(prefab).GetComponent<TView>();
-                view.SetSortingOrder(_order++);
+                view.SetSortingOrder(order++);
 
                 var model = new TModel();
 
@@ -79,6 +79,11 @@ namespace UITemplate.UI.Factory
         public void GetStubPopup(Action<StubPopupPresenter> callback)
         {
             Create<StubPopupPresenter, StubPopupView, StubPopupModel>(callback);
+        }
+
+        public void GetWelcomePopup(Action<WelcomePopupPresenter> callback = null)
+        {
+            Create<WelcomePopupPresenter, WelcomePopupView, BaseModel>(callback);
         }
     }
 }

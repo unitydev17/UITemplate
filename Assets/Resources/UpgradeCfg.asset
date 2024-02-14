@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e51a38d660ec4fe194b779163cc55e5, type: 3}
   m_Name: UpgradeCfg
   m_EditorClassIdentifier: 
+  speedUpMultiplier: 2
+  incomeSpeed: 0.2
+  playerStartCoins: 15
   costs: 10,20,50,100,250,500,1250,2500,5000
   incomes: 0,1,2,5,10,25,50,125,250,500
   incomeMultiplier: 0,1,1.25,1.5,2,2.5,3,4,5,10
-  globalSpeedMultiplier: 0.2
-  speedUpDuration: 20
+  speedUpDuration: 60

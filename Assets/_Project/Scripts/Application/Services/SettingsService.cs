@@ -7,9 +7,9 @@ namespace UITemplate.Application.Services
     [UsedImplicitly]
     public class SettingsService : ISettingsService
     {
-        private readonly Settings _model;
+        private readonly SettingsData _model;
 
-        public SettingsService(Settings model)
+        public SettingsService(SettingsData model)
         {
             _model = model;
         }

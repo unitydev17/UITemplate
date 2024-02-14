@@ -15,7 +15,12 @@ namespace UITemplate.Core.Controller.Command
         private Action<int, float> _progressNotifier;
         private Action _finishAction;
         private Action _startAction;
+        private float _startTime;
 
+        protected void SetStartTime(float time)
+        {
+            _startTime = time;
+        }
         protected TimerCommand SetDuration(float time)
         {
             _targetTime = time;
@@ -43,7 +48,7 @@ namespace UITemplate.Core.Controller.Command
         {
             _startAction?.Invoke();
 
-            var timer = 0f;
+            var timer = _startTime;
 
             _tempDisposable = RegisterTemporary(Observable.EveryUpdate(), () =>
             {
