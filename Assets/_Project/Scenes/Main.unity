@@ -397,6 +397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c838c62e57146888cdf063e5a51eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 4
   _buyArea: {fileID: 1777452221}
   _buyBtn: {fileID: 812671538}
   _buyCostTxt: {fileID: 8292411}
@@ -1928,6 +1929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c838c62e57146888cdf063e5a51eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 3
   _buyArea: {fileID: 272694488}
   _buyBtn: {fileID: 1460145774}
   _buyCostTxt: {fileID: 1535520816}
@@ -2646,6 +2648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c838c62e57146888cdf063e5a51eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 1
   _buyArea: {fileID: 749448641}
   _buyBtn: {fileID: 286134425}
   _buyCostTxt: {fileID: 1700630294}
@@ -4128,6 +4131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c838c62e57146888cdf063e5a51eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 0
   _buyArea: {fileID: 26752222}
   _buyBtn: {fileID: 1520280470}
   _buyCostTxt: {fileID: 1061736782}
@@ -4271,6 +4275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62c838c62e57146888cdf063e5a51eb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _id: 2
   _buyArea: {fileID: 2136816665}
   _buyBtn: {fileID: 1426042861}
   _buyCostTxt: {fileID: 657541457}

@@ -25,7 +25,6 @@ namespace UITemplate.UI.Managers
             MessageBroker.Default.Receive<HudSettingsOpenEvent>().Subscribe(_ => OpenSettingsPopup());
             MessageBroker.Default.Receive<HudStubOpenEvent>().Subscribe(_ => OpenStubPopup());
             MessageBroker.Default.Receive<BoostRequestEvent>().Subscribe(_ => OpenStubPopup());
-            MessageBroker.Default.Receive<OpenStubEvent>().Subscribe(_ => OpenStubPopup());
         }
 
         public void Run()

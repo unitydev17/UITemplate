@@ -1,7 +1,6 @@
 using UITemplate.Common.Dto;
-using UITemplate.Core.Entities;
 
-namespace UITemplate.Core
+namespace UITemplate.Core.DomainEntities.Mappers
 {
     public static class BuildingDtoMapper
     {

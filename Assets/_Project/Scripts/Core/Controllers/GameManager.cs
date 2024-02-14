@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using UITemplate.Common.Dto;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
+using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
 using UITemplate.Events;
 using UITemplate.Utils;
@@ -14,20 +15,24 @@ namespace UITemplate.Core.Controller
     [UsedImplicitly]
     public class GameManager : Registrable, IInitializable
     {
+        private readonly GameData _gameData;
         private readonly PlayerData _playerData;
-        private readonly IWorldService _worldService;
+
+        private readonly ISceneService _sceneService;
         private readonly IUpgradeService _upgradeService;
         private readonly IIncomeService _incomeService;
+        private readonly IPersistenceService _persistenceService;
 
-        private List<Building> _buildings = new List<Building>();
 
-
-        public GameManager(IWorldService worldService, PlayerData playerData, IUpgradeService upgradeService, IIncomeService incomeService)
+        public GameManager(ISceneService sceneService, PlayerData playerData, IUpgradeService upgradeService, IIncomeService incomeService, IPersistenceService persistenceService, GameData gameData)
         {
-            _worldService = worldService;
+            _gameData = gameData;
             _playerData = playerData;
+
+            _sceneService = sceneService;
             _upgradeService = upgradeService;
             _incomeService = incomeService;
+            _persistenceService = persistenceService;
         }
 
         public void Initialize()
@@ -50,13 +55,8 @@ namespace UITemplate.Core.Controller
 
         private void UpdateBuildingTimer()
         {
-            foreach (var building in _buildings)
-            {
-                _incomeService.Process(building);
-            }
-
-            var dtoList = GetDtoList();
-            _worldService.UpdateBuildingViews(dtoList);
+            _incomeService.Process();
+            _sceneService.UpdateBuildingViews(buildingsDtoList);
         }
 
         private void InitializePlayerData()
@@ -68,36 +68,29 @@ namespace UITemplate.Core.Controller
 
         private void InitializeBuildings()
         {
-            _buildings = _worldService.FetchBuildingsFromScene();
-
-            for (var i = 0; i < _buildings.Count; i++)
-            {
-                var value = _buildings[i];
-                _upgradeService.UpdateBuildingValues(ref value);
-                _buildings[i] = value;
-            }
-
-            var dtoList = GetDtoList();
-            _worldService.UpdateBuildingViews(dtoList);
+            _gameData.buildings = _sceneService.FetchBuildingsFromScene();
+            _upgradeService.UpdateBuildingsInfo();
+            _sceneService.UpdateBuildingViews(buildingsDtoList);
         }
 
-        private IEnumerable<BuildingDto> GetDtoList()
-        {
-            return _buildings.Select(BuildingDtoMapper.GetDto).ToList();
-        }
+        private IEnumerable<BuildingDto> buildingsDtoList => _gameData.buildings.Select(BuildingDtoMapper.GetDto).ToList();
 
         private void HandleUpgradeRequestEvent(UpgradeRequestEvent data)
         {
             var building = GetBuilding(data.id);
-            var upgradeSuccess = _upgradeService.TryUpgrade(ref building);
-            if (!upgradeSuccess) return;
+            if (!_upgradeService.TryUpgrade(ref building)) return;
 
             MessageBroker.Default.Publish(new UpgradeResponseEvent(building.ToDto()));
         }
 
         private Building GetBuilding(int id)
         {
-            return _buildings.Single(b => b.id == id);
+            return _gameData.buildings.Single(b => b.id == id);
+        }
+
+        public void SaveGameState()
+        {
+            _persistenceService.SaveGameState(_gameData.buildings);
         }
     }
 }

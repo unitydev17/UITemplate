@@ -16,7 +16,7 @@ namespace UITemplate.UI.MVP.Presenter
         protected void RegisterCloser(IObservable<Unit> closer)
         {
             Register(closer, OnCloseClick);
-        } 
+        }
 
         public void Start()
         {
@@ -28,7 +28,7 @@ namespace UITemplate.UI.MVP.Presenter
             CloseView(CloseAction);
         }
 
-        protected void OnCloseClick()
+        private void OnCloseClick()
         {
             CloseView(CloseAction);
         }

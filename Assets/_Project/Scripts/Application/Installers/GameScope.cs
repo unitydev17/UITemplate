@@ -2,7 +2,7 @@ using UITemplate.Application;
 using UITemplate.Application.ScriptableObjects;
 using UITemplate.Core.Interfaces;
 using UITemplate.Application.Services;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Controller;
 using UITemplate.Infrastructure.Services;
 using UITemplate.UI.Factory;
@@ -68,6 +68,7 @@ namespace UITemplate.Infrastructure.Installers
         private static void RegisterGameCore(IContainerBuilder builder)
         {
             builder.Register<PlayerData>(Lifetime.Scoped);
+            builder.Register<GameData>(Lifetime.Scoped);
             builder.Register<GameManager>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
             builder.Register<Settings>(Lifetime.Scoped);
         }
@@ -89,7 +90,8 @@ namespace UITemplate.Infrastructure.Installers
             builder.Register<ISettingsService, SettingsService>(Lifetime.Scoped);
             builder.Register<IWebService, WebService>(Lifetime.Scoped);
             builder.Register<IPrefabLoadService, PrefabLoadService>(Lifetime.Scoped);
-            builder.Register<IWorldService, WorldService>(Lifetime.Scoped);
+            builder.Register<ISceneService, SceneService>(Lifetime.Scoped);
+            builder.Register<IPersistenceService, PersistenceService>(Lifetime.Scoped);
         }
     }
 }

@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
-using UITemplate.Core;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
+using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
 using UITemplate.Events;
 using UniRx;
@@ -14,14 +14,21 @@ namespace UITemplate.Application.Services
     {
         private readonly PlayerData _playerData;
         private readonly UpgradeCfg _cfg;
+        private readonly GameData _gameData;
 
-        public IncomeService(PlayerData playerData, UpgradeCfg cfg)
+        public IncomeService(PlayerData playerData, GameData gameData, UpgradeCfg cfg)
         {
             _playerData = playerData;
+            _gameData = gameData;
             _cfg = cfg;
         }
 
-        public void Process(Building building)
+        public void Process()
+        {
+            foreach (var building in _gameData.buildings) ProcessItem(building);
+        }
+
+        private void ProcessItem(Building building)
         {
             if (IsBuildingClose(building)) return;
 

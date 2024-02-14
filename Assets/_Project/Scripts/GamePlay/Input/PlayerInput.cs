@@ -45,4 +45,5 @@ public class PlayerInput : MonoBehaviour
         var deltaPos = (Input.mousePosition - _position).normalized;
         OnSlide?.Invoke(deltaPos);
     }
+    
 }

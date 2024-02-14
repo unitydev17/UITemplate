@@ -1,5 +1,8 @@
-namespace UITemplate.Core.Entities
+using System;
+
+namespace UITemplate.Core.DomainEntities
 {
+    [Serializable]
     public class Building
     {
         public int id;

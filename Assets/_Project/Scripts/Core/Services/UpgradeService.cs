@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using UITemplate.Application.ScriptableObjects;
-using UITemplate.Core;
-using UITemplate.Core.Entities;
+using UITemplate.Core.DomainEntities;
+using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
 using UITemplate.Events;
 using UniRx;
@@ -13,14 +13,26 @@ namespace UITemplate.Application.Services
     {
         private readonly UpgradeCfg _cfg;
         private readonly PlayerData _playerData;
+        private readonly GameData _gameData;
 
-        public UpgradeService(PlayerData playerData, UpgradeCfg cfg)
+        public UpgradeService(PlayerData playerData, GameData gameData, UpgradeCfg cfg)
         {
             _playerData = playerData;
+            _gameData = gameData;
             _cfg = cfg;
         }
 
-        public void UpdateBuildingValues(ref Building building)
+        public void UpdateBuildingsInfo()
+        {
+            for (var i = 0; i < _gameData.buildings.Count; i++)
+            {
+                var value = _gameData.buildings[i];
+                UpdateBuildingValues(ref value);
+                _gameData.buildings[i] = value;
+            }
+        }
+
+        private void UpdateBuildingValues(ref Building building)
         {
             var maxUpdate = IsLastUpdateReached(building);
 
@@ -50,14 +62,14 @@ namespace UITemplate.Application.Services
 
             _playerData.money -= cost;
             NotifyUI();
-            
+
 
             building.level++;
             UpdateBuildingValues(ref building);
 
             return true;
         }
-        
+
         private void NotifyUI()
         {
             MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
