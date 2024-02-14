@@ -39,7 +39,7 @@ public class BuildingView : MonoBehaviour
     private void HandleIncomeEvent(IncomeEvent data)
     {
         var dto = data.dto;
-        if (dto.id != gameObject.GetInstanceID()) return;
+        if (dto.id != _id) return;
 
         _incomeView.gameObject.SetActive(true);
         _incomeView.Activate(dto.currentIncome);
