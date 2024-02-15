@@ -7,7 +7,7 @@ namespace UITemplate.Application.ScriptableObjects
     public class UpgradeCfg : ScriptableObject
     {
         public int speedUpMultiplier;
-        public float incomeSpeed;
+        public float baseIncomePerSecond;
         public int playerStartCoins;
         public string costs;
         public string incomes;

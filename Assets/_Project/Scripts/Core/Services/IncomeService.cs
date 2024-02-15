@@ -41,7 +41,7 @@ namespace UITemplate.Application.Services
             if (_playerData.speedUp)
             {
                 var rightBorder = Math.Min(_playerData.speedUpStartTime + _playerData.speedUpDuration, now);
-                speedUpTime =  rightBorder - _playerData.gameExitTime;
+                speedUpTime = rightBorder - _playerData.gameExitTime;
                 normalTime = Math.Abs(passiveTime - speedUpTime);
             }
 
@@ -49,9 +49,9 @@ namespace UITemplate.Application.Services
 
             foreach (var building in _gameData.buildings)
             {
-                var income = CountIncome(building) * normalTime;
-                income += CountIncome(building, _cfg.speedUpMultiplier) * speedUpTime;
-                overallIncome += income;
+                var incomeMultiplier = CountIncome(building) * normalTime;
+                incomeMultiplier += CountIncome(building, _cfg.speedUpMultiplier) * speedUpTime;
+                overallIncome += incomeMultiplier * building.currentIncome;
             }
 
             return ((int) overallIncome, passiveTime);
@@ -85,13 +85,13 @@ namespace UITemplate.Application.Services
         private void UpdateIncome(Building building)
         {
             var speedUpMultiplier = _playerData.speedUp ? _cfg.speedUpMultiplier : 1;
-            var income = CountIncome(building, speedUpMultiplier) * Time.deltaTime;
-            building.incomeCompletion += income;
+            var income = CountIncome(building, speedUpMultiplier);
+            building.incomeCompletion += income * Time.fixedDeltaTime;
         }
 
         private static float CountIncome(Building building, int speedUpMultiplier = 1)
         {
-            return building.incomeSpeed * building.incomeMultiplier * speedUpMultiplier;
+            return building.incomePerSecond * building.incomeMultiplier * speedUpMultiplier;
         }
 
         private static bool IsBuildingClose(Building building)

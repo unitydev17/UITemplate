@@ -10,7 +10,6 @@ using UITemplate.Core.Interfaces;
 using UITemplate.Events;
 using UITemplate.Utils;
 using UniRx;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.Core.Controller
@@ -51,7 +50,7 @@ namespace UITemplate.Core.Controller
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeRequestEvent);
             Register(MessageBroker.Default.Receive<UISpeedUpRequestEvent>(), HandleSpeedUpRequestEvent);
             Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), HandleCloseStartingPopupEvent);
-            Register(Observable.EveryUpdate(), UpdateBuildingTimer);
+            Register(Observable.EveryFixedUpdate(), UpdateBuildingTimer);
         }
 
         public void Run()
@@ -87,13 +86,14 @@ namespace UITemplate.Core.Controller
 
         private void InitializePlayerData()
         {
-            if (_persistenceService.LoadPlayerData() == false)
+            var isFirstRun = _persistenceService.LoadPlayerData() == false;
+            if (isFirstRun)
             {
                 InitPlayerData();
                 MessageBroker.Default.Publish(new WelcomeEvent());
                 return;
             }
-
+            
             var (passiveIncome, passiveTime) = _incomeService.AccruePassiveIncome();
             _playerData.passiveIncome = passiveIncome;
 

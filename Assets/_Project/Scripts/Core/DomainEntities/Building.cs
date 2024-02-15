@@ -1,5 +1,6 @@
 using System;
 using UITemplate.Core.Interfaces;
+using UnityEngine.Serialization;
 
 namespace UITemplate.Core.DomainEntities
 {
@@ -13,7 +14,7 @@ namespace UITemplate.Core.DomainEntities
         public int nextUpgradeCost;
         public float upgradeCompletion;
         public float incomeCompletion;
-        public float incomeSpeed;
+        [FormerlySerializedAs("incomeSpeed")] public float incomePerSecond;
         public float incomeMultiplier;
 
         public void CopyFrom(Building data)

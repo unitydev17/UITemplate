@@ -31,7 +31,7 @@ public class SceneService : ISceneService
             result.Add(new Building
             {
                 id = view.id,
-                incomeSpeed = _cfg.incomeSpeed
+                incomePerSecond = _cfg.baseIncomePerSecond
             });
         }
 
