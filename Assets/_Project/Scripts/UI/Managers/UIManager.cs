@@ -1,6 +1,6 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UITemplate.UI.Factory;
 using UITemplate.UI.Windows.Popups.Promo;
 using UITemplate.UI.Windows.Popups.Starting;

@@ -12,6 +12,7 @@ namespace UITemplate.Infrastructure.Services
     public class PrefabLoadService : IPrefabLoadService
     {
         private static readonly CompositeDisposable Disposable = new CompositeDisposable();
+
         public void LoadUIPrefab<TView>(Action<GameObject> returnPrefabCallback)
         {
             var address = GetAddress<TView>();

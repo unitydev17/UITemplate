@@ -1,4 +1,4 @@
-namespace UITemplate.Events
+namespace UITemplate.Common.Events
 {
     public class CloseStartingPopupEvent
     {

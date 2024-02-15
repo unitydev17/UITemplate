@@ -3,7 +3,7 @@ using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UniRx;
 
 namespace UITemplate.Application.Services

@@ -1,5 +1,5 @@
 using System;
-using UITemplate.Core.Interfaces;
+using UITemplate.Infrastructure.Interfaces;
 using UnityEngine;
 
 namespace UITemplate.Infrastructure.Services

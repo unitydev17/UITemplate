@@ -9,5 +9,6 @@ namespace UITemplate.Common.Dto
         public int level;
         public float upgradeProgress;
         public float incomeProgress;
+        public float incomePerSecond;
     }
 }

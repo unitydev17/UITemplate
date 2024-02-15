@@ -1,6 +1,6 @@
 using TMPro;
 using UITemplate.Common.Dto;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UITemplate.UI.Widgets;
 using UniRx;
 using UnityEngine;

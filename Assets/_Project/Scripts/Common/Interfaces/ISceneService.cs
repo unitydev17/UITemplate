@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using UITemplate.Common.Dto;
-using UITemplate.Core.DomainEntities;
 
-namespace UITemplate.Core.Interfaces
+namespace UITemplate.Common.Interfaces
 {
     public interface ISceneService
     {
-        public List<Building> FetchBuildingsFromScene();
+        public IEnumerable<BuildingDto> FetchBuildingsFromScene();
         void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList);
     }
 }

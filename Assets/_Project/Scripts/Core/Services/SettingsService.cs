@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 
-namespace UITemplate.Application.Services
+namespace UITemplate.Core.Services
 {
     [UsedImplicitly]
     public class SettingsService : ISettingsService

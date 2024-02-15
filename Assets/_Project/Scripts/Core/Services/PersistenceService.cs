@@ -4,7 +4,7 @@ using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Interfaces;
 using UnityEngine;
 
-namespace UITemplate.Application.Services
+namespace UITemplate.Core.Services
 {
     [UsedImplicitly]
     public class PersistenceService : IPersistenceService

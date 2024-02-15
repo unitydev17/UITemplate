@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UITemplate.UI.MVP.Presenter;
 using UniRx;
 using VContainer.Unity;

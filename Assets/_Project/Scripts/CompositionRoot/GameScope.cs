@@ -2,8 +2,12 @@ using UITemplate.Application;
 using UITemplate.Core.Interfaces;
 using UITemplate.Application.Services;
 using UITemplate.Common;
+using UITemplate.Common.Interfaces;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Controller;
+using UITemplate.Core.Services;
+using UITemplate.GamePlay.Services;
+using UITemplate.Infrastructure;
 using UITemplate.Infrastructure.Interfaces;
 using UITemplate.Infrastructure.Services;
 using UITemplate.UI.Factory;
@@ -16,7 +20,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace UITemplate.Infrastructure.Installers
+namespace UITemplate.Installers
 {
     public class GameScope : LifetimeScope
     {

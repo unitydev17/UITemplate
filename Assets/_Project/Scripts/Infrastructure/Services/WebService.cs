@@ -1,5 +1,4 @@
 using JetBrains.Annotations;
-using UITemplate.Core.Interfaces;
 
 namespace UITemplate.Infrastructure.Services
 {

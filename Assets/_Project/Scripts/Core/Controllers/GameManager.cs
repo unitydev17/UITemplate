@@ -4,10 +4,11 @@ using System.Linq;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
+using UITemplate.Common.Interfaces;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UITemplate.Utils;
 using UniRx;
 using VContainer.Unity;
@@ -111,7 +112,7 @@ namespace UITemplate.Core.Controller
         {
             _persistenceService.LoadSettingsData();
 
-            _gameData.buildings = _sceneService.FetchBuildingsFromScene();
+            _gameData.buildings = BuildingDtoMapper.ToEntityList(_sceneService.FetchBuildingsFromScene());
             _persistenceService.LoadSceneData();
 
             _upgradeService.UpdateBuildingsInfo();

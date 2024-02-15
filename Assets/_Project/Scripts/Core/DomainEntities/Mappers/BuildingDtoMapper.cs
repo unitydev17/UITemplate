@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UITemplate.Common.Dto;
 
 namespace UITemplate.Core.DomainEntities.Mappers
@@ -31,6 +33,20 @@ namespace UITemplate.Core.DomainEntities.Mappers
                 upgradeProgress = building.upgradeProgress,
                 incomeProgress = building.incomeProgress,
                 nextDeltaIncome = building.nextDeltaIncome
+            };
+        }
+
+        public static List<Building> ToEntityList(IEnumerable<BuildingDto> buildingDtoList)
+        {
+            return buildingDtoList.Select(ToEntity).ToList();
+        }
+
+        private static Building ToEntity(BuildingDto dto)
+        {
+            return new Building
+            {
+                id = dto.id,
+                incomePerSecond = dto.incomePerSecond
             };
         }
     }

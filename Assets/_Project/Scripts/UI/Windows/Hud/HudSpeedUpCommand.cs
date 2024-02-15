@@ -1,6 +1,6 @@
 using JetBrains.Annotations;
 using UITemplate.Common;
-using UITemplate.Events;
+using UITemplate.Common.Events;
 using UITemplate.UI.Command;
 using UniRx;
 

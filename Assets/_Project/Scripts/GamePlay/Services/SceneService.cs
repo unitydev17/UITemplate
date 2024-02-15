@@ -3,50 +3,52 @@ using System.Linq;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
-using UITemplate.Core.DomainEntities;
-using UITemplate.Core.Interfaces;
+using UITemplate.Common.Interfaces;
 using UnityEngine;
 
-[UsedImplicitly]
-public class SceneService : ISceneService
+namespace UITemplate.GamePlay.Services
 {
-    private readonly Dictionary<int, BuildingView> _buildings = new Dictionary<int, BuildingView>();
-    private readonly UpgradeCfg _cfg;
-
-
-    public SceneService(UpgradeCfg cfg)
+    [UsedImplicitly]
+    public class SceneService : ISceneService
     {
-        _cfg = cfg;
-    }
+        private readonly Dictionary<int, BuildingView> _buildings = new Dictionary<int, BuildingView>();
+        private readonly UpgradeCfg _cfg;
 
-    public List<Building> FetchBuildingsFromScene()
-    {
-        var buildingViews = Object.FindObjectsOfType<BuildingView>();
-        var result = new List<Building>();
 
-        foreach (var view in buildingViews)
+        public SceneService(UpgradeCfg cfg)
         {
-            _buildings.Add(view.id, view);
-
-            result.Add(new Building
-            {
-                id = view.id,
-                incomePerSecond = _cfg.baseIncomePerSecond
-            });
+            _cfg = cfg;
         }
 
-        return result;
-    }
-
-    public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList)
-    {
-        foreach (var dto in dtoList)
+        public IEnumerable<BuildingDto> FetchBuildingsFromScene()
         {
-            var viewKey = _buildings.Keys.Single(id => id == dto.id);
-            var view = _buildings.GetValueOrDefault(viewKey);
+            var buildingViews = Object.FindObjectsOfType<BuildingView>();
+            var result = new List<BuildingDto>();
 
-            if (dto.level > 0) view.OpenBuilding();
-            view.UpdateInfo(dto);
+            foreach (var view in buildingViews)
+            {
+                _buildings.Add(view.id, view);
+
+                result.Add(new BuildingDto()
+                {
+                    id = view.id,
+                    incomePerSecond = _cfg.baseIncomePerSecond
+                });
+            }
+
+            return result;
+        }
+
+        public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList)
+        {
+            foreach (var dto in dtoList)
+            {
+                var viewKey = _buildings.Keys.Single(id => id == dto.id);
+                var view = _buildings.GetValueOrDefault(viewKey);
+
+                if (dto.level > 0) view.OpenBuilding();
+                view.UpdateInfo(dto);
+            }
         }
     }
 }
