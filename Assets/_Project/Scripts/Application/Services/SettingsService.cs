@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using UITemplate.Core.Interfaces;
+using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 
 namespace UITemplate.Application.Services

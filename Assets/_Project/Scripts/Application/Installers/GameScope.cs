@@ -1,9 +1,10 @@
 using UITemplate.Application;
-using UITemplate.Application.ScriptableObjects;
 using UITemplate.Core.Interfaces;
 using UITemplate.Application.Services;
+using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Controller;
+using UITemplate.Infrastructure.Interfaces;
 using UITemplate.Infrastructure.Services;
 using UITemplate.UI.Factory;
 using UITemplate.UI.Managers;

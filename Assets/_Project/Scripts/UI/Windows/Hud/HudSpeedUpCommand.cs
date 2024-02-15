@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
-using UITemplate.Application.ScriptableObjects;
-using UITemplate.Core.Controller.Command;
+using UITemplate.Common;
 using UITemplate.Events;
+using UITemplate.UI.Command;
 using UniRx;
 
 namespace UITemplate.UI.Windows.Hud
@@ -48,7 +48,7 @@ namespace UITemplate.UI.Windows.Hud
             _model.timerEnabled = false;
             _view.SetSpeedButtonActive(false);
             _view.UpdateSpeedUpTimer(_cfg.speedUpDuration, 1);
-            
+
             MessageBroker.Default.Publish(new UISpeedUpRequestEvent(false));
         }
 

@@ -1,11 +1,11 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Core.Interfaces;
+using UITemplate.Common;
 using UITemplate.Utils;
 using UniRx;
 using UnityEngine;
 
-namespace UITemplate.Core.Controller.Command
+namespace UITemplate.UI.Command
 {
     [UsedImplicitly]
     public class TimerCommand : Registrable, ICommand

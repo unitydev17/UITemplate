@@ -1,4 +1,4 @@
-namespace UITemplate.Application
+namespace UITemplate.Common
 {
     public static class Constants
     {

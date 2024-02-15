@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UITemplate.Application.ScriptableObjects
+namespace UITemplate.Common
 {
     [CreateAssetMenu(fileName = "UpgradeCfg")]
     public class UpgradeCfg : ScriptableObject

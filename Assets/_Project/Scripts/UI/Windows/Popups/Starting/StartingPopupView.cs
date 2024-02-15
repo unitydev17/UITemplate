@@ -1,6 +1,6 @@
 using System;
 using TMPro;
-using UITemplate.Application;
+using UITemplate.Common;
 using UITemplate.UI.MVP.View;
 using UITemplate.UI.Widgets;
 using UniRx;

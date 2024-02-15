@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UITemplate.Core.Interfaces
+namespace UITemplate.Infrastructure.Interfaces
 {
     public interface IPrefabLoadService
     {

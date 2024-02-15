@@ -1,5 +1,5 @@
 using JetBrains.Annotations;
-using UITemplate.Application.ScriptableObjects;
+using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;

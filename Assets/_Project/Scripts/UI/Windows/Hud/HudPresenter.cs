@@ -1,11 +1,10 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Application.ScriptableObjects;
+using UITemplate.Common;
 using UITemplate.Common.Dto;
 using UITemplate.Events;
 using UITemplate.UI.MVP.Presenter;
 using UniRx;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.UI.Windows.Hud

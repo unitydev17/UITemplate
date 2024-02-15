@@ -1,4 +1,4 @@
-namespace UITemplate.Core.Interfaces
+namespace UITemplate.Common
 {
     public interface ISettingsService
     {

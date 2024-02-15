@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using UITemplate.Application.ScriptableObjects;
+using UITemplate.Common;
 using UITemplate.Common.Dto;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;

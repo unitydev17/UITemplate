@@ -1,6 +1,6 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Application.ScriptableObjects;
+using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
@@ -54,7 +54,7 @@ namespace UITemplate.Application.Services
                 overallIncome += incomeMultiplier * building.currentIncome;
             }
 
-            _playerData.passiveIncome = (int)overallIncome;
+            _playerData.passiveIncome = (int) overallIncome;
             _playerData.passiveTime = passiveTime;
         }
 

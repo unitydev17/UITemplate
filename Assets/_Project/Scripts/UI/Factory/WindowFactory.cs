@@ -1,6 +1,6 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Core.Interfaces;
+using UITemplate.Infrastructure.Interfaces;
 using UITemplate.UI.MVP.Model;
 using UITemplate.UI.MVP.Presenter;
 using UITemplate.UI.MVP.View;

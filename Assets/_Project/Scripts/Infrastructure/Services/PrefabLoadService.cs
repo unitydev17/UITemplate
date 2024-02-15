@@ -1,6 +1,6 @@
 using System;
 using JetBrains.Annotations;
-using UITemplate.Core.Interfaces;
+using UITemplate.Infrastructure.Interfaces;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
