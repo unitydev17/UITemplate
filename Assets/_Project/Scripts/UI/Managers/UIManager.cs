@@ -1,4 +1,3 @@
-using System;
 using JetBrains.Annotations;
 using UITemplate.Common.Events;
 using UITemplate.UI.Factory;
@@ -32,9 +31,9 @@ namespace UITemplate.UI.Managers
             Register(MessageBroker.Default.Receive<WelcomeEvent>(), OpenWelcomePopup);
         }
 
-        public void Run(Action callback)
+        public void Run()
         {
-            _windowFactory.GetHudWindow(presenter => { callback?.Invoke(); });
+            _windowFactory.GetHudWindow();
         }
 
         private void OpenWelcomePopup()
@@ -42,9 +41,15 @@ namespace UITemplate.UI.Managers
             _windowFactory.GetWelcomePopup();
         }
 
-        private void OpenStartingPopup(PassiveIncomeNotifyEvent data)
+        private async void OpenStartingPopup(PassiveIncomeNotifyEvent data)
         {
-            _windowFactory.GetStartingPopup(presenter => { presenter.Setup(data.sum, data.time); });
+            var presenter = await _windowFactory.GetStartingPopup();
+            presenter.Setup(data.sum, data.time);
+        }
+
+        private void OnCloseStartingPopup(CloseStartingPopupEvent evt)
+        {
+            if (evt.claimPressed) OpenPromoPopup();
         }
 
         private void OpenStubPopup()
@@ -57,11 +62,6 @@ namespace UITemplate.UI.Managers
             _windowFactory.GetSettingsPopup();
         }
 
-
-        private void OnCloseStartingPopup(CloseStartingPopupEvent evt)
-        {
-            if (evt.claimPressed) OpenPromoPopup();
-        }
 
         private void OpenPromoPopup()
         {

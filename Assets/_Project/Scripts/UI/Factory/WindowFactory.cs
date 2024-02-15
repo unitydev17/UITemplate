@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Infrastructure.Interfaces;
 using UITemplate.UI.MVP.Model;
@@ -26,64 +28,61 @@ namespace UITemplate.UI.Factory
         {
             _container = container;
             _prefabLoadService = prefabLoadService;
-            _prefabLoadService = prefabLoadService;
         }
 
-        private void Create<TPresenter, TView, TModel>(Action<TPresenter> callback) where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
+        private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
         {
-            _prefabLoadService.LoadUIPrefab<TView>(prefab =>
-            {
-                var view = Object.Instantiate(prefab).GetComponent<TView>();
-                view.SetSortingOrder(order++);
+            var prefab = await _prefabLoadService.LoadUIPrefab<TView>();
 
-                var model = new TModel();
+            var view = Object.Instantiate(prefab).GetComponent<TView>();
+            view.SetSortingOrder(order++);
 
-                var presenter = _container.Resolve<TPresenter>();
-                presenter.view = view;
-                presenter.model = model;
-                presenter.container = _container;
+            var model = new TModel();
 
-                (presenter as IInitializable)?.Initialize();
-                (presenter as IStartable)?.Start();
+            var presenter = _container.Resolve<TPresenter>();
+            presenter.view = view;
+            presenter.model = model;
+            presenter.container = _container;
 
-                callback?.Invoke(presenter);
-            });
+            (presenter as IInitializable)?.Initialize();
+            (presenter as IStartable)?.Start();
+
+            return presenter;
         }
 
-
-        public void GetStartingPopup(Action<StartingPopupPresenter> callback)
+        public async UniTask<StartingPopupPresenter> GetStartingPopup()
         {
-            Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>(callback);
+            return await Create<StartingPopupPresenter, StartingPopupView, StartingPopupModel>();
         }
 
-        public void GetSettingsPopup(Action<SettingsPopupPresenter> callback)
+        public async UniTask<SettingsPopupPresenter> GetSettingsPopup()
         {
-            Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>(callback);
+            return await Create<SettingsPopupPresenter, SettingsPopupView, SettingsPopupModel>();
         }
 
-        public void GetPromoPopup(Action<PromoPopupPresenter> callback)
+        public async UniTask<PromoPopupPresenter> GetPromoPopup()
         {
-            Create<PromoPopupPresenter, PromoPopupView, BaseModel>(callback);
+            return await Create<PromoPopupPresenter, PromoPopupView, BaseModel>();
         }
 
-        public void GetPromoInfoPopup(Action<PromoInfoPopupPresenter> callback)
+        public async UniTask<PromoInfoPopupPresenter> GetPromoInfoPopup()
         {
-            Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>(callback);
+            return await Create<PromoInfoPopupPresenter, PromoInfoPopupView, BaseModel>();
         }
 
-        public void GetHudWindow(Action<HudPresenter> callback)
+        public async UniTask<HudPresenter> GetHudWindow()
         {
-            Create<HudPresenter, HudView, HudModel>(callback);
+            return await Create<HudPresenter, HudView, HudModel>();
         }
 
-        public void GetStubPopup(Action<StubPopupPresenter> callback)
+        public async UniTask<StubPopupPresenter> GetStubPopup()
         {
-            Create<StubPopupPresenter, StubPopupView, StubPopupModel>(callback);
+            return await Create<StubPopupPresenter, StubPopupView, StubPopupModel>();
         }
 
-        public void GetWelcomePopup(Action<WelcomePopupPresenter> callback = null)
+        public async UniTask<WelcomePopupPresenter> GetWelcomePopup()
         {
-            Create<WelcomePopupPresenter, WelcomePopupView, BaseModel>(callback);
+            return await Create<WelcomePopupPresenter, WelcomePopupView, BaseModel>();
         }
     }
 }

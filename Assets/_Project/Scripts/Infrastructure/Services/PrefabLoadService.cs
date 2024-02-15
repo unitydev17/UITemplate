@@ -1,7 +1,7 @@
 using System;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Infrastructure.Interfaces;
-using UniRx;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -11,12 +11,10 @@ namespace UITemplate.Infrastructure.Services
     [UsedImplicitly]
     public class PrefabLoadService : IPrefabLoadService
     {
-        private static readonly CompositeDisposable Disposable = new CompositeDisposable();
-
-        public void LoadUIPrefab<TView>(Action<GameObject> returnPrefabCallback)
+        public async UniTask<GameObject> LoadUIPrefab<TView>()
         {
             var address = GetAddress<TView>();
-            GetPrefabAsObservable(address).Subscribe(returnPrefabCallback).AddTo(Disposable);
+            return await GetPrefab(address);
         }
 
         private static string GetAddress<TView>()
@@ -26,28 +24,13 @@ namespace UITemplate.Infrastructure.Services
             return address;
         }
 
-        private static IObservable<GameObject> GetPrefabAsObservable(string address)
+        private static async UniTask<GameObject> GetPrefab(string address)
         {
-            return Observable.Create<GameObject>(observer =>
-            {
-                var handle = Addressables.LoadAssetAsync<GameObject>(address);
-                handle.Completed += op =>
-                {
-                    if (op.Status == AsyncOperationStatus.Succeeded)
-                    {
-                        observer.OnNext(op.Result);
-                        observer.OnCompleted();
-                        Disposable.Dispose();
-                    }
-                    else
-                    {
-                        observer.OnError(new Exception($"Failed to load asset with address: {address}"));
-                        Disposable.Dispose();
-                    }
-                };
+            var handle = Addressables.LoadAssetAsync<GameObject>(address);
+            await handle;
+            if (handle.Status == AsyncOperationStatus.Succeeded) return handle.Result;
 
-                return UniRx.Disposable.Empty;
-            });
+            throw new Exception($"Can not load addressables prefab with address:{address}");
         }
     }
 }

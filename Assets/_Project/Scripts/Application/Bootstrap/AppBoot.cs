@@ -26,7 +26,8 @@ namespace UITemplate.Application
         {
             AppSetup();
 
-            _ui.Run(() => { _gameManager.Run(); });
+            _ui.Run();
+            _gameManager.Run();
         }
 
         private void AppSetup()

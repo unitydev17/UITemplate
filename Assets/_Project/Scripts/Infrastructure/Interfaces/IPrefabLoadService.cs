@@ -1,10 +1,10 @@
-using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace UITemplate.Infrastructure.Interfaces
 {
     public interface IPrefabLoadService
     {
-        public void LoadUIPrefab<TView>(Action<GameObject> returnPrefabCallback);
+        public UniTask<GameObject> LoadUIPrefab<TView>();
     }
 }

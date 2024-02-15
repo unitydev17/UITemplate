@@ -1,4 +1,4 @@
-using System;
+using Cysharp.Threading.Tasks;
 using UITemplate.UI.Windows.Hud;
 using UITemplate.UI.Windows.Popups.Promo;
 using UITemplate.UI.Windows.Popups.Settings;
@@ -8,12 +8,12 @@ namespace UITemplate.UI.Factory
 {
     public interface IWindowFactory
     {
-        public void GetStartingPopup(Action<StartingPopupPresenter> callback = null);
-        public void GetSettingsPopup(Action<SettingsPopupPresenter> callback = null);
-        public void GetPromoPopup(Action<PromoPopupPresenter> callback = null);
-        public void GetPromoInfoPopup(Action<PromoInfoPopupPresenter> callback = null);
-        public void GetHudWindow(Action<HudPresenter> callback = null);
-        public void GetStubPopup(Action<StubPopupPresenter> callback = null);
-        public void GetWelcomePopup(Action<WelcomePopupPresenter> callback = null);
+        public UniTask<StartingPopupPresenter> GetStartingPopup();
+        public UniTask<SettingsPopupPresenter> GetSettingsPopup();
+        public UniTask<PromoPopupPresenter> GetPromoPopup();
+        public UniTask<PromoInfoPopupPresenter> GetPromoInfoPopup();
+        public UniTask<HudPresenter> GetHudWindow();
+        public UniTask<StubPopupPresenter> GetStubPopup();
+        public UniTask<WelcomePopupPresenter> GetWelcomePopup();
     }
 }
