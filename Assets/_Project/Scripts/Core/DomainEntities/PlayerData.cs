@@ -11,6 +11,7 @@ namespace UITemplate.Core.DomainEntities
         public float speedUpDuration;
         public double gameExitTime;
         public int passiveIncome;
+        public double passiveTime;
 
         public void CopyFrom(PlayerData data)
         {

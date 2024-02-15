@@ -28,8 +28,8 @@ namespace UITemplate.Core.DomainEntities.Mappers
                 currentIncome = building.currentIncome,
                 nextUpgradeCost = building.nextUpgradeCost,
                 level = building.level,
-                upgradeCompletion = building.upgradeCompletion,
-                incomeCompletion = building.incomeCompletion,
+                upgradeProgress = building.upgradeProgress,
+                incomeProgress = building.incomeProgress,
                 nextDeltaIncome = building.nextDeltaIncome
             };
         }

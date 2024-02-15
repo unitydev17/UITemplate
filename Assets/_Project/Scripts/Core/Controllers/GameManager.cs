@@ -66,6 +66,7 @@ namespace UITemplate.Core.Controller
                 _playerData.money += _playerData.passiveIncome;
                 MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
             }
+
             _playerData.passiveIncome = 0;
         }
 
@@ -93,11 +94,10 @@ namespace UITemplate.Core.Controller
                 MessageBroker.Default.Publish(new WelcomeEvent());
                 return;
             }
-            
-            var (passiveIncome, passiveTime) = _incomeService.AccruePassiveIncome();
-            _playerData.passiveIncome = passiveIncome;
 
-            MessageBroker.Default.Publish(new PassiveIncomeNotifyEvent(passiveIncome, passiveTime));
+            _incomeService.AccruePassiveIncome();
+
+            MessageBroker.Default.Publish(new PassiveIncomeNotifyEvent(_playerData.passiveIncome, _playerData.passiveTime));
             MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
         }
 
@@ -110,7 +110,7 @@ namespace UITemplate.Core.Controller
         private void InitializeBuildings()
         {
             _persistenceService.LoadSettingsData();
-            
+
             _gameData.buildings = _sceneService.FetchBuildingsFromScene();
             _persistenceService.LoadSceneData();
 

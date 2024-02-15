@@ -90,8 +90,8 @@ public class BuildingView : MonoBehaviour
         _upgradeCostTxt.text = dto.nextUpgradeCost == 0 ? "Max" : dto.nextUpgradeCost.ToString();
         _buyCostTxt.text = dto.nextUpgradeCost.ToString();
 
-        _upgradeProgressImg.fillAmount = dto.upgradeCompletion;
-        _incomeProgressImg.fillAmount = dto.incomeCompletion;
+        _upgradeProgressImg.fillAmount = dto.upgradeProgress;
+        _incomeProgressImg.fillAmount = dto.incomeProgress;
 
         _incomeHelperTxt.text = dto.nextDeltaIncome == 0 ? string.Empty : $"+{dto.nextDeltaIncome}";
     }

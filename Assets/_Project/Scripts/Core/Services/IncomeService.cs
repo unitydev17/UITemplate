@@ -29,7 +29,7 @@ namespace UITemplate.Application.Services
             foreach (var building in _gameData.buildings) ProcessItem(building);
         }
 
-        public (int, double) AccruePassiveIncome()
+        public void AccruePassiveIncome()
         {
             var now = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
             var passiveTime = now - _playerData.gameExitTime;
@@ -54,7 +54,8 @@ namespace UITemplate.Application.Services
                 overallIncome += incomeMultiplier * building.currentIncome;
             }
 
-            return ((int) overallIncome, passiveTime);
+            _playerData.passiveIncome = (int)overallIncome;
+            _playerData.passiveTime = passiveTime;
         }
 
         private void ProcessItem(Building building)
@@ -63,8 +64,8 @@ namespace UITemplate.Application.Services
 
             UpdateIncome(building);
 
-            if (building.incomeCompletion < 1) return;
-            building.incomeCompletion = 0;
+            if (building.incomeProgress < 1) return;
+            building.incomeProgress = 0;
 
             _playerData.money += building.currentIncome;
 
@@ -86,7 +87,7 @@ namespace UITemplate.Application.Services
         {
             var speedUpMultiplier = _playerData.speedUp ? _cfg.speedUpMultiplier : 1;
             var income = CountIncome(building, speedUpMultiplier);
-            building.incomeCompletion += income * Time.fixedDeltaTime;
+            building.incomeProgress += income * Time.fixedDeltaTime;
         }
 
         private static float CountIncome(Building building, int speedUpMultiplier = 1)

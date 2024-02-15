@@ -37,7 +37,7 @@ namespace UITemplate.Application.Services
             var maxUpdate = IsLastUpdateReached(building);
 
             building.nextUpgradeCost = maxUpdate ? 0 : _cfg.GetCost(building.level);
-            building.upgradeCompletion = GetUpgradeCompletion(building);
+            building.upgradeProgress = GetUpgradeCompletion(building);
             building.currentIncome = _cfg.GetIncome(building.level);
             building.incomeMultiplier = _cfg.GetIncomeMultiplier(building.level);
             building.nextDeltaIncome = maxUpdate ? 0 : _cfg.GetIncome(building.level + 1) - building.currentIncome;

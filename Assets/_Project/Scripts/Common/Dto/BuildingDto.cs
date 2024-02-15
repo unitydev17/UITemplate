@@ -7,7 +7,7 @@ namespace UITemplate.Common.Dto
         public int nextDeltaIncome;
         public int nextUpgradeCost;
         public int level;
-        public float upgradeCompletion;
-        public float incomeCompletion;
+        public float upgradeProgress;
+        public float incomeProgress;
     }
 }
