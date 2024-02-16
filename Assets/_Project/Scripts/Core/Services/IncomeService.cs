@@ -35,18 +35,32 @@ namespace UITemplate.Application.Services
             var passiveTime = now - _playerData.gameExitTime;
 
             double speedUpTime = 0;
-            double normalTime = passiveTime;
+            var normalTime = passiveTime;
 
 
             if (_playerData.speedUp)
             {
-                var rightBorder = Math.Min(_playerData.speedUpStartTime + _playerData.speedUpDuration, now);
-                speedUpTime = rightBorder - _playerData.gameExitTime;
+                var speedUpTargetStopTime = Math.Min(_playerData.speedUpStartTime + _playerData.speedUpDuration, now);
+                CheckStopSpeedUp(now, speedUpTargetStopTime);
+
+                speedUpTime = speedUpTargetStopTime - _playerData.gameExitTime;
                 normalTime = Math.Abs(passiveTime - speedUpTime);
             }
 
-            double overallIncome = 0;
+            var overallIncome = CountOverallIncome(normalTime, speedUpTime);
 
+            _playerData.passiveIncome = (int) overallIncome;
+            _playerData.passiveTime = passiveTime;
+        }
+
+        private void CheckStopSpeedUp(double now, double rightBorder)
+        {
+            if (now - rightBorder >= 0) _playerData.speedUp = false;
+        }
+
+        private double CountOverallIncome(double normalTime, double speedUpTime)
+        {
+            double overallIncome = 0;
             foreach (var building in _gameData.buildings)
             {
                 var incomeMultiplier = CountIncome(building) * normalTime;
@@ -54,22 +68,24 @@ namespace UITemplate.Application.Services
                 overallIncome += incomeMultiplier * building.currentIncome;
             }
 
-            _playerData.passiveIncome = (int) overallIncome;
-            _playerData.passiveTime = passiveTime;
+            return overallIncome;
         }
+
 
         private void ProcessItem(Building building)
         {
             if (IsBuildingClose(building)) return;
 
-            UpdateIncome(building);
+            UpdateIncomeProgress(building);
 
-            if (building.incomeProgress < 1) return;
+            building.incomeReceived = building.incomeProgress >= 1;
+
+            if (!building.incomeReceived) return;
             building.incomeProgress = 0;
 
             _playerData.money += building.currentIncome;
 
-            NotifyBoard(building);
+
             NotifyUI();
         }
 
@@ -78,12 +94,7 @@ namespace UITemplate.Application.Services
             MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
         }
 
-        private static void NotifyBoard(Building building)
-        {
-            MessageBroker.Default.Publish(new IncomeEvent(building.ToDto()));
-        }
-
-        private void UpdateIncome(Building building)
+        private void UpdateIncomeProgress(Building building)
         {
             var speedUpMultiplier = _playerData.speedUp ? _cfg.speedUpMultiplier : 1;
             var income = CountIncome(building, speedUpMultiplier);

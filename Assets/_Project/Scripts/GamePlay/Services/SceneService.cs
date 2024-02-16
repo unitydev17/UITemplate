@@ -45,8 +45,6 @@ namespace UITemplate.GamePlay.Services
             {
                 var viewKey = _buildings.Keys.Single(id => id == dto.id);
                 var view = _buildings.GetValueOrDefault(viewKey);
-
-                if (dto.level > 0) view.OpenBuilding();
                 view.UpdateInfo(dto);
             }
         }

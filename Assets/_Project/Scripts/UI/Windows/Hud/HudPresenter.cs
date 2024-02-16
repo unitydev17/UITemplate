@@ -88,7 +88,7 @@ namespace UITemplate.UI.Windows.Hud
             var leftTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds - data.dto.speedUpStartTime;
             if (leftTime >= data.dto.speedUpDuration)
             {
-                MessageBroker.Default.Publish(new UISpeedUpRequestEvent(false));
+                MessageBroker.Default.Publish(new SpeedUpRequestEvent(false));
                 return;
             }
 

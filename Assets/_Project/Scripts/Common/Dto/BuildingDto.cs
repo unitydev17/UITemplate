@@ -10,5 +10,6 @@ namespace UITemplate.Common.Dto
         public float upgradeProgress;
         public float incomeProgress;
         public float incomePerSecond;
+        public bool incomeReceived;
     }
 }

@@ -48,10 +48,10 @@ namespace UITemplate.Core.Controller
 
         public void Initialize()
         {
-            Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), HandleUpgradeRequestEvent);
-            Register(MessageBroker.Default.Receive<UISpeedUpRequestEvent>(), HandleSpeedUpRequestEvent);
-            Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), HandleCloseStartingPopupEvent);
-            Register(Observable.EveryFixedUpdate(), UpdateBuildingTimer);
+            Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), UpgradeRequestEventHandler);
+            Register(MessageBroker.Default.Receive<SpeedUpRequestEvent>(), SpeedUpRequestEventHandler);
+            Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), CloseStartingPopupEventHandler);
+            Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
         }
 
         public void Run()
@@ -59,33 +59,7 @@ namespace UITemplate.Core.Controller
             InitializeBuildings();
             InitializePlayerData();
         }
-
-        private void HandleCloseStartingPopupEvent(CloseStartingPopupEvent data)
-        {
-            if (data.claimPressed)
-            {
-                _playerData.money += _playerData.passiveIncome;
-                MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
-            }
-
-            _playerData.passiveIncome = 0;
-        }
-
-        private void HandleSpeedUpRequestEvent(UISpeedUpRequestEvent data)
-        {
-            _playerData.speedUp = data.enable;
-            if (_playerData.speedUp == false) return;
-
-            _playerData.speedUpStartTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
-            _playerData.speedUpDuration = data.duration;
-        }
-
-        private void UpdateBuildingTimer()
-        {
-            _incomeService.Process();
-            _sceneService.UpdateBuildingViews(buildingsDtoList);
-        }
-
+        
         private void InitializePlayerData()
         {
             var isFirstRun = _persistenceService.LoadPlayerData() == false;
@@ -108,6 +82,32 @@ namespace UITemplate.Core.Controller
             _playerData.speedUp = false;
         }
 
+        private void CloseStartingPopupEventHandler(CloseStartingPopupEvent data)
+        {
+            if (data.claimPressed)
+            {
+                _playerData.money += _playerData.passiveIncome;
+                MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
+            }
+
+            _playerData.passiveIncome = 0;
+        }
+
+        private void SpeedUpRequestEventHandler(SpeedUpRequestEvent data)
+        {
+            _playerData.speedUp = data.enable;
+            if (_playerData.speedUp == false) return;
+
+            _playerData.speedUpStartTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
+            _playerData.speedUpDuration = data.duration;
+        }
+
+        private void UpdateBuildingProgress()
+        {
+            _incomeService.Process();
+            _sceneService.UpdateBuildingViews(buildingsDtoList);
+        }
+
         private void InitializeBuildings()
         {
             _persistenceService.LoadSettingsData();
@@ -121,7 +121,7 @@ namespace UITemplate.Core.Controller
 
         private IEnumerable<BuildingDto> buildingsDtoList => _gameData.buildings.Select(BuildingDtoMapper.GetDto).ToList();
 
-        private void HandleUpgradeRequestEvent(UpgradeRequestEvent data)
+        private void UpgradeRequestEventHandler(UpgradeRequestEvent data)
         {
             var building = GetBuilding(data.id);
             if (!_upgradeService.TryUpgrade(ref building)) return;

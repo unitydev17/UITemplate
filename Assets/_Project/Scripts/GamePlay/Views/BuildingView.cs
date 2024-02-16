@@ -29,32 +29,20 @@ public class BuildingView : MonoBehaviour
 
     private void Start()
     {
-        _buyBtn.onClick.AsObservable().Subscribe(_ => HandleUpgradeClick()).AddTo(this);
-        _upgradeBtn.onClick.AsObservable().Subscribe(_ => HandleUpgradeClick()).AddTo(this);
+        _buyBtn.onClick.AsObservable().Subscribe(_ => UpgradeClickHandler()).AddTo(this);
+        _upgradeBtn.onClick.AsObservable().Subscribe(_ => UpgradeClickHandler()).AddTo(this);
 
-        MessageBroker.Default.Receive<UpgradeResponseEvent>().Subscribe(HandleUpgradeResponseEvent).AddTo(this);
-        MessageBroker.Default.Receive<IncomeEvent>().Subscribe(HandleIncomeEvent).AddTo(this);
+        MessageBroker.Default.Receive<UpgradeResponseEvent>().Subscribe(UpgradeResponseEventHandler).AddTo(this);
     }
 
-    private void HandleIncomeEvent(IncomeEvent data)
-    {
-        var dto = data.dto;
-        if (dto.id != _id) return;
-
-        _incomeView.gameObject.SetActive(true);
-        _incomeView.Activate(dto.currentIncome);
-
-        UpdateInfo(dto);
-    }
-
-    private void HandleUpgradeClick()
+    private void UpgradeClickHandler()
     {
         MessageBroker.Default.Publish(new UpgradeRequestEvent(_id));
         _clickEffect.Animate();
     }
 
 
-    private void HandleUpgradeResponseEvent(UpgradeResponseEvent data)
+    private void UpgradeResponseEventHandler(UpgradeResponseEvent data)
     {
         var dto = data.dto;
         if (dto.id != _id) return;
@@ -70,20 +58,6 @@ public class BuildingView : MonoBehaviour
 
     private static bool IsBuildingOpen(BuildingDto dto) => dto.level > 1;
 
-    private void OpenBuilding(BuildingDto dto)
-    {
-        _buyArea.Hide(() =>
-        {
-            OpenBuilding();
-            UpdateInfo(dto);
-        });
-    }
-
-    public void OpenBuilding()
-    {
-        _buyArea.gameObject.SetActive(false);
-        _upgradeArea.SetActive(true);
-    }
 
     public void UpdateInfo(BuildingDto dto)
     {
@@ -94,5 +68,32 @@ public class BuildingView : MonoBehaviour
         _incomeProgressImg.fillAmount = dto.incomeProgress;
 
         _incomeHelperTxt.text = dto.nextDeltaIncome == 0 ? string.Empty : $"+{dto.nextDeltaIncome}";
+
+        ReceiveIncome(dto);
+        OpenBuilding(dto);
+    }
+
+    private void OpenBuilding(BuildingDto dto)
+    {
+        if (dto.level < 1) return;
+
+        _buyArea.Hide(() =>
+        {
+            OpenBuilding();
+            UpdateInfo(dto);
+        });
+    }
+
+    private void OpenBuilding()
+    {
+        _buyArea.gameObject.SetActive(false);
+        _upgradeArea.SetActive(true);
+    }
+
+    private void ReceiveIncome(BuildingDto dto)
+    {
+        if (dto.incomeReceived == false) return;
+        _incomeView.gameObject.SetActive(true);
+        _incomeView.Activate(dto.currentIncome);
     }
 }

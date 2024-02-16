@@ -15,6 +15,7 @@ namespace UITemplate.Core.DomainEntities
         public float incomeProgress;
         public float incomePerSecond;
         public float incomeMultiplier;
+        public bool incomeReceived;
 
         public void CopyFrom(Building data)
         {

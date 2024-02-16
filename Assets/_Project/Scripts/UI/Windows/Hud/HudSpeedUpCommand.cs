@@ -49,7 +49,7 @@ namespace UITemplate.UI.Windows.Hud
             _view.SetSpeedButtonActive(false);
             _view.UpdateSpeedUpTimer(_cfg.speedUpDuration, 1);
 
-            MessageBroker.Default.Publish(new UISpeedUpRequestEvent(false));
+            MessageBroker.Default.Publish(new SpeedUpRequestEvent(false));
         }
 
         protected virtual void OnStart()
@@ -57,7 +57,7 @@ namespace UITemplate.UI.Windows.Hud
             _model.timerEnabled = true;
             _view.SetSpeedButtonActive(true);
 
-            if (!_skipStartNotification) MessageBroker.Default.Publish(new UISpeedUpRequestEvent(true, _cfg.speedUpDuration));
+            if (!_skipStartNotification) MessageBroker.Default.Publish(new SpeedUpRequestEvent(true, _cfg.speedUpDuration));
         }
     }
 }
