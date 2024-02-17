@@ -84,5 +84,10 @@ namespace UITemplate.UI.Factory
         {
             return await Create<WelcomePopupPresenter, WelcomePopupView, BaseModel>();
         }
+
+        public async UniTask<SimpleMessagePopupPresenter> GetSimpleMessagePopup()
+        {
+            return await Create<SimpleMessagePopupPresenter, SimpleMessagePopupView, BaseModel>();
+        }
     }
 }

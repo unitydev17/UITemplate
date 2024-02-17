@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: UIGroup
+  m_Name: PrimaryGroup
   m_EditorClassIdentifier: 
-  m_GroupName: UIGroup
+  m_GroupName: PrimaryGroup
   m_Data:
     m_SerializedData: []
   m_GUID: 1f752aa6f5a334cb49c058e05b6959ac
@@ -49,6 +49,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c55366480c813412dafac9df78c8cb0f
     m_Address: UI/WelcomePopupView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb7d865339abb4a51acf58f4384fe0cd
+    m_Address: Levels/Level_0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bb3da1cc0cab42b7b7632786760c1b2
+    m_Address: Levels/Level_1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f666fae0a91334dc9adbe81a3b58fae3
+    m_Address: UI/SimpleMessagePopupView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -16,12 +16,14 @@ namespace UITemplate.Application.Services
         private readonly PlayerData _playerData;
         private readonly GameData _gameData;
         private readonly UpgradeCfg _cfg;
+        private readonly ITimerService _timerService;
 
-        public IncomeService(PlayerData playerData, GameData gameData, UpgradeCfg cfg)
+        public IncomeService(PlayerData playerData, GameData gameData, UpgradeCfg cfg, ITimerService timerService)
         {
             _playerData = playerData;
             _gameData = gameData;
             _cfg = cfg;
+            _timerService = timerService;
         }
 
         public void Process()
@@ -31,21 +33,7 @@ namespace UITemplate.Application.Services
 
         public void AccruePassiveIncome()
         {
-            var now = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
-            var passiveTime = now - _playerData.gameExitTime;
-
-            double speedUpTime = 0;
-            var normalTime = passiveTime;
-
-
-            if (_playerData.speedUp)
-            {
-                var speedUpTargetStopTime = Math.Min(_playerData.speedUpStartTime + _playerData.speedUpDuration, now);
-                CheckStopSpeedUp(now, speedUpTargetStopTime);
-
-                speedUpTime = speedUpTargetStopTime - _playerData.gameExitTime;
-                normalTime = Math.Abs(passiveTime - speedUpTime);
-            }
+            var passiveTime = _timerService.CountTimePassed(out var speedUpTime, out var normalTime);
 
             var overallIncome = CountOverallIncome(normalTime, speedUpTime);
 
@@ -53,10 +41,6 @@ namespace UITemplate.Application.Services
             _playerData.passiveTime = passiveTime;
         }
 
-        private void CheckStopSpeedUp(double now, double rightBorder)
-        {
-            if (now - rightBorder >= 0) _playerData.speedUp = false;
-        }
 
         private double CountOverallIncome(double normalTime, double speedUpTime)
         {
@@ -84,10 +68,24 @@ namespace UITemplate.Application.Services
             building.incomeProgress = 0;
 
             _playerData.money += building.currentIncome;
+            CheckLevelCompleted();
 
 
             NotifyUI();
         }
+
+        private void CheckLevelCompleted()
+        {
+            if (_playerData.money < _cfg.coinsToCompleteLevel) return;
+
+            _playerData.levelCompleted = true;
+            _playerData.levelIndex++;
+
+            _timerService.PauseSpeedUpTimer();
+
+            MessageBroker.Default.Publish(new LevelCompletedEvent());
+        }
+
 
         private void NotifyUI()
         {
@@ -96,7 +94,7 @@ namespace UITemplate.Application.Services
 
         private void UpdateIncomeProgress(Building building)
         {
-            var speedUpMultiplier = _playerData.speedUp ? _cfg.speedUpMultiplier : 1;
+            var speedUpMultiplier = _playerData.timer.speedUp ? _cfg.speedUpMultiplier : 1;
             var income = CountIncome(building, speedUpMultiplier);
             building.incomeProgress += income * Time.fixedDeltaTime;
         }
@@ -108,7 +106,7 @@ namespace UITemplate.Application.Services
 
         private static bool IsBuildingClose(Building building)
         {
-            return building.level < 1;
+            return building.upgradeLevel < 1;
         }
     }
 }

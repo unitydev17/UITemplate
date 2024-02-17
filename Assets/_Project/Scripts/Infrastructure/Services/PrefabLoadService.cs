@@ -13,24 +13,41 @@ namespace UITemplate.Infrastructure.Services
     {
         public async UniTask<GameObject> LoadUIPrefab<TView>()
         {
-            var address = GetAddress<TView>();
+            var address = GetAddress<TView>("UI");
             return await GetPrefab(address);
         }
 
-        private static string GetAddress<TView>()
+        private static string GetAddress<T>(string prefix)
         {
-            var path = typeof(TView).ToString().Split(".");
-            var address = $"UI/{path[^1]}";
-            return address;
+            var path = typeof(T).ToString().Split(".");
+            return $"{prefix}/{path[^1]}";
         }
 
         private static async UniTask<GameObject> GetPrefab(string address)
         {
             var handle = Addressables.LoadAssetAsync<GameObject>(address);
             await handle;
+
+            if (handle.Status != AsyncOperationStatus.Succeeded) throw new Exception($"Can not load addressable prefab with address:{address}");
+
+            var result = handle.Result;
+            Addressables.Release(handle);
+            return result;
+        }
+
+        private static async UniTask<GameObject> InstantiatePrefab(string address)
+        {
+            var handle = Addressables.InstantiateAsync(address);
+            await handle;
             if (handle.Status == AsyncOperationStatus.Succeeded) return handle.Result;
 
-            throw new Exception($"Can not load addressables prefab with address:{address}");
+            throw new Exception($"Can not instantiate addressable prefab with address:{address}");
+        }
+
+        public async UniTask<GameObject> LoadLevelPrefab(int index)
+        {
+            var address = $"Levels/Level_{index}";
+            return await InstantiatePrefab(address);
         }
     }
 }

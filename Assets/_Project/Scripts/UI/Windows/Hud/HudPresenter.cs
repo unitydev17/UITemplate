@@ -5,6 +5,7 @@ using UITemplate.Common.Dto;
 using UITemplate.Common.Events;
 using UITemplate.UI.MVP.Presenter;
 using UniRx;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace UITemplate.UI.Windows.Hud
@@ -29,8 +30,9 @@ namespace UITemplate.UI.Windows.Hud
         {
             RegisterStubList();
             Register(view.onSettingsBtnClick, OpenSettingsPopup);
-            Register(MessageBroker.Default.Receive<UpdateOnInitEvent>(), UpdateOnInit);
-            Register(MessageBroker.Default.Receive<UpdatePlayerDataEvent>(), UpdatePlayerData);
+            Register(MessageBroker.Default.Receive<UpdateOnInitEvent>(), UpdateOnInitEventHandler);
+            Register(MessageBroker.Default.Receive<UpdatePlayerDataEvent>(), UpdatePlayerDataEventHandler);
+            Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), LevelCompletedEventHandler);
             Register(view.onSpeedBtnClick, ActivateSpeed);
         }
 
@@ -70,7 +72,7 @@ namespace UITemplate.UI.Windows.Hud
             MessageBroker.Default.Publish(new SettingsOpenEvent());
         }
 
-        private void UpdatePlayerData(UpdatePlayerDataEvent data)
+        private void UpdatePlayerDataEventHandler(UpdatePlayerDataEvent data)
         {
             UpdateCoins(data.dto);
         }
@@ -80,20 +82,43 @@ namespace UITemplate.UI.Windows.Hud
             view.UpdateCoins(data.money);
         }
 
-        private void UpdateOnInit(UpdateOnInitEvent data)
+        private void UpdateOnInitEventHandler(UpdateOnInitEvent data)
         {
-            UpdateCoins(data.dto);
-            if (data.dto.speedUp == false) return;
+            var dto = data.dto;
 
-            var leftTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds - data.dto.speedUpStartTime;
-            if (leftTime >= data.dto.speedUpDuration)
-            {
-                MessageBroker.Default.Publish(new SpeedUpRequestEvent(false));
-                return;
-            }
+            UpdateCoins(dto);
+            SetupTimer(dto);
+        }
 
-            _timeCommand.SetInitData(view, model, true, (float) leftTime);
+        private void SetupTimer(PlayerDto dto)
+        {
+            if (dto.timer.speedUp == false) return;
+
+            var timerPaused = dto.timer.timerPaused;
+            var pauseTime = dto.timer.timerPauseTime;
+
+            
+            var elapsedTime = (timerPaused ? pauseTime : new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds) - dto.timer.speedUpStartTime;
+            
+            Debug.Log(timerPaused + "   " + elapsedTime + "   " + dto.timer.speedUpStartTime);
+            
+            if (CheckStopTimer(dto, elapsedTime)) return;
+
+            _timeCommand.SetInitData(view, model, true, (float) elapsedTime);
             _timeCommand.Execute();
+        }
+
+        private static bool CheckStopTimer(PlayerDto dto, double elapsedTime)
+        {
+            if (elapsedTime < dto.timer.speedUpDuration) return false;
+            
+            MessageBroker.Default.Publish(new SpeedUpRequestEvent(false));
+            return true;
+        }
+
+        private void LevelCompletedEventHandler()
+        {
+            _timeCommand?.ForceStopTimer();
         }
     }
 

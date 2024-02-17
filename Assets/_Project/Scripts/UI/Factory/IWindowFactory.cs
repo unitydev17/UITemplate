@@ -15,5 +15,7 @@ namespace UITemplate.UI.Factory
         public UniTask<HudPresenter> GetHudWindow();
         public UniTask<StubPopupPresenter> GetStubPopup();
         public UniTask<WelcomePopupPresenter> GetWelcomePopup();
+
+        public UniTask<SimpleMessagePopupPresenter> GetSimpleMessagePopup();
     }
 }

@@ -66,7 +66,7 @@ namespace UITemplate.Core.Services
 
         private void SavePlayerData()
         {
-            _playerData.gameExitTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
+            _playerData.timer.gameExitTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
             PlayerPrefs.SetString(PlayerDataKey, JsonUtility.ToJson(_playerData));
         }
 

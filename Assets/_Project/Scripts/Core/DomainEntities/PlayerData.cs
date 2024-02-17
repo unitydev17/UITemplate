@@ -1,3 +1,4 @@
+using System;
 using JetBrains.Annotations;
 
 namespace UITemplate.Core.DomainEntities
@@ -5,21 +6,26 @@ namespace UITemplate.Core.DomainEntities
     [UsedImplicitly]
     public class PlayerData
     {
+        public int levelIndex;
         public int money;
-        public bool speedUp;
-        public double speedUpStartTime;
-        public float speedUpDuration;
-        public double gameExitTime;
-        public int passiveIncome;
-        public double passiveTime;
+        public Timer timer;
+
+        [NonSerialized] public int passiveIncome;
+        [NonSerialized] public double passiveTime;
+        [NonSerialized] public bool levelCompleted;
+
+        public PlayerData()
+        {
+            timer = new Timer();
+        }
 
         public void CopyFrom(PlayerData data)
         {
+            levelIndex = data.levelIndex;
             money = data.money;
-            speedUp = data.speedUp;
-            speedUpStartTime = data.speedUpStartTime;
-            speedUpDuration = data.speedUpDuration;
-            gameExitTime = data.gameExitTime;
+            levelCompleted = data.levelCompleted;
+
+            timer.CopyFrom(data.timer);
         }
     }
 }

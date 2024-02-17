@@ -13,4 +13,9 @@ public class IncomeView : MonoBehaviour
         transform.DOKill();
         transform.DOLocalMoveY(1.6f, 2).From(0.6f).SetEase(Ease.OutSine).OnComplete(() => { gameObject.SetActive(false); });
     }
+
+    public void Deactivate()
+    {
+        transform.DOKill();
+    }
 }

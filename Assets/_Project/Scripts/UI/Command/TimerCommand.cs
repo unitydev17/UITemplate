@@ -21,6 +21,7 @@ namespace UITemplate.UI.Command
         {
             _startTime = time;
         }
+
         protected TimerCommand SetDuration(float time)
         {
             _targetTime = time;
@@ -65,12 +66,18 @@ namespace UITemplate.UI.Command
 
                 _progressNotifier?.Invoke(timeRemain, progress);
             });
+        }
 
-            void StopTimer()
-            {
-                _finishAction?.Invoke();
-                Dispose(_tempDisposable);
-            }
+        private void StopTimer()
+        {
+            _finishAction?.Invoke();
+            Dispose(_tempDisposable);
+        }
+
+        public void ForceStopTimer()
+        {
+            if (_tempDisposable == null) return;
+            Dispose(_tempDisposable);
         }
     }
 }

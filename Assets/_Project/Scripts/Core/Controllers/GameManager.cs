@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
@@ -26,7 +27,7 @@ namespace UITemplate.Core.Controller
         private readonly IUpgradeService _upgradeService;
         private readonly IIncomeService _incomeService;
         private readonly IPersistenceService _persistenceService;
-
+        private readonly ITimerService _timerService;
 
         public GameManager(ISceneService sceneService,
             PlayerData playerData,
@@ -34,7 +35,8 @@ namespace UITemplate.Core.Controller
             IIncomeService incomeService,
             GameData gameData,
             IPersistenceService persistenceService,
-            UpgradeCfg cfg)
+            UpgradeCfg cfg,
+            ITimerService timerService)
         {
             _gameData = gameData;
             _playerData = playerData;
@@ -44,28 +46,31 @@ namespace UITemplate.Core.Controller
             _incomeService = incomeService;
             _persistenceService = persistenceService;
             _cfg = cfg;
+            _timerService = timerService;
         }
 
         public void Initialize()
         {
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), UpgradeRequestEventHandler);
-            Register(MessageBroker.Default.Receive<SpeedUpRequestEvent>(), SpeedUpRequestEventHandler);
+
             Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), CloseStartingPopupEventHandler);
+            RegisterAsync(MessageBroker.Default.Receive<NextLevelRequestEvent>(), value => NextLevelRequestEventHandler());
             Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
         }
 
-        public void Run()
+        public async UniTask Run()
         {
-            InitializeBuildings();
             InitializePlayerData();
+            await LoadLevel();
+            InitializeLevel();
         }
-        
+
         private void InitializePlayerData()
         {
             var isFirstRun = _persistenceService.LoadPlayerData() == false;
             if (isFirstRun)
             {
-                InitPlayerData();
+                ResetPlayerData();
                 MessageBroker.Default.Publish(new WelcomeEvent());
                 return;
             }
@@ -76,10 +81,58 @@ namespace UITemplate.Core.Controller
             MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
         }
 
-        private void InitPlayerData()
+        private void ResetPlayerData()
         {
             _playerData.money = _cfg.playerStartCoins;
-            _playerData.speedUp = false;
+        }
+
+        private async UniTask LoadLevel()
+        {
+            await _sceneService.LoadLevel(_playerData.levelIndex);
+        }
+
+        private void InitializeLevel()
+        {
+            _persistenceService.LoadSettingsData();
+
+            _gameData.buildings = FetchBuildingsFromScene();
+            _persistenceService.LoadSceneData();
+            _upgradeService.UpdateBuildingsInfo();
+            _sceneService.UpdateBuildingViews(buildingsDtoList);
+
+            StartCountingProcess();
+        }
+
+        private List<Building> FetchBuildingsFromScene()
+        {
+            return BuildingDtoMapper.ToEntityList(_sceneService.FetchBuildingsFromScene());
+        }
+
+        private void StartCountingProcess()
+        {
+            _playerData.levelCompleted = false;
+        }
+
+        private void UpdateBuildingProgress()
+        {
+            if (_playerData.levelCompleted) return;
+            _incomeService.Process();
+            _sceneService.UpdateBuildingViews(buildingsDtoList);
+        }
+
+        private void UpgradeRequestEventHandler(UpgradeRequestEvent data)
+        {
+            var building = GetBuilding(data.id);
+            if (!_upgradeService.TryUpgrade(ref building)) return;
+
+            MessageBroker.Default.Publish(new UpgradeResponseEvent(building.ToDto()));
+        }
+
+        private IEnumerable<BuildingDto> buildingsDtoList => _gameData.buildings.Select(BuildingDtoMapper.GetDto).ToList();
+
+        private Building GetBuilding(int id)
+        {
+            return _gameData.buildings.Single(b => b.id == id);
         }
 
         private void CloseStartingPopupEventHandler(CloseStartingPopupEvent data)
@@ -93,45 +146,22 @@ namespace UITemplate.Core.Controller
             _playerData.passiveIncome = 0;
         }
 
-        private void SpeedUpRequestEventHandler(SpeedUpRequestEvent data)
+        private async UniTask NextLevelRequestEventHandler()
         {
-            _playerData.speedUp = data.enable;
-            if (_playerData.speedUp == false) return;
+            await LoadLevel();
+            UpdateSceneData();
 
-            _playerData.speedUpStartTime = new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds;
-            _playerData.speedUpDuration = data.duration;
+            ResetPlayerData();
+            StartCountingProcess();
+
+            MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
         }
 
-        private void UpdateBuildingProgress()
+        private void UpdateSceneData()
         {
-            _incomeService.Process();
-            _sceneService.UpdateBuildingViews(buildingsDtoList);
-        }
-
-        private void InitializeBuildings()
-        {
-            _persistenceService.LoadSettingsData();
-
             _gameData.buildings = BuildingDtoMapper.ToEntityList(_sceneService.FetchBuildingsFromScene());
-            _persistenceService.LoadSceneData();
-
             _upgradeService.UpdateBuildingsInfo();
             _sceneService.UpdateBuildingViews(buildingsDtoList);
-        }
-
-        private IEnumerable<BuildingDto> buildingsDtoList => _gameData.buildings.Select(BuildingDtoMapper.GetDto).ToList();
-
-        private void UpgradeRequestEventHandler(UpgradeRequestEvent data)
-        {
-            var building = GetBuilding(data.id);
-            if (!_upgradeService.TryUpgrade(ref building)) return;
-
-            MessageBroker.Default.Publish(new UpgradeResponseEvent(building.ToDto()));
-        }
-
-        private Building GetBuilding(int id)
-        {
-            return _gameData.buildings.Single(b => b.id == id);
         }
     }
 }

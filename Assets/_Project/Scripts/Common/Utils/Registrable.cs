@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UniRx;
 
 namespace UITemplate.Utils
@@ -6,6 +7,12 @@ namespace UITemplate.Utils
     public abstract class Registrable : IDisposable
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        protected void RegisterAsync<T>(IObservable<T> observable, Func<T, UniTask> handler)
+        {
+            if (observable == null) return;
+            _disposables.Add(observable.Subscribe(async value => await handler(value)));
+        }
 
         protected void Register<T>(IObservable<T> observable, Action handler)
         {

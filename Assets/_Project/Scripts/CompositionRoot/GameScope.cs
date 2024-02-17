@@ -59,6 +59,7 @@ namespace UITemplate.Installers
             builder.Register<PromoInfoPopupPresenter>(Lifetime.Scoped);
             builder.Register<StubPopupPresenter>(Lifetime.Scoped);
             builder.Register<WelcomePopupPresenter>(Lifetime.Scoped);
+            builder.Register<SimpleMessagePopupPresenter>(Lifetime.Scoped);
         }
 
         private void RegisterScriptableObjects(IContainerBuilder builder)
@@ -98,6 +99,7 @@ namespace UITemplate.Installers
             builder.Register<IPrefabLoadService, PrefabLoadService>(Lifetime.Scoped);
             builder.Register<ISceneService, SceneService>(Lifetime.Scoped);
             builder.Register<IPersistenceService, PersistenceService>(Lifetime.Scoped);
+            builder.Register<ITimerService, TimerService>(Lifetime.Scoped).AsImplementedInterfaces().AsSelf();
         }
     }
 }

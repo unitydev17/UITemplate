@@ -16,9 +16,20 @@ namespace UITemplate.Core.DomainEntities.Mappers
             return new PlayerDto
             {
                 money = playerData.money,
-                speedUp = playerData.speedUp,
-                speedUpDuration = playerData.speedUpDuration,
-                speedUpStartTime = playerData.speedUpStartTime
+                timer = playerData.timer.ToDto()
+            };
+        }
+
+        private static TimerDto ToDto(this Timer timer)
+        {
+            return new TimerDto
+            {
+                speedUp = timer.speedUp,
+                speedUpDuration = timer.speedUpDuration,
+                speedUpStartTime = timer.speedUpStartTime,
+                gameExitTime = timer.gameExitTime,
+                timerPauseTime = timer.timerPauseTime,
+                timerPaused = timer.timerPaused
             };
         }
 
@@ -29,11 +40,11 @@ namespace UITemplate.Core.DomainEntities.Mappers
                 id = building.id,
                 currentIncome = building.currentIncome,
                 nextUpgradeCost = building.nextUpgradeCost,
-                level = building.level,
+                upgradeLevel = building.upgradeLevel,
                 upgradeProgress = building.upgradeProgress,
                 incomeProgress = building.incomeProgress,
                 nextDeltaIncome = building.nextDeltaIncome,
-                incomeReceived =  building.incomeReceived
+                incomeReceived = building.incomeReceived
             };
         }
 

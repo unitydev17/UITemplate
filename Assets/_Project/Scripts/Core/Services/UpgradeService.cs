@@ -5,6 +5,7 @@ using UITemplate.Core.DomainEntities.Mappers;
 using UITemplate.Core.Interfaces;
 using UITemplate.Common.Events;
 using UniRx;
+using UnityEngine;
 
 namespace UITemplate.Application.Services
 {
@@ -27,36 +28,36 @@ namespace UITemplate.Application.Services
             for (var i = 0; i < _gameData.buildings.Count; i++)
             {
                 var value = _gameData.buildings[i];
-                UpdateBuildingValues(ref value);
+                UpdateBuildingRelativeValues(ref value);
                 _gameData.buildings[i] = value;
             }
         }
 
-        private void UpdateBuildingValues(ref Building building)
+        private void UpdateBuildingRelativeValues(ref Building building)
         {
             var maxUpdate = IsLastUpdateReached(building);
 
-            building.nextUpgradeCost = maxUpdate ? 0 : _cfg.GetCost(building.level);
+            building.nextUpgradeCost = maxUpdate ? 0 : _cfg.GetCost(building.upgradeLevel);
             building.upgradeProgress = GetUpgradeCompletion(building);
-            building.currentIncome = _cfg.GetIncome(building.level);
-            building.incomeMultiplier = _cfg.GetIncomeMultiplier(building.level);
-            building.nextDeltaIncome = maxUpdate ? 0 : _cfg.GetIncome(building.level + 1) - building.currentIncome;
+            building.currentIncome = _cfg.GetIncome(building.upgradeLevel);
+            building.incomeMultiplier = _cfg.GetIncomeMultiplier(building.upgradeLevel);
+            building.nextDeltaIncome = maxUpdate ? 0 : _cfg.GetIncome(building.upgradeLevel + 1) - building.currentIncome;
         }
 
         private float GetUpgradeCompletion(Building building)
         {
-            return (building.level - 1) / ((float) _cfg.upgradesCount - 1);
+            return (Mathf.Max(building.upgradeLevel - 1, 0)) / ((float) _cfg.upgradesCount - 1);
         }
 
         public bool TryUpgrade(ref Building building)
         {
             if (IsLastUpdateReached(building))
             {
-                UpdateBuildingValues(ref building);
+                UpdateBuildingRelativeValues(ref building);
                 return false;
             }
 
-            var cost = _cfg.GetCost(building.level);
+            var cost = _cfg.GetCost(building.upgradeLevel);
             var canUpgrade = _playerData.money >= cost;
             if (!canUpgrade) return false;
 
@@ -64,8 +65,8 @@ namespace UITemplate.Application.Services
             NotifyUI();
 
 
-            building.level++;
-            UpdateBuildingValues(ref building);
+            building.upgradeLevel++;
+            UpdateBuildingRelativeValues(ref building);
 
             return true;
         }
@@ -77,7 +78,7 @@ namespace UITemplate.Application.Services
 
         private bool IsLastUpdateReached(Building building)
         {
-            return building.level > _cfg.upgradesCount - 1;
+            return building.upgradeLevel > _cfg.upgradesCount - 1;
         }
     }
 }

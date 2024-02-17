@@ -6,7 +6,7 @@ namespace UITemplate.Common
     [CreateAssetMenu(fileName = "UpgradeCfg")]
     public class UpgradeCfg : ScriptableObject
     {
-        public int speedUpMultiplier;
+        [Header("Upgrades")] public int speedUpMultiplier;
         public float baseIncomePerSecond;
         public int playerStartCoins;
         public string costs;
@@ -14,7 +14,13 @@ namespace UITemplate.Common
         public string incomeMultiplier;
         public int speedUpDuration;
 
+        [Header("Levels")] public int levelCount;
+        public int coinsToCompleteLevel;
+
+        public int NormalizedLevel(int levelIndex) => levelIndex % levelCount;
         public int upgradesCount => GetSize(costs);
+
+
         public int GetCost(in int upgradeLevel) => GetValue<int>(costs, upgradeLevel, upgradesCount - 1);
         public int GetIncome(in int upgradeLevel) => GetValue<int>(incomes, upgradeLevel, upgradesCount);
 

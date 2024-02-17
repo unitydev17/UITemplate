@@ -1,3 +1,5 @@
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Core.Controller;
 using UITemplate.Core.Interfaces;
@@ -9,7 +11,7 @@ using VContainer.Unity;
 namespace UITemplate.Application
 {
     [UsedImplicitly]
-    public class AppBoot : Registrable, IStartable
+    public class AppBoot : Registrable, IAsyncStartable
     {
         private readonly UIManager _ui;
         private readonly GameManager _gameManager;
@@ -22,18 +24,18 @@ namespace UITemplate.Application
             _persistenceService = persistenceService;
         }
 
-        public void Start()
+        public async UniTask StartAsync(CancellationToken cancellation)
         {
             AppSetup();
 
-            _ui.Run();
-            _gameManager.Run();
+            await _ui.Run();
+            await _gameManager.Run();
         }
 
         private void AppSetup()
         {
-            RegisterSaveGameDataHandler();
             UnityEngine.Device.Application.targetFrameRate = 60;
+            RegisterSaveGameDataHandler();
         }
 
         private void RegisterSaveGameDataHandler()

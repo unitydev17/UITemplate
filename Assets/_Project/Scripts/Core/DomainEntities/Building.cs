@@ -7,19 +7,20 @@ namespace UITemplate.Core.DomainEntities
     public class Building : ICopyable<Building>
     {
         public int id;
-        public int level;
-        public int currentIncome;
-        public int nextDeltaIncome;
-        public int nextUpgradeCost;
-        public float upgradeProgress;
+        public int upgradeLevel;
         public float incomeProgress;
-        public float incomePerSecond;
-        public float incomeMultiplier;
-        public bool incomeReceived;
+
+        [NonSerialized] public int currentIncome;
+        [NonSerialized] public int nextDeltaIncome;
+        [NonSerialized] public int nextUpgradeCost;
+        [NonSerialized] public float upgradeProgress;
+        [NonSerialized] public float incomePerSecond;
+        [NonSerialized] public float incomeMultiplier;
+        [NonSerialized] public bool incomeReceived;
 
         public void CopyFrom(Building data)
         {
-            level = data.level;
+            upgradeLevel = data.upgradeLevel;
             incomeProgress = data.incomeProgress;
         }
     }

@@ -26,6 +26,7 @@ public class BuildingView : MonoBehaviour
 
     [SerializeField] private ClickEffect _clickEffect;
     public int id => _id;
+    private bool _opened;
 
     private void Start()
     {
@@ -56,7 +57,7 @@ public class BuildingView : MonoBehaviour
         OpenBuilding(dto);
     }
 
-    private static bool IsBuildingOpen(BuildingDto dto) => dto.level > 1;
+    private static bool IsBuildingOpen(BuildingDto dto) => dto.upgradeLevel > 1;
 
 
     public void UpdateInfo(BuildingDto dto)
@@ -75,8 +76,10 @@ public class BuildingView : MonoBehaviour
 
     private void OpenBuilding(BuildingDto dto)
     {
-        if (dto.level < 1) return;
+        if (_opened) return;
+        if (dto.upgradeLevel < 1) return;
 
+        _opened = true;
         _buyArea.Hide(() =>
         {
             OpenBuilding();
@@ -95,5 +98,10 @@ public class BuildingView : MonoBehaviour
         if (dto.incomeReceived == false) return;
         _incomeView.gameObject.SetActive(true);
         _incomeView.Activate(dto.currentIncome);
+    }
+
+    public void Release()
+    {
+        _incomeView.Deactivate();
     }
 }

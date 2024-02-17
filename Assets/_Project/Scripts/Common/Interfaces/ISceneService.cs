@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UITemplate.Common.Dto;
 
 namespace UITemplate.Common.Interfaces
@@ -7,5 +8,7 @@ namespace UITemplate.Common.Interfaces
     {
         public IEnumerable<BuildingDto> FetchBuildingsFromScene();
         void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList);
+
+        UniTask LoadLevel(int index);
     }
 }

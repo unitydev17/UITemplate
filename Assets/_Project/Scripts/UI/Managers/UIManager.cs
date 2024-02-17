@@ -1,4 +1,7 @@
+using System;
+using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
+using UITemplate.Common;
 using UITemplate.Common.Events;
 using UITemplate.UI.Factory;
 using UITemplate.UI.Windows.Popups.Promo;
@@ -29,11 +32,18 @@ namespace UITemplate.UI.Managers
             Register(MessageBroker.Default.Receive<BoostRequestEvent>(), OpenStubPopup);
             Register(MessageBroker.Default.Receive<PassiveIncomeNotifyEvent>(), OpenStartingPopup);
             Register(MessageBroker.Default.Receive<WelcomeEvent>(), OpenWelcomePopup);
+            Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
         }
 
-        public void Run()
+        private async void OpenLevelCompletePopup()
         {
-            _windowFactory.GetHudWindow();
+            var presenter = await _windowFactory.GetSimpleMessagePopup();
+            presenter.Setup(Constants.LevelComplete, Constants.Congratulations, () => MessageBroker.Default.Publish(new NextLevelRequestEvent()));
+        }
+
+        public async UniTask Run()
+        {
+            await _windowFactory.GetHudWindow();
         }
 
         private void OpenWelcomePopup()
