@@ -57,7 +57,7 @@ namespace UITemplate.Core.Services
                 return passiveTime;
             }
 
-            // returns speedUp/normal time only in case speedUp was started
+            // returns speed/normal time only in case Timer was started
 
             if (!_playerData.timer.active) return passiveTime;
 

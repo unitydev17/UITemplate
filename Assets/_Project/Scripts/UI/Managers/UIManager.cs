@@ -25,9 +25,8 @@ namespace UITemplate.UI.Managers
 
         public void Initialize()
         {
-            Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), OnCloseStartingPopup);
-            Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
-
+            RegisterAsync(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), OnCloseStartingPopup);
+            RegisterAsync(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
             RegisterAsync(MessageBroker.Default.Receive<ChefPackInfoOpenEvent>(), OpenPromoInfoPopup);
             RegisterAsync(MessageBroker.Default.Receive<SettingsOpenEvent>(), OpenSettingsPopup);
             RegisterAsync(MessageBroker.Default.Receive<StubOpenEvent>(), OpenStubPopup);
@@ -37,7 +36,7 @@ namespace UITemplate.UI.Managers
         }
 
 
-        private async void OpenLevelCompletePopup()
+        private async UniTask OpenLevelCompletePopup()
         {
             var presenter = await _windowFactory.GetSimpleMessagePopup();
 
@@ -71,7 +70,7 @@ namespace UITemplate.UI.Managers
                 .ShowView();
         }
 
-        private async void OnCloseStartingPopup(CloseStartingPopupEvent evt)
+        private async UniTask OnCloseStartingPopup(CloseStartingPopupEvent evt)
         {
             if (evt.claimPressed) await OpenPromoPopup();
             if (evt.claimX2Pressed) MessageBroker.Default.Publish(new StartCountingEvent());

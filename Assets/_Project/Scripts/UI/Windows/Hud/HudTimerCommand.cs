@@ -27,7 +27,6 @@ namespace UITemplate.UI.Windows.Hud
             _skipStartNotification = skipStartNotification;
             SetStartTime(startTime);
             SetDuration(duration);
-
             UpdateView();
         }
 

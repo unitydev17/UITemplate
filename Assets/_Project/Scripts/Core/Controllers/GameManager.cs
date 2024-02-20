@@ -43,21 +43,20 @@ namespace UITemplate.Core.Controller
 
         public GameManager(ISceneService sceneService,
             PlayerData playerData,
+            GameData gameData,
+            UpgradeCfg cfg,
             IUpgradeService upgradeService,
             IIncomeService incomeService,
-            GameData gameData,
             IPersistenceService persistenceService,
-            UpgradeCfg cfg,
             ITimerService timerService)
         {
-            _gameData = gameData;
             _playerData = playerData;
-
+            _gameData = gameData;
+            _cfg = cfg;
             _sceneService = sceneService;
             _upgradeService = upgradeService;
             _incomeService = incomeService;
             _persistenceService = persistenceService;
-            _cfg = cfg;
             _timerService = timerService;
         }
 
@@ -65,9 +64,9 @@ namespace UITemplate.Core.Controller
         {
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), UpgradeRequestEventHandler);
             Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), CloseStartingPopupEventHandler);
-            Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
             Register(MessageBroker.Default.Receive<StartCountingEvent>(), StartCountingEventHandler);
             RegisterAsync(MessageBroker.Default.Receive<NextLevelRequestEvent>(), NextLevelStartEvent);
+            Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
         }
 
         public async UniTask Run()

@@ -73,16 +73,7 @@ namespace UITemplate.UI.Windows.Hud
             UpdateCoins(dto.money);
             UpdateTimer(dto);
 
-            PrepareTimer(dto);
-
-            if (!dto.timer.active) return;
-
-            RunTimer();
-        }
-
-        private void RunTimer()
-        {
-            _timeCommand.Execute();
+            RunTimer(dto);
         }
 
         private static bool CheckStopTimer(PlayerDto dto, double elapsedTime)
@@ -98,18 +89,18 @@ namespace UITemplate.UI.Windows.Hud
             _timeCommand?.ForceStopTimer();
         }
 
-        private void PrepareTimer(PlayerDto dto)
+        private void RunTimer(PlayerDto dto)
         {
             if (!dto.timer.active) return;
 
             var wasTimerPaused = dto.timer.timerPaused;
             var pauseTime = dto.timer.timerPauseTime;
-
             var elapsedTime = (wasTimerPaused ? pauseTime : new TimeSpan(DateTime.UtcNow.Ticks).TotalSeconds) - dto.timer.startTime;
 
             if (CheckStopTimer(dto, elapsedTime)) return;
 
             _timeCommand.SetInitData(view, model, true, (float) elapsedTime, dto.timer.duration);
+            _timeCommand.Execute();
         }
 
         private void UpdateTimer(PlayerDto dto)

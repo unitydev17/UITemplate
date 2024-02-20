@@ -32,13 +32,13 @@ namespace UITemplate.UI.MVP.View
             SetBg(true);
 
             _popupTr.DOKill();
-            _popupTr.DOScale(1, 0.5f).From(0).SetEase(Ease.OutBack);
+            _popupTr.DOScale(1, 0.5f).From(0.5f).SetEase(Ease.OutBack);
         }
 
         protected override void Disappear(Action callback = null)
         {
             _popupTr.DOKill();
-            _popupTr.DOScale(0, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
+            _popupTr.DOScale(0.5f, 0.25f).SetEase(Ease.InBack).OnComplete(() =>
             {
                 SetBg(false);
                 base.Disappear(callback);
