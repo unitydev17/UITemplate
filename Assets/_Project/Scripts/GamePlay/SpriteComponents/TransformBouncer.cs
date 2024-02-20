@@ -8,10 +8,10 @@ public class TransformBouncer : MonoBehaviour
     private Vector3 _startScale;
     private Transform _tr;
 
-    private void OnEnable()
-    {
-        if (_bounceOnEnable) Appear();
-    }
+    // private void OnEnable()
+    // {
+    //     if (_bounceOnEnable) Appear();
+    // }
 
     private void Awake()
     {
@@ -31,9 +31,16 @@ public class TransformBouncer : MonoBehaviour
         _tr.DOKill();
         _tr.DOScale(_startScale, 0.25f).From(_startScale * 0.8f).SetEase(Ease.OutBack);
     }
-    
-    private void Appear()
+
+    public void Appear(bool immediate = false)
     {
+        if (immediate)
+        {
+            _tr.DOKill();
+            _tr.DOScale(_startScale, 0);
+            return;
+        }
+
         _tr.DOKill();
         _tr.DOScale(_startScale, 0.25f).From(0).SetEase(Ease.OutBack);
     }

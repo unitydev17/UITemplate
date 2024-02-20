@@ -170,7 +170,7 @@ namespace UITemplate.Core.Controller
             _gameData.buildings = FetchBuildingsFromScene();
             _persistenceService.LoadSceneData();
             _upgradeService.UpdateBuildingsInfo();
-            _sceneService.UpdateBuildingViews(buildingsDtoList);
+            _sceneService.UpdateBuildingViews(buildingsDtoList, true);
         }
 
         private List<Building> FetchBuildingsFromScene()

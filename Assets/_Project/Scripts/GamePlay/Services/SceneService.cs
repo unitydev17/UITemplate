@@ -47,13 +47,13 @@ namespace UITemplate.GamePlay.Services
             return result;
         }
 
-        public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList)
+        public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList, bool immediate = false)
         {
             foreach (var dto in dtoList)
             {
                 var viewKey = _buildings.Keys.Single(id => id == dto.id);
                 var view = _buildings.GetValueOrDefault(viewKey);
-                view.UpdateInfo(dto);
+                view.UpdateInfo(dto, immediate);
             }
         }
 

@@ -4791,7 +4791,7 @@ MonoBehaviour:
   _buyArea: {fileID: 2301165352706907345}
   _buyBtn: {fileID: 3386414775055441057}
   _buyCostTxt: {fileID: 2591037904352901796}
-  _upgradeArea: {fileID: 3900922326749223140}
+  _upgradeArea: {fileID: 1193015801476015607}
   _upgradeBtn: {fileID: 6064657284780225270}
   _upgradeCostTxt: {fileID: 8273098182952051281}
   _upgradeProgressImg: {fileID: 7205097916784103863}

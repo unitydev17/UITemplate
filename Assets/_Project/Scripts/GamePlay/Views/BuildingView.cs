@@ -14,7 +14,7 @@ public class BuildingView : MonoBehaviour
     [SerializeField] private TMP_Text _buyCostTxt;
 
 
-    [SerializeField] private GameObject _upgradeArea;
+    [SerializeField] private TransformBouncer _upgradeArea;
     [SerializeField] private ButtonWidget _upgradeBtn;
     [SerializeField] private TMP_Text _upgradeCostTxt;
 
@@ -60,7 +60,7 @@ public class BuildingView : MonoBehaviour
     private static bool IsBuildingOpen(BuildingDto dto) => dto.upgradeLevel > 1;
 
 
-    public void UpdateInfo(BuildingDto dto)
+    public void UpdateInfo(BuildingDto dto, bool immediate = false)
     {
         _upgradeCostTxt.text = dto.nextUpgradeCost == 0 ? "Max" : dto.nextUpgradeCost.ToString();
         _buyCostTxt.text = dto.nextUpgradeCost.ToString();
@@ -71,26 +71,29 @@ public class BuildingView : MonoBehaviour
         _incomeHelperTxt.text = dto.nextDeltaIncome == 0 ? string.Empty : $"+{dto.nextDeltaIncome}";
 
         ReceiveIncome(dto);
-        OpenBuilding(dto);
+        OpenBuilding(dto, immediate);
     }
 
-    private void OpenBuilding(BuildingDto dto)
+    private void OpenBuilding(BuildingDto dto, bool immediate = false)
     {
         if (_opened) return;
         if (dto.upgradeLevel < 1) return;
 
         _opened = true;
+
         _buyArea.Hide(() =>
         {
-            OpenBuilding();
+            OpenBuilding(immediate);
             UpdateInfo(dto);
         });
     }
 
-    private void OpenBuilding()
+    private void OpenBuilding(bool immediate = false)
     {
         _buyArea.gameObject.SetActive(false);
-        _upgradeArea.SetActive(true);
+
+        _upgradeArea.gameObject.SetActive(true);
+        _upgradeArea.Appear(immediate);
     }
 
     private void ReceiveIncome(BuildingDto dto)

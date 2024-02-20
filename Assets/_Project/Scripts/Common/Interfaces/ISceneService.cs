@@ -7,8 +7,7 @@ namespace UITemplate.Common.Interfaces
     public interface ISceneService
     {
         public IEnumerable<BuildingDto> FetchBuildingsFromScene();
-        void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList);
-
+        void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList, bool immediate = false);
         UniTask LoadLevel(int index);
     }
 }
