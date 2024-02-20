@@ -318,7 +318,7 @@ MonoBehaviour:
   _buyArea: {fileID: 466563269428655334}
   _buyBtn: {fileID: 7703561787052102679}
   _buyCostTxt: {fileID: 1219591308656432509}
-  _upgradeArea: {fileID: 3640187258343545226}
+  _upgradeArea: {fileID: 2110884008825137072}
   _upgradeBtn: {fileID: 194691909918544526}
   _upgradeCostTxt: {fileID: 5225108652397782891}
   _upgradeProgressImg: {fileID: 4430122211859935350}
@@ -776,7 +776,7 @@ MonoBehaviour:
   _buyArea: {fileID: 2333022698723507451}
   _buyBtn: {fileID: 5597388936061666016}
   _buyCostTxt: {fileID: 724506505615795366}
-  _upgradeArea: {fileID: 1551007063518918076}
+  _upgradeArea: {fileID: 3602867533401601878}
   _upgradeBtn: {fileID: 7220227441792639352}
   _upgradeCostTxt: {fileID: 460320592739754306}
   _upgradeProgressImg: {fileID: 2717510517419993765}
@@ -1062,7 +1062,7 @@ MonoBehaviour:
   _buyArea: {fileID: 995304447329120915}
   _buyBtn: {fileID: 6584875641272192636}
   _buyCostTxt: {fileID: 2972351171472715524}
-  _upgradeArea: {fileID: 7339560371989037217}
+  _upgradeArea: {fileID: 5194341084207944019}
   _upgradeBtn: {fileID: 8931100583065598808}
   _upgradeCostTxt: {fileID: 8326760735384658221}
   _upgradeProgressImg: {fileID: 8314689930752458841}
@@ -2220,7 +2220,7 @@ MonoBehaviour:
   _buyArea: {fileID: 8686219494584812921}
   _buyBtn: {fileID: 3040659666965569570}
   _buyCostTxt: {fileID: 304709666869975156}
-  _upgradeArea: {fileID: 6633028470642194642}
+  _upgradeArea: {fileID: 3864184656629613291}
   _upgradeBtn: {fileID: 8208559794676087049}
   _upgradeCostTxt: {fileID: 3306075319560335258}
   _upgradeProgressImg: {fileID: 7293306189449009638}

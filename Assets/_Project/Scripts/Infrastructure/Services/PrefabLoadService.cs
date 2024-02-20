@@ -47,7 +47,7 @@ namespace UITemplate.Infrastructure.Services
         public async UniTask<GameObject> LoadLevelPrefab(int index)
         {
             var address = $"Levels/Level_{index}";
-            return await InstantiatePrefab(address);
+            return await GetPrefab(address);
         }
     }
 }

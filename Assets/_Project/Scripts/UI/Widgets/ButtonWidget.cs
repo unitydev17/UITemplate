@@ -50,7 +50,7 @@ namespace UITemplate.UI.Widgets
         private void AnimateRelease()
         {
             transform.DOKill();
-            transform.DOScale(1, 0.15f).From(0.8f).SetEase(Ease.OutBack);
+            transform.DOScale(1, 0.25f).From(0.8f).SetEase(Ease.OutBack);
         }
     }
 }

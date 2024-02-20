@@ -8,40 +8,67 @@ public class TransformBouncer : MonoBehaviour
     private Vector3 _startScale;
     private Transform _tr;
 
-    // private void OnEnable()
-    // {
-    //     if (_bounceOnEnable) Appear();
-    // }
 
-    private void Awake()
+    private void OnEnable()
     {
-        _tr = transform;
-        _startScale = _tr.localScale;
+        Bounce();
+    }
+
+    private Transform tr
+    {
+        get
+        {
+            if (_tr == null)
+            {
+                _tr = transform;
+            }
+
+            return _tr;
+        }
+    }
+
+    private Vector3 startScale
+    {
+        get
+        {
+            if (_startScale == Vector3.zero)
+            {
+                _startScale = tr.localScale;
+            }
+
+            return _startScale;
+        }
     }
 
 
-    public void Hide(Action callback)
+    public void Hide(Action callback, bool immediate = false)
     {
-        _tr.DOKill();
-        _tr.DOScale(0.25f, 0f).SetEase(Ease.OutSine).OnComplete(() => callback?.Invoke());
+        if (immediate)
+        {
+            tr.localScale = Vector3.zero;
+            callback?.Invoke();
+            return;
+        }
+
+        tr.DOKill();
+        tr.DOScale(0.25f, 0f).SetEase(Ease.OutSine).OnComplete(() => callback?.Invoke());
     }
 
     private void Bounce()
     {
-        _tr.DOKill();
-        _tr.DOScale(_startScale, 0.25f).From(_startScale * 0.8f).SetEase(Ease.OutBack);
+        tr.DOKill();
+        tr.DOScale(startScale, 0.25f).From(_startScale * 0.8f).SetEase(Ease.OutBack);
     }
 
     public void Appear(bool immediate = false)
     {
         if (immediate)
         {
-            _tr.DOKill();
-            _tr.DOScale(_startScale, 0);
+            tr.localScale = startScale;
             return;
         }
 
-        _tr.DOKill();
-        _tr.DOScale(_startScale, 0.25f).From(0).SetEase(Ease.OutBack);
+        tr.DOKill();
+        tr.DOScale(startScale, 0.25f).From(0).SetEase(Ease.OutBack);
     }
 }

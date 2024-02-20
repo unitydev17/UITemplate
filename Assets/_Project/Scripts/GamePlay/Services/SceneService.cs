@@ -5,8 +5,7 @@ using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
 using UITemplate.Common.Interfaces;
-using UITemplate.Infrastructure.Interfaces;
-using UITemplate.UI.Managers;
+using UITemplate.GamePlay.Factory;
 using UnityEngine;
 
 namespace UITemplate.GamePlay.Services
@@ -16,21 +15,19 @@ namespace UITemplate.GamePlay.Services
     {
         private readonly Dictionary<int, BuildingView> _buildings = new Dictionary<int, BuildingView>();
         private readonly UpgradeCfg _cfg;
-        private readonly IPrefabLoadService _prefabLoadService;
+        private readonly LevelFactory _levelFactory;
         private GameObject _level;
-        private readonly UIManager _ui;
 
 
-        public SceneService(UpgradeCfg cfg, IPrefabLoadService prefabLoadService, UIManager ui)
+        public SceneService(UpgradeCfg cfg, LevelFactory levelFactory)
         {
             _cfg = cfg;
-            _prefabLoadService = prefabLoadService;
-            _ui = ui;
+            _levelFactory = levelFactory;
         }
 
         public IEnumerable<BuildingDto> FetchBuildingsFromScene()
         {
-            var buildingViews = Object.FindObjectsOfType<BuildingView>();
+            var buildingViews = Object.FindObjectsOfType<BuildingView>(true);
             var result = new List<BuildingDto>();
 
             foreach (var view in buildingViews)
@@ -47,13 +44,13 @@ namespace UITemplate.GamePlay.Services
             return result;
         }
 
-        public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList, bool immediate = false)
+        public void UpdateBuildingViews(IEnumerable<BuildingDto> dtoList, bool initStart = false)
         {
             foreach (var dto in dtoList)
             {
                 var viewKey = _buildings.Keys.Single(id => id == dto.id);
                 var view = _buildings.GetValueOrDefault(viewKey);
-                view.UpdateInfo(dto, immediate);
+                view.UpdateInfo(dto, initStart);
             }
         }
 
@@ -62,8 +59,13 @@ namespace UITemplate.GamePlay.Services
         {
             ClearLevel();
 
-            var normalizedLevel = _cfg.NormalizedLevel(index);
-            _level = await _prefabLoadService.LoadLevelPrefab(normalizedLevel);
+            _levelFactory.SetLevelIndex(index);
+            _level = await _levelFactory.Create();
+        }
+
+        public void ActivateLevel()
+        {
+            _level.gameObject.SetActive(true);
         }
 
         private void ClearLevel()
@@ -75,7 +77,7 @@ namespace UITemplate.GamePlay.Services
                     view.Release();
                     view.gameObject.SetActive(false);
                     Object.Destroy(view);
-                } 
+                }
             }
 
             _buildings.Clear();

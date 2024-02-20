@@ -85,7 +85,7 @@ public class BuildingView : MonoBehaviour
         {
             OpenBuilding(immediate);
             UpdateInfo(dto);
-        });
+        }, immediate);
     }
 
     private void OpenBuilding(bool immediate = false)

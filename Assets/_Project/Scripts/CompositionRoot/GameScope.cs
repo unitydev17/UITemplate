@@ -6,6 +6,7 @@ using UITemplate.Common.Interfaces;
 using UITemplate.Core.DomainEntities;
 using UITemplate.Core.Controller;
 using UITemplate.Core.Services;
+using UITemplate.GamePlay.Factory;
 using UITemplate.GamePlay.Services;
 using UITemplate.Infrastructure;
 using UITemplate.Infrastructure.Interfaces;
@@ -88,6 +89,7 @@ namespace UITemplate.Installers
         private static void RegisterFactories(IContainerBuilder builder)
         {
             builder.Register<IWindowFactory, WindowFactory>(Lifetime.Scoped);
+            builder.Register<LevelFactory>(Lifetime.Scoped);
         }
 
         private static void RegisterServices(IContainerBuilder builder)
