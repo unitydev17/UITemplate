@@ -76,7 +76,7 @@ namespace UITemplate.UI.Factory
 
         public async UniTask<StubPopupPresenter> GetStubPopup()
         {
-            return await Create<StubPopupPresenter, StubPopupView, StubPopupModel>();
+            return await Create<StubPopupPresenter, StubPopupView, BaseModel>();
         }
 
         public async UniTask<WelcomePopupPresenter> GetWelcomePopup()
