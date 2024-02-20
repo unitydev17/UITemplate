@@ -54,13 +54,13 @@ namespace UITemplate.Installers
         private static void RegisterUIViews(IContainerBuilder builder)
         {
             builder.Register<HudPresenter>(Lifetime.Scoped);
-            builder.Register<StartingPopupPresenter>(Lifetime.Scoped);
-            builder.Register<SettingsPopupPresenter>(Lifetime.Scoped);
-            builder.Register<PromoPopupPresenter>(Lifetime.Scoped);
-            builder.Register<PromoInfoPopupPresenter>(Lifetime.Scoped);
-            builder.Register<StubPopupPresenter>(Lifetime.Scoped);
-            builder.Register<WelcomePopupPresenter>(Lifetime.Scoped);
-            builder.Register<SimpleMessagePopupPresenter>(Lifetime.Scoped);
+            builder.Register<StartingPopupPresenter>(Lifetime.Transient);
+            builder.Register<SettingsPopupPresenter>(Lifetime.Transient);
+            builder.Register<PromoPopupPresenter>(Lifetime.Transient);
+            builder.Register<PromoInfoPopupPresenter>(Lifetime.Transient);
+            builder.Register<StubPopupPresenter>(Lifetime.Transient);
+            builder.Register<WelcomePopupPresenter>(Lifetime.Transient);
+            builder.Register<SimpleMessagePopupPresenter>(Lifetime.Transient);
         }
 
         private void RegisterScriptableObjects(IContainerBuilder builder)

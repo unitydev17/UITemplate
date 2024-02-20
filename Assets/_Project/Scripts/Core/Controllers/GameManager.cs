@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Common.Dto;
