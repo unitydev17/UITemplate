@@ -42,7 +42,7 @@ namespace UITemplate.Application
         {
             Register(Observable.EveryApplicationFocus(), value =>
             {
-                if (value == false) _persistenceService.SaveGameState();
+                if (value == false) _persistenceService.SaveAppState();
             });
         }
     }

@@ -16,7 +16,11 @@ namespace UITemplate.Core.DomainEntities.Mappers
             return new PlayerDto
             {
                 money = playerData.money,
-                timer = playerData.timer.ToDto()
+                timer = playerData.timer.ToDto(),
+                passiveIncome = playerData.passiveIncome,
+                passiveTime = playerData.passiveTime,
+                elapsedTime = playerData.elapsedTime,
+                levelCompleted = playerData.levelCompleted
             };
         }
 
@@ -24,12 +28,12 @@ namespace UITemplate.Core.DomainEntities.Mappers
         {
             return new TimerDto
             {
-                speedUp = timer.speedUp,
-                speedUpDuration = timer.speedUpDuration,
-                speedUpStartTime = timer.speedUpStartTime,
+                active = timer.active,
+                duration = timer.duration,
+                startTime = timer.startTime,
                 gameExitTime = timer.gameExitTime,
-                timerPauseTime = timer.timerPauseTime,
-                timerPaused = timer.timerPaused
+                timerPauseTime = timer.pauseTime,
+                timerPaused = timer.paused
             };
         }
 

@@ -7,15 +7,17 @@ namespace UITemplate.UI.MVP.Presenter
 {
     public abstract class PopupPresenter<TView, TModel> : WindowPresenter<TView, TModel>, IInitializable, IStartable where TView : PopupView
     {
+        public Action onClosePopup;
+
         public virtual void Initialize()
         {
-            Register(view.onSkipBtnClick, OnSkipClick);
-            Register(view.onCloseBtnClick, OnCloseClick);
+            Register(view.onSkipBtnClick, CloseClick);
+            Register(view.onCloseBtnClick, CloseClick);
         }
 
         protected void RegisterCloser(IObservable<Unit> closer)
         {
-            Register(closer, OnCloseClick);
+            Register(closer, CloseClick);
         }
 
         public void Start()
@@ -23,14 +25,10 @@ namespace UITemplate.UI.MVP.Presenter
             OpenView();
         }
 
-        private void OnSkipClick()
+        protected void CloseClick()
         {
             CloseView(CloseAction);
-        }
-
-        private void OnCloseClick()
-        {
-            CloseView(CloseAction);
+            onClosePopup?.Invoke();
         }
     }
 }

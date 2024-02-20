@@ -13,7 +13,7 @@ namespace UITemplate.UI.Windows.Popups.Starting
         {
             base.Initialize();
             Register(view.onClaimBtnClick, OnClaimClick);
-            Register(view.onClaimX2BtnClick, OnClaimClick);
+            Register(view.onClaimX2BtnClick, OnClaimX2Click);
             Register(view.onBoostBtnClick, OnBoostClick);
         }
 
@@ -27,9 +27,14 @@ namespace UITemplate.UI.Windows.Popups.Starting
             CloseView(() => MessageBroker.Default.Publish(new CloseStartingPopupEvent {claimPressed = true}));
         }
 
-        public void Setup(int sum, double seconds)
+        private void OnClaimX2Click(Unit value)
         {
-            model.passiveIncome = sum;
+            CloseView(() => MessageBroker.Default.Publish(new CloseStartingPopupEvent {claimX2Pressed = true}));
+        }
+
+        public void Setup(int passiveIncome, double seconds)
+        {
+            model.passiveIncome = passiveIncome;
 
             var timeSpan = TimeSpan.FromSeconds(seconds);
             var days = timeSpan.Days;

@@ -19,5 +19,6 @@ MonoBehaviour:
   incomes: 0,1,2,5,10,25,50,125,250,500
   incomeMultiplier: 0,1,1.25,1.5,2,2.5,3,4,5,10
   speedUpDuration: 100
+  claimMultiplier: 2
   levelCount: 2
-  coinsToCompleteLevel: 20
+  coinsToCompleteLevel: 10000

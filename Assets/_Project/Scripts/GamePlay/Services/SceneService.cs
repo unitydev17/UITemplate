@@ -6,6 +6,7 @@ using UITemplate.Common;
 using UITemplate.Common.Dto;
 using UITemplate.Common.Interfaces;
 using UITemplate.Infrastructure.Interfaces;
+using UITemplate.UI.Managers;
 using UnityEngine;
 
 namespace UITemplate.GamePlay.Services
@@ -17,12 +18,14 @@ namespace UITemplate.GamePlay.Services
         private readonly UpgradeCfg _cfg;
         private readonly IPrefabLoadService _prefabLoadService;
         private GameObject _level;
+        private readonly UIManager _ui;
 
 
-        public SceneService(UpgradeCfg cfg, IPrefabLoadService prefabLoadService)
+        public SceneService(UpgradeCfg cfg, IPrefabLoadService prefabLoadService, UIManager ui)
         {
             _cfg = cfg;
             _prefabLoadService = prefabLoadService;
+            _ui = ui;
         }
 
         public IEnumerable<BuildingDto> FetchBuildingsFromScene()
@@ -53,6 +56,7 @@ namespace UITemplate.GamePlay.Services
                 view.UpdateInfo(dto);
             }
         }
+
 
         public async UniTask LoadLevel(int index)
         {

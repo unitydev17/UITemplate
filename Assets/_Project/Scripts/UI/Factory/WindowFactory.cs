@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Infrastructure.Interfaces;
@@ -30,7 +28,7 @@ namespace UITemplate.UI.Factory
             _prefabLoadService = prefabLoadService;
         }
 
-        private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel>, new() where TView : ISortedView
+        private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel> where TView : ISortedView
         {
             var prefab = await _prefabLoadService.LoadUIPrefab<TView>();
 

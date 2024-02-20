@@ -6,21 +6,21 @@ namespace UITemplate.Core.DomainEntities
     [Serializable]
     public class Timer : ICopyable<Timer>
     {
-        public bool speedUp;
-        public double speedUpStartTime;
-        public float speedUpDuration;
+        public bool active;
+        public double startTime;
+        public float duration;
         public double gameExitTime;
-        public double timerPauseTime;
-        public bool timerPaused;
-        
+        public double pauseTime;
+        public bool paused;
+
         public void CopyFrom(Timer data)
         {
-            speedUp = data.speedUp;
-            speedUpStartTime = data.speedUpStartTime;
-            speedUpDuration = data.speedUpDuration;
+            active = data.active;
+            startTime = data.startTime;
+            duration = data.duration;
             gameExitTime = data.gameExitTime;
-            timerPauseTime = data.timerPauseTime;
-            timerPaused = data.timerPaused;
+            pauseTime = data.pauseTime;
+            paused = data.paused;
         }
     }
 }

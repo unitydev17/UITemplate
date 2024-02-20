@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Common;
@@ -17,6 +16,7 @@ namespace UITemplate.UI.Managers
     public class UIManager : Registrable, IInitializable
     {
         private readonly IWindowFactory _windowFactory;
+        private HudPresenter _hudPresenter;
 
         public UIManager(IWindowFactory windowFactory)
         {
@@ -30,10 +30,11 @@ namespace UITemplate.UI.Managers
             Register(MessageBroker.Default.Receive<SettingsOpenEvent>(), OpenSettingsPopup);
             Register(MessageBroker.Default.Receive<StubOpenEvent>(), OpenStubPopup);
             Register(MessageBroker.Default.Receive<BoostRequestEvent>(), OpenStubPopup);
-            Register(MessageBroker.Default.Receive<PassiveIncomeNotifyEvent>(), OpenStartingPopup);
-            Register(MessageBroker.Default.Receive<WelcomeEvent>(), OpenWelcomePopup);
+            RegisterAsync(MessageBroker.Default.Receive<PassiveIncomeNotifyEvent>(), OpenStartingPopup);
+            RegisterAsync(MessageBroker.Default.Receive<WelcomeEvent>(), OpenWelcomePopup);
             Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
         }
+
 
         private async void OpenLevelCompletePopup()
         {
@@ -43,23 +44,31 @@ namespace UITemplate.UI.Managers
 
         public async UniTask Run()
         {
-            await _windowFactory.GetHudWindow();
+            _hudPresenter = await _windowFactory.GetHudWindow();
         }
 
-        private void OpenWelcomePopup()
+        private async UniTask OpenWelcomePopup(WelcomeEvent data)
         {
-            _windowFactory.GetWelcomePopup();
+            _hudPresenter.UpdateView(data.dto);
+
+            var presenter = await _windowFactory.GetWelcomePopup();
+            presenter.onClosePopup = () => MessageBroker.Default.Publish(new StartCountingEvent());
         }
 
-        private async void OpenStartingPopup(PassiveIncomeNotifyEvent data)
+        private async UniTask OpenStartingPopup(PassiveIncomeNotifyEvent data)
         {
+            _hudPresenter.UpdateView(data.dto);
+
             var presenter = await _windowFactory.GetStartingPopup();
-            presenter.Setup(data.sum, data.time);
+
+            var dto = data.dto;
+            presenter.Setup(dto.passiveIncome, dto.passiveTime);
         }
 
-        private void OnCloseStartingPopup(CloseStartingPopupEvent evt)
+        private async void OnCloseStartingPopup(CloseStartingPopupEvent evt)
         {
-            if (evt.claimPressed) OpenPromoPopup();
+            if (evt.claimPressed) await OpenPromoPopup();
+            if (evt.claimX2Pressed) MessageBroker.Default.Publish(new StartCountingEvent());
         }
 
         private void OpenStubPopup()
@@ -73,9 +82,10 @@ namespace UITemplate.UI.Managers
         }
 
 
-        private void OpenPromoPopup()
+        private async UniTask OpenPromoPopup()
         {
-            _windowFactory.GetPromoPopup();
+            var presenter = await _windowFactory.GetPromoPopup();
+            presenter.onClosePopup = () => MessageBroker.Default.Publish(new StartCountingEvent());
         }
 
         private void OpenPromoInfoPopup()

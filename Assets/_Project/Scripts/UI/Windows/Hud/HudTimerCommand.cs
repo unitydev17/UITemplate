@@ -7,7 +7,7 @@ using UniRx;
 namespace UITemplate.UI.Windows.Hud
 {
     [UsedImplicitly]
-    public class HudSpeedUpCommand : TimerCommand
+    public class HudTimerCommand : TimerCommand
     {
         private readonly UpgradeCfg _cfg;
         private HudModel _model;
@@ -15,17 +15,26 @@ namespace UITemplate.UI.Windows.Hud
 
         private bool _skipStartNotification;
 
-        public HudSpeedUpCommand(UpgradeCfg cfg)
+        public HudTimerCommand(UpgradeCfg cfg)
         {
             _cfg = cfg;
         }
 
-        public void SetInitData(HudView aView, HudModel aModel, bool skipStartNotification = false, float startTime = 0)
+        public void SetInitData(HudView aView, HudModel aModel, bool skipStartNotification = false, float startTime = 0, float duration = 0)
         {
             _view = aView;
             _model = aModel;
             _skipStartNotification = skipStartNotification;
             SetStartTime(startTime);
+            SetDuration(duration);
+
+            UpdateView();
+        }
+
+        private void UpdateView()
+        {
+            var (timeRemain, progress) = GetStartProgress();
+            _view.UpdateTimer(timeRemain, progress);
         }
 
         public override void Execute()
@@ -40,16 +49,16 @@ namespace UITemplate.UI.Windows.Hud
 
         private void OnUpdate(int timeRemain, float progress)
         {
-            _view.UpdateSpeedUpTimer(timeRemain, progress);
+            _view.UpdateTimer(timeRemain, progress);
         }
 
         private void OnFinish()
         {
             _model.timerEnabled = false;
             _view.SetSpeedButtonActive(false);
-            _view.UpdateSpeedUpTimer(_cfg.speedUpDuration, 1);
+            _view.UpdateTimer(_cfg.speedUpDuration, 1);
 
-            MessageBroker.Default.Publish(new SpeedUpRequestEvent(false));
+            MessageBroker.Default.Publish(new StopTimerEvent());
         }
 
         protected virtual void OnStart()
@@ -57,7 +66,7 @@ namespace UITemplate.UI.Windows.Hud
             _model.timerEnabled = true;
             _view.SetSpeedButtonActive(true);
 
-            if (!_skipStartNotification) MessageBroker.Default.Publish(new SpeedUpRequestEvent(true, _cfg.speedUpDuration));
+            if (!_skipStartNotification) MessageBroker.Default.Publish(new StartTimerEvent(true, _cfg.speedUpDuration));
         }
     }
 }

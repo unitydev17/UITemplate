@@ -47,7 +47,7 @@ namespace UITemplate.Installers
 
         private void RegisterCommands(IContainerBuilder builder)
         {
-            builder.Register<HudSpeedUpCommand>(Lifetime.Scoped);
+            builder.Register<HudTimerCommand>(Lifetime.Scoped);
         }
 
         private static void RegisterUIViews(IContainerBuilder builder)

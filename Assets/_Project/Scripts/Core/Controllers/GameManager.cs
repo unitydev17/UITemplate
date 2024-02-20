@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
 using UITemplate.Common;
@@ -29,6 +30,16 @@ namespace UITemplate.Core.Controller
         private readonly IPersistenceService _persistenceService;
         private readonly ITimerService _timerService;
 
+        private enum GameState
+        {
+            Welcome,
+            Starting,
+            Completed
+        }
+
+        private GameState _state;
+
+
         public GameManager(ISceneService sceneService,
             PlayerData playerData,
             IUpgradeService upgradeService,
@@ -52,17 +63,71 @@ namespace UITemplate.Core.Controller
         public void Initialize()
         {
             Register(MessageBroker.Default.Receive<UpgradeRequestEvent>(), UpgradeRequestEventHandler);
-
             Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), CloseStartingPopupEventHandler);
-            RegisterAsync(MessageBroker.Default.Receive<NextLevelRequestEvent>(), value => NextLevelRequestEventHandler());
             Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
+            Register(MessageBroker.Default.Receive<StartCountingEvent>(), StartCountingEventHandler);
+            RegisterAsync(MessageBroker.Default.Receive<NextLevelRequestEvent>(), NextLevelStartEvent);
         }
 
         public async UniTask Run()
         {
+            InitializeSettings();
             InitializePlayerData();
+            await SelectStartPath();
+        }
+
+        private async Task SelectStartPath()
+        {
+            switch (_state)
+            {
+                case GameState.Welcome:
+                    await WelcomeStart();
+                    break;
+                case GameState.Starting:
+                    await StartOrContinueGame();
+                    break;
+                case GameState.Completed:
+                    await StartNextLevel();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        private async Task StartNextLevel()
+        {
+            await NextLevelStartEvent();
+        }
+
+        private async Task StartOrContinueGame()
+        {
             await LoadLevel();
             InitializeLevel();
+
+            _incomeService.AccruePassiveIncome();
+            if (_playerData.passiveIncome > 0)
+            {
+                _timerService.PauseOnReturnToGame();
+                MessageBroker.Default.Publish(new PassiveIncomeNotifyEvent(_playerData.ToDto()));
+            }
+            else
+            {
+                StartCountingEventHandler();
+            }
+        }
+
+        private async Task WelcomeStart()
+        {
+            await LoadLevel();
+            InitializeLevel();
+
+            SetStartPlayerData();
+            MessageBroker.Default.Publish(new WelcomeEvent(_playerData.ToDto()));
+        }
+
+        private void InitializeSettings()
+        {
+            _persistenceService.LoadSettingsData();
         }
 
         private void InitializePlayerData()
@@ -70,20 +135,29 @@ namespace UITemplate.Core.Controller
             var isFirstRun = _persistenceService.LoadPlayerData() == false;
             if (isFirstRun)
             {
-                ResetPlayerData();
-                MessageBroker.Default.Publish(new WelcomeEvent());
+                _state = GameState.Welcome;
                 return;
             }
 
-            _incomeService.AccruePassiveIncome();
+            if (_playerData.levelCompleted)
+            {
+                _state = GameState.Completed;
+                return;
+            }
 
-            MessageBroker.Default.Publish(new PassiveIncomeNotifyEvent(_playerData.passiveIncome, _playerData.passiveTime));
-            MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
+            _state = GameState.Starting;
+        }
+
+        private void SetStartPlayerData()
+        {
+            _playerData.money = _cfg.playerStartCoins;
+            _playerData.timer.duration = _cfg.speedUpDuration;
         }
 
         private void ResetPlayerData()
         {
             _playerData.money = _cfg.playerStartCoins;
+            _playerData.levelCompleted = false;
         }
 
         private async UniTask LoadLevel()
@@ -93,14 +167,10 @@ namespace UITemplate.Core.Controller
 
         private void InitializeLevel()
         {
-            _persistenceService.LoadSettingsData();
-
             _gameData.buildings = FetchBuildingsFromScene();
             _persistenceService.LoadSceneData();
             _upgradeService.UpdateBuildingsInfo();
             _sceneService.UpdateBuildingViews(buildingsDtoList);
-
-            StartCountingProcess();
         }
 
         private List<Building> FetchBuildingsFromScene()
@@ -110,12 +180,12 @@ namespace UITemplate.Core.Controller
 
         private void StartCountingProcess()
         {
-            _playerData.levelCompleted = false;
+            _playerData.countingEnabled = true;
         }
 
         private void UpdateBuildingProgress()
         {
-            if (_playerData.levelCompleted) return;
+            if (!_playerData.countingEnabled) return;
             _incomeService.Process();
             _sceneService.UpdateBuildingViews(buildingsDtoList);
         }
@@ -137,23 +207,32 @@ namespace UITemplate.Core.Controller
 
         private void CloseStartingPopupEventHandler(CloseStartingPopupEvent data)
         {
-            if (data.claimPressed)
+            var claimed = data.claimPressed || data.claimX2Pressed;
+            if (claimed)
             {
-                _playerData.money += _playerData.passiveIncome;
+                var multiplier = data.claimX2Pressed ? _cfg.claimMultiplier : 1;
+
+                _incomeService.ClaimPassiveIncome(multiplier);
                 MessageBroker.Default.Publish(new UpdatePlayerDataEvent(_playerData.ToDto()));
+                return;
             }
 
-            _playerData.passiveIncome = 0;
+            _incomeService.ClaimPassiveIncome(0);
         }
 
-        private async UniTask NextLevelRequestEventHandler()
+        private async UniTask NextLevelStartEvent()
         {
             await LoadLevel();
             UpdateSceneData();
-
             ResetPlayerData();
-            StartCountingProcess();
 
+            StartCountingEventHandler();
+        }
+
+        private void StartCountingEventHandler()
+        {
+            _timerService.UnPause();
+            StartCountingProcess();
             MessageBroker.Default.Publish(new UpdateOnInitEvent(_playerData.ToDto()));
         }
 

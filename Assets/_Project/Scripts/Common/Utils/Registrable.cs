@@ -8,6 +8,12 @@ namespace UITemplate.Utils
     {
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+        protected void RegisterAsync<T>(IObservable<T> observable, Func<UniTask> handler)
+        {
+            if (observable == null) return;
+            _disposables.Add(observable.Subscribe(async value => await handler()));
+        }
+        
         protected void RegisterAsync<T>(IObservable<T> observable, Func<T, UniTask> handler)
         {
             if (observable == null) return;

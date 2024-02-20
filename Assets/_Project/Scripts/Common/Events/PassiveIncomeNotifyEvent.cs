@@ -1,14 +1,14 @@
+using UITemplate.Common.Dto;
+
 namespace UITemplate.Common.Events
 {
     public class PassiveIncomeNotifyEvent
     {
-        public int sum { get; }
-        public double time { get; }
-
-        public PassiveIncomeNotifyEvent(int sum, double time)
+        public PassiveIncomeNotifyEvent(PlayerDto dto)
         {
-            this.sum = sum;
-            this.time = time;
+            this.dto = dto;
         }
+
+        public PlayerDto dto { get; }
     }
 }

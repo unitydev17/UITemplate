@@ -13,6 +13,7 @@ namespace UITemplate.Common
         public string incomes;
         public string incomeMultiplier;
         public int speedUpDuration;
+        public int claimMultiplier;
 
         [Header("Levels")] public int levelCount;
         public int coinsToCompleteLevel;

@@ -4,5 +4,7 @@ namespace UITemplate.Core.Interfaces
     {
         void Process();
         void AccruePassiveIncome();
+
+        void ClaimPassiveIncome(float multiplier);
     }
 }

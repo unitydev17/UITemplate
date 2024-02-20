@@ -1,4 +1,3 @@
-using System;
 using JetBrains.Annotations;
 using UITemplate.Common;
 using UITemplate.Core.DomainEntities;
@@ -78,10 +77,11 @@ namespace UITemplate.Application.Services
         {
             if (_playerData.money < _cfg.coinsToCompleteLevel) return;
 
-            _playerData.levelCompleted = true;
+            _playerData.countingEnabled = false;
             _playerData.levelIndex++;
+            _playerData.levelCompleted = true;
 
-            _timerService.PauseSpeedUpTimer();
+            _timerService.Pause();
 
             MessageBroker.Default.Publish(new LevelCompletedEvent());
         }
@@ -94,7 +94,7 @@ namespace UITemplate.Application.Services
 
         private void UpdateIncomeProgress(Building building)
         {
-            var speedUpMultiplier = _playerData.timer.speedUp ? _cfg.speedUpMultiplier : 1;
+            var speedUpMultiplier = _playerData.timer.active ? _cfg.speedUpMultiplier : 1;
             var income = CountIncome(building, speedUpMultiplier);
             building.incomeProgress += income * Time.fixedDeltaTime;
         }
@@ -107,6 +107,11 @@ namespace UITemplate.Application.Services
         private static bool IsBuildingClose(Building building)
         {
             return building.upgradeLevel < 1;
+        }
+
+        public void ClaimPassiveIncome(float multiplier)
+        {
+            _playerData.money += _playerData.passiveIncome * multiplier;
         }
     }
 }

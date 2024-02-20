@@ -1,19 +1,14 @@
 namespace UITemplate.Common.Events
 {
-    public class SpeedUpRequestEvent
+    public class StartTimerEvent
     {
         public bool enable { get; }
         public float duration { get; }
 
-        public SpeedUpRequestEvent(bool enable, float duration)
+        public StartTimerEvent(bool enable, float duration)
         {
             this.enable = enable;
             this.duration = duration;
-        }
-
-        public SpeedUpRequestEvent(bool enable)
-        {
-            this.enable = enable;
         }
     }
 }

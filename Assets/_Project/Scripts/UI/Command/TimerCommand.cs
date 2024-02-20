@@ -11,7 +11,7 @@ namespace UITemplate.UI.Command
     public class TimerCommand : Registrable, ICommand
     {
         private IDisposable _tempDisposable;
-        private float _targetTime;
+        private float _duration;
         private Action<int, float> _progressNotifier;
         private Action _finishAction;
         private Action _startAction;
@@ -24,7 +24,7 @@ namespace UITemplate.UI.Command
 
         protected TimerCommand SetDuration(float time)
         {
-            _targetTime = time;
+            _duration = time;
             return this;
         }
 
@@ -55,17 +55,29 @@ namespace UITemplate.UI.Command
             {
                 timer += Time.deltaTime;
 
-                if (timer > _targetTime)
+                if (timer > _duration)
                 {
                     StopTimer();
                     return;
                 }
 
-                var progress = 1 - timer / _targetTime;
-                var timeRemain = (int) (_targetTime - timer);
+                var progress = 1 - timer / _duration;
+                var timeRemain = (int) (_duration - timer);
 
                 _progressNotifier?.Invoke(timeRemain, progress);
             });
+        }
+
+        protected (int, float) GetStartProgress()
+        {
+            return GetProgress(_startTime, _duration);
+        }
+
+
+        public static (int, float) GetProgress(float startTime, float duration)
+        {
+            var currentProgress = 1f - startTime / duration;
+            return ((int) (duration - startTime), currentProgress);
         }
 
         private void StopTimer()

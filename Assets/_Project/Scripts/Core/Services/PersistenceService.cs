@@ -24,7 +24,7 @@ namespace UITemplate.Core.Services
             _settingsData = settingsData;
         }
 
-        public void SaveGameState()
+        public void SaveAppState()
         {
             SavePlayerData();
             SaveSceneData();
