@@ -18,5 +18,10 @@ namespace UITemplate.UI.MVP.Presenter
         protected virtual void CloseAction()
         {
         }
+
+        public void ShowView()
+        {
+            view.gameObject.SetActive(true);
+        }
     }
 }

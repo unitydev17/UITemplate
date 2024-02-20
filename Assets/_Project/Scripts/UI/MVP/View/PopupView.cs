@@ -22,9 +22,8 @@ namespace UITemplate.UI.MVP.View
             return _closeBtn ? _closeBtn.onClick.AsObservable() : null;
         }
 
-        public override void Awake()
+        public void Awake()
         {
-            base.Awake();
             _popupTr = transform.GetChild(0);
         }
 

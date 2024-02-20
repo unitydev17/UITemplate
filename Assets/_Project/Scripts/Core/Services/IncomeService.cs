@@ -75,11 +75,13 @@ namespace UITemplate.Application.Services
 
         private void CheckLevelCompleted()
         {
+            if (_playerData.levelCompleted) return;
             if (_playerData.money < _cfg.coinsToCompleteLevel) return;
 
+            _playerData.levelCompleted = true;
             _playerData.countingEnabled = false;
             _playerData.levelIndex++;
-            _playerData.levelCompleted = true;
+
 
             _timerService.Pause();
 

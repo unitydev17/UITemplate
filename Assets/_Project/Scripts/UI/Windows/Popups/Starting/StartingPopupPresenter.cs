@@ -32,7 +32,7 @@ namespace UITemplate.UI.Windows.Popups.Starting
             CloseView(() => MessageBroker.Default.Publish(new CloseStartingPopupEvent {claimX2Pressed = true}));
         }
 
-        public void Setup(int passiveIncome, double seconds)
+        public StartingPopupPresenter Setup(int passiveIncome, double seconds)
         {
             model.passiveIncome = passiveIncome;
 
@@ -41,12 +41,14 @@ namespace UITemplate.UI.Windows.Popups.Starting
             var hours = timeSpan.Hours;
             var minutes = timeSpan.Minutes;
             var sec = timeSpan.Seconds;
-            model.timeAbsent = (days > 0 ? $"{days} days " : "") +
-                               (hours > 0 ? $"{hours} hours " : "") +
-                               (minutes > 0 ? $"{minutes} minutes " : "") +
-                               (sec > 0 ? $"{sec} seconds " : "");
+
+            if (days > 0) model.timeAbsent = $"{days} days {hours} hours";
+            else if (hours > 0) model.timeAbsent = $"{hours} hours {minutes} minutes";
+            else if (minutes > 0) model.timeAbsent = $"{minutes} minutes {sec} seconds";
+            else model.timeAbsent = $"{sec} seconds";
 
             view.Refresh(model);
+            return this;
         }
     }
 

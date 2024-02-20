@@ -9,15 +9,27 @@ namespace UITemplate.UI.MVP.View
         private Image _bg;
         private Canvas _canvas;
 
-        public virtual void Awake()
+        private Canvas canvas
         {
-            _bg = GetComponent<Image>();
-            _canvas = GetComponent<Canvas>();
+            get
+            {
+                if (_canvas == null) _canvas = GetComponent<Canvas>();
+                return _canvas;
+            }
+        }
+
+        private Image bg
+        {
+            get
+            {
+                if (_bg == null) _bg = GetComponent<Image>();
+                return _bg;
+            }
         }
 
         protected void SetBg(bool enable)
         {
-            _bg.enabled = enable;
+            bg.enabled = enable;
         }
 
         public void OnEnable()
@@ -44,7 +56,7 @@ namespace UITemplate.UI.MVP.View
 
         public void SetSortingOrder(int value)
         {
-            _canvas.sortingOrder = value;
+            canvas.sortingOrder = value;
         }
     }
 }

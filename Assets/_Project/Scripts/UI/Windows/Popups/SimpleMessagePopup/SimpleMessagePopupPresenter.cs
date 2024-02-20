@@ -9,7 +9,7 @@ namespace UITemplate.UI.Windows.Popups.Settings
     [UsedImplicitly]
     public class SimpleMessagePopupPresenter : PopupPresenter<SimpleMessagePopupView, BaseModel>
     {
-        private Action _continueCallback;
+        private Action _closeAction;
 
         public override void Initialize()
         {
@@ -19,15 +19,25 @@ namespace UITemplate.UI.Windows.Popups.Settings
 
         protected override void CloseAction()
         {
-            _continueCallback?.Invoke();
+            _closeAction?.Invoke();
         }
 
-        public void Setup(string header, string message, Action continueCallback)
+        public SimpleMessagePopupPresenter SetCloseAction(Action closeAction)
         {
-            _continueCallback = continueCallback;
-            view.SetHeader(header);
-            view.SetMessage(message);
+            _closeAction = closeAction;
+            return this;
         }
-        
+
+        public SimpleMessagePopupPresenter SetHeader(string header)
+        {
+            view.SetHeader(header);
+            return this;
+        }
+
+        public SimpleMessagePopupPresenter SetMessage(string message)
+        {
+            view.SetMessage(message);
+            return this;
+        }
     }
 }

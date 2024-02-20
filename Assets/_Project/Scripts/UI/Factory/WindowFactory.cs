@@ -31,6 +31,7 @@ namespace UITemplate.UI.Factory
         private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel> where TView : ISortedView
         {
             var prefab = await _prefabLoadService.LoadUIPrefab<TView>();
+            prefab.SetActive(false);
 
             var view = Object.Instantiate(prefab).GetComponent<TView>();
             view.SetSortingOrder(order++);

@@ -26,25 +26,31 @@ namespace UITemplate.UI.Managers
         public void Initialize()
         {
             Register(MessageBroker.Default.Receive<CloseStartingPopupEvent>(), OnCloseStartingPopup);
-            Register(MessageBroker.Default.Receive<ChefPackInfoOpenEvent>(), OpenPromoInfoPopup);
-            Register(MessageBroker.Default.Receive<SettingsOpenEvent>(), OpenSettingsPopup);
-            Register(MessageBroker.Default.Receive<StubOpenEvent>(), OpenStubPopup);
-            Register(MessageBroker.Default.Receive<BoostRequestEvent>(), OpenStubPopup);
+            Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
+
+            RegisterAsync(MessageBroker.Default.Receive<ChefPackInfoOpenEvent>(), OpenPromoInfoPopup);
+            RegisterAsync(MessageBroker.Default.Receive<SettingsOpenEvent>(), OpenSettingsPopup);
+            RegisterAsync(MessageBroker.Default.Receive<StubOpenEvent>(), OpenStubPopup);
+            RegisterAsync(MessageBroker.Default.Receive<BoostRequestEvent>(), OpenStubPopup);
             RegisterAsync(MessageBroker.Default.Receive<PassiveIncomeNotifyEvent>(), OpenStartingPopup);
             RegisterAsync(MessageBroker.Default.Receive<WelcomeEvent>(), OpenWelcomePopup);
-            Register(MessageBroker.Default.Receive<LevelCompletedEvent>(), OpenLevelCompletePopup);
         }
 
 
         private async void OpenLevelCompletePopup()
         {
             var presenter = await _windowFactory.GetSimpleMessagePopup();
-            presenter.Setup(Constants.LevelComplete, Constants.Congratulations, () => MessageBroker.Default.Publish(new NextLevelRequestEvent()));
+
+            presenter.SetHeader(Constants.LevelComplete)
+                .SetMessage(Constants.Congratulations)
+                .SetCloseAction(() => MessageBroker.Default.Publish(new NextLevelRequestEvent()))
+                .ShowView();
         }
 
         public async UniTask Run()
         {
             _hudPresenter = await _windowFactory.GetHudWindow();
+            _hudPresenter.ShowView();
         }
 
         private async UniTask OpenWelcomePopup(WelcomeEvent data)
@@ -53,6 +59,7 @@ namespace UITemplate.UI.Managers
 
             var presenter = await _windowFactory.GetWelcomePopup();
             presenter.onClosePopup = () => MessageBroker.Default.Publish(new StartCountingEvent());
+            presenter.ShowView();
         }
 
         private async UniTask OpenStartingPopup(PassiveIncomeNotifyEvent data)
@@ -60,9 +67,8 @@ namespace UITemplate.UI.Managers
             _hudPresenter.UpdateView(data.dto);
 
             var presenter = await _windowFactory.GetStartingPopup();
-
-            var dto = data.dto;
-            presenter.Setup(dto.passiveIncome, dto.passiveTime);
+            presenter.Setup(data.dto.passiveIncome, data.dto.passiveTime)
+                .ShowView();
         }
 
         private async void OnCloseStartingPopup(CloseStartingPopupEvent evt)
@@ -71,14 +77,16 @@ namespace UITemplate.UI.Managers
             if (evt.claimX2Pressed) MessageBroker.Default.Publish(new StartCountingEvent());
         }
 
-        private void OpenStubPopup()
+        private async UniTask OpenStubPopup()
         {
-            _windowFactory.GetStubPopup();
+            var presenter = await _windowFactory.GetStubPopup();
+            presenter.ShowView();
         }
 
-        private void OpenSettingsPopup()
+        private async UniTask OpenSettingsPopup()
         {
-            _windowFactory.GetSettingsPopup();
+            var presenter = await _windowFactory.GetSettingsPopup();
+            presenter.ShowView();
         }
 
 
@@ -86,11 +94,13 @@ namespace UITemplate.UI.Managers
         {
             var presenter = await _windowFactory.GetPromoPopup();
             presenter.onClosePopup = () => MessageBroker.Default.Publish(new StartCountingEvent());
+            presenter.ShowView();
         }
 
-        private void OpenPromoInfoPopup()
+        private async UniTask OpenPromoInfoPopup()
         {
-            _windowFactory.GetPromoInfoPopup();
+            var presenter = await _windowFactory.GetPromoInfoPopup();
+            presenter.ShowView();
         }
     }
 }
