@@ -46,7 +46,7 @@ namespace UITemplate.Application.Services
 
         private float GetUpgradeCompletion(Building building)
         {
-            return (Mathf.Max(building.upgradeLevel - 1, 0)) / ((float) _cfg.upgradesCount - 1);
+            return Mathf.Max(building.upgradeLevel - 1, 0) / ((float) _cfg.upgradesCount - 1);
         }
 
         public bool TryUpgrade(ref Building building)
