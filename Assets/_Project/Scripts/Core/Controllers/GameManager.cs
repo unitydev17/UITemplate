@@ -66,6 +66,7 @@ namespace UITemplate.Core.Controller
             Register(MessageBroker.Default.Receive<StartCountingEvent>(), StartCountingEventHandler);
             RegisterAsync(MessageBroker.Default.Receive<NextLevelRequestEvent>(), NextLevelStartEvent);
             Register(Observable.EveryFixedUpdate(), UpdateBuildingProgress);
+            Register(Observable.EveryApplicationFocus(), OnApplicationFocusHandler);
         }
 
         public async UniTask Run()
@@ -242,6 +243,11 @@ namespace UITemplate.Core.Controller
             _upgradeService.UpdateBuildingsInfo();
             _sceneService.UpdateBuildingViews(buildingsDtoList);
             _sceneService.ActivateLevel();
+        }
+
+        private void OnApplicationFocusHandler(bool focus)
+        {
+            if (focus == false) _persistenceService.SaveAppState();
         }
     }
 }
