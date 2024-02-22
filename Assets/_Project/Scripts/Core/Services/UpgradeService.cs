@@ -28,12 +28,12 @@ namespace UITemplate.Application.Services
             for (var i = 0; i < _gameData.buildings.Count; i++)
             {
                 var value = _gameData.buildings[i];
-                UpdateBuildingRelativeValues(ref value);
+                UpdateBuildingRelativeValues(value);
                 _gameData.buildings[i] = value;
             }
         }
 
-        private void UpdateBuildingRelativeValues(ref Building building)
+        private void UpdateBuildingRelativeValues(Building building)
         {
             var maxUpdate = IsLastUpdateReached(building);
 
@@ -49,11 +49,11 @@ namespace UITemplate.Application.Services
             return Mathf.Max(building.upgradeLevel - 1, 0) / ((float) _cfg.upgradesCount - 1);
         }
 
-        public bool TryUpgrade(ref Building building)
+        public bool TryUpgrade(Building building)
         {
             if (IsLastUpdateReached(building))
             {
-                UpdateBuildingRelativeValues(ref building);
+                UpdateBuildingRelativeValues(building);
                 return false;
             }
 
@@ -66,7 +66,7 @@ namespace UITemplate.Application.Services
 
 
             building.upgradeLevel++;
-            UpdateBuildingRelativeValues(ref building);
+            UpdateBuildingRelativeValues(building);
 
             return true;
         }

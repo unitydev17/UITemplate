@@ -194,7 +194,7 @@ namespace UITemplate.Core.Controller
         private void UpgradeRequestEventHandler(UpgradeRequestEvent data)
         {
             var building = GetBuilding(data.id);
-            if (!_upgradeService.TryUpgrade(ref building)) return;
+            if (!_upgradeService.TryUpgrade(building)) return;
 
             MessageBroker.Default.Publish(new UpgradeResponseEvent(building.ToDto()));
         }

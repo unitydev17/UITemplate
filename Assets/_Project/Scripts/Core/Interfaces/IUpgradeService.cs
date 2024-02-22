@@ -5,7 +5,7 @@ namespace UITemplate.Core.Interfaces
     public interface IUpgradeService
     {
         public void UpdateBuildingsInfo();
-        public bool TryUpgrade(ref Building building);
+        public bool TryUpgrade(Building building);
         
     }
 }
