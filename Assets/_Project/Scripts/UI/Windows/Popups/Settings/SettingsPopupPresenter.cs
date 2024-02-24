@@ -9,15 +9,18 @@ namespace UITemplate.UI.Windows.Popups.Settings
     [UsedImplicitly]
     public class SettingsPopupPresenter : PopupPresenter<SettingsPopupView, SettingsPopupModel>
     {
-        private ISettingsService _settingsService;
-        private IWebService _webService;
+        private readonly ISettingsService _settingsService;
+        private readonly IWebService _webService;
 
+
+        public SettingsPopupPresenter(ISettingsService settingsService, IWebService webService)
+        {
+            _settingsService = settingsService;
+            _webService = webService;
+        }
 
         public override void Initialize()
         {
-            _settingsService = Resolve<ISettingsService>();
-            _webService = Resolve<IWebService>();
-
             base.Initialize();
             Register(view.onChangeMusic, ChangeMusic);
             Register(view.onChangeSound, ChangeSound);

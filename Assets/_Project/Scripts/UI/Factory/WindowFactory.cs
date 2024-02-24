@@ -41,7 +41,6 @@ namespace UITemplate.UI.Factory
             var presenter = _container.Resolve<TPresenter>();
             presenter.view = view;
             presenter.model = model;
-            presenter.container = _container;
 
             (presenter as IInitializable)?.Initialize();
             (presenter as IStartable)?.Start();
