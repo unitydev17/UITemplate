@@ -8,6 +8,7 @@ using UITemplate.UI.Windows.Hud;
 using UITemplate.UI.Windows.Popups.Promo;
 using UITemplate.UI.Windows.Popups.Settings;
 using UITemplate.UI.Windows.Popups.Starting;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
@@ -28,13 +29,14 @@ namespace UITemplate.UI.Factory
             _prefabLoadService = prefabLoadService;
         }
 
-        private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel> where TView : ISortedView
+        private async UniTask<TPresenter> Create<TPresenter, TView, TModel>() where TModel : new() where TPresenter : BasePresenter<TView, TModel> where TView : ISortedView, IDestructable
         {
             var prefab = await _prefabLoadService.LoadUIPrefab<TView>();
             prefab.SetActive(false);
 
             var view = Object.Instantiate(prefab).GetComponent<TView>();
             view.SetSortingOrder(order++);
+            view.SetDestructor(_prefabLoadService.ReleaseAsset<TView>);
 
             var model = new TModel();
 

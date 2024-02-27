@@ -86,6 +86,7 @@ namespace UITemplate.GamePlay.Services
 
             _level.gameObject.SetActive(false);
             Object.Destroy(_level);
+            _levelFactory.ReleaseLevelAsset();
             _level = null;
         }
     }

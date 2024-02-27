@@ -4,10 +4,11 @@ using UnityEngine.UI;
 
 namespace UITemplate.UI.MVP.View
 {
-    public abstract class WindowView : MonoBehaviour, ISortedView
+    public abstract class WindowView : MonoBehaviour, ISortedView, IDestructable
     {
         private Image _bg;
         private Canvas _canvas;
+        private Action _destructor;
 
         private Canvas canvas
         {
@@ -51,12 +52,19 @@ namespace UITemplate.UI.MVP.View
             callback?.Invoke();
             GameObject go;
             (go = gameObject).SetActive(false);
+            _destructor?.Invoke();
             Destroy(go);
         }
 
         public void SetSortingOrder(int value)
         {
             canvas.sortingOrder = value;
+        }
+
+
+        public void SetDestructor(Action action)
+        {
+            _destructor = action;
         }
     }
 }

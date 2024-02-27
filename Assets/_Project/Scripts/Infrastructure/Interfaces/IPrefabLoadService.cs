@@ -7,5 +7,7 @@ namespace UITemplate.Infrastructure.Interfaces
     {
         public UniTask<GameObject> LoadUIPrefab<T>();
         public UniTask<GameObject> LoadLevelPrefab(int index);
+        public void ReleaseAsset<TView>();
+        public void ReleaseLevelAsset(int index);
     }
 }

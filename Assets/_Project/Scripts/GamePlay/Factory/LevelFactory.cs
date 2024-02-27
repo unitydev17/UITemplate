@@ -32,5 +32,10 @@ namespace UITemplate.GamePlay.Factory
             gameObject.SetActive(false);
             return gameObject;
         }
+
+        public void ReleaseLevelAsset()
+        {
+            _prefabLoadService.ReleaseLevelAsset(_levelIndex);
+        }
     }
 }
